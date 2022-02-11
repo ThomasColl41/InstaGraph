@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/get_data_activity.xml" value="0.29347826086956524" />
+        <entry key="app/src/main/res/layout/predict_activity.xml" value="0.26321379009046053" />
+        <entry key="app/src/main/res/layout/result_activity.xml" value="0.29347826086956524" />
+        <entry key="app/src/main/res/layout/select_columns_activity.xml" value="0.29347826086956524" />
+        <entry key="app/src/main/res/layout/select_graph_activity.xml" value="0.29347826086956524" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
