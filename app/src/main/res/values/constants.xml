@@ -1,2 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <dimen name="title_text">54sp</dimen>
+    <dimen name="step_text">38sp</dimen>
+    <dimen name="big_button_width">150dp</dimen>
+    <dimen name="big_button_height">70dp</dimen>
+    <dimen name="big_button_text">40sp</dimen>
+    <dimen name="small_button_width">100dp</dimen>
+    <dimen name="small_button_height">60dp</dimen>
+    <dimen name="small_button_text">20sp</dimen>
+</resources>

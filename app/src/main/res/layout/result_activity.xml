@@ -16,6 +16,56 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <!--Step Text-->
+            <TextView
+                android:layout_width="370dp"
+                android:layout_height="70dp"
+                android:background="@drawable/instagraph_step_text"
+                android:text="@string/step_five"
+                android:textSize="@dimen/step_text"
+                android:textColor="@color/black"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:layout_marginTop="100dp"/>
+
+            <!--Data Preview window-->
+            <ImageView
+                android:id="@+id/data_preview"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_centerHorizontal="true"
+                android:background="@color/white"
+                android:layout_marginTop="200dp"
+                android:contentDescription="@string/empty_content_description"/>
+
+            <!--Back button-->
+            <Button
+                android:id="@+id/back"
+                android:layout_width="@dimen/small_button_width"
+                android:layout_height="@dimen/small_button_height"
+                android:text="@string/back_button_text"
+                android:textColor="@color/black"
+                android:textSize="@dimen/small_button_text"
+                android:layout_below="@id/data_preview"
+                android:layout_marginTop="50dp"
+                android:layout_marginStart="75dp"
+                android:layout_marginEnd="25dp"
+                android:contentDescription="@string/start_button_content"/>
+
+            <!--Next button-->
+            <Button
+                android:id="@+id/next"
+                android:layout_width="@dimen/small_button_width"
+                android:layout_height="@dimen/small_button_height"
+                android:layout_below="@id/data_preview"
+                android:layout_marginTop="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="75dp"
+                android:contentDescription="@string/start_button_content"
+                android:text="@string/next_button_text"
+                android:textColor="@color/black"
+                android:textSize="@dimen/small_button_text"/>
+
         </RelativeLayout>
     </ScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>

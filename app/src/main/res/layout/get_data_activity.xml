@@ -16,6 +16,53 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <!--Step Text-->
+            <TextView
+                android:layout_width="370dp"
+                android:layout_height="70dp"
+                android:background="@drawable/instagraph_step_text"
+                android:text="@string/step_one"
+                android:textSize="@dimen/step_text"
+                android:textColor="@color/black"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:layout_marginTop="100dp"/>
+
+            <!--Data Preview window-->
+            <ImageView
+                android:id="@+id/data_preview"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_centerHorizontal="true"
+                android:background="@color/white"
+                android:layout_marginTop="200dp"
+                android:contentDescription="@string/empty_content_description"/>
+
+            <!--Choose File... button-->
+            <Button
+                android:id="@+id/choose_file"
+                android:layout_width="@dimen/big_button_width"
+                android:layout_height="@dimen/big_button_height"
+                android:layout_centerHorizontal="true"
+                android:text="@string/choose_file_button_text"
+                android:textColor="@color/black"
+                android:textSize="@dimen/small_button_text"
+                android:layout_below="@id/data_preview"
+                android:layout_marginTop="50dp"
+                android:contentDescription="@string/start_button_content"/>
+
+            <!--Next button-->
+            <Button
+                android:id="@+id/next"
+                android:layout_width="@dimen/big_button_width"
+                android:layout_height="@dimen/big_button_height"
+                android:layout_centerHorizontal="true"
+                android:text="@string/next_button_text"
+                android:textColor="@color/black"
+                android:textSize="@dimen/big_button_text"
+                android:layout_below="@id/choose_file"
+                android:layout_marginTop="50dp"
+                android:contentDescription="@string/start_button_content"/>
         </RelativeLayout>
     </ScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>

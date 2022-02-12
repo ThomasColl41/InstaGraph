@@ -21,9 +21,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="InstaGraph"
-                android:textSize="54dp"
-                android:textAlignment="center"
+                android:text="@string/app_name"
+                android:textSize="@dimen/title_text"
+                android:textColor="@color/black"
+                android:gravity="center"
                 android:layout_marginTop="25dp"/>
 
             <!--Logo image-->
@@ -34,28 +35,29 @@
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/instagraph_logo"
                 android:layout_marginTop="275dp"
-                android:contentDescription=""/>
+                android:contentDescription="@string/empty_content_description"/>
 
             <!--Info button-->
             <ImageButton
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@drawable/instagraph_info"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="25dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="25dp"
                 android:layout_marginTop="210dp"
-                android:contentDescription="Tap to display information about InstaGraph"/>
+                android:contentDescription="@string/info_button_content"/>
 
             <!--Start button-->
             <Button
-                android:layout_width="150dp"
-                android:layout_height="50dp"
+                android:layout_width="@dimen/big_button_width"
+                android:layout_height="@dimen/big_button_height"
                 android:layout_centerHorizontal="true"
-                android:text="Start"
+                android:text="@string/start_button_text"
                 android:textColor="@color/black"
+                android:textSize="@dimen/big_button_text"
                 android:layout_below="@id/logo"
                 android:layout_marginTop="50dp"
-                android:contentDescription="Tap to start InstaGraph."/>
+                android:contentDescription="@string/start_button_content"/>
 
         </RelativeLayout>
     </ScrollView>
