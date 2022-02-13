@@ -8,4 +8,16 @@
     <dimen name="small_button_width">100dp</dimen>
     <dimen name="small_button_height">60dp</dimen>
     <dimen name="small_button_text">20sp</dimen>
+    <dimen name="step_background_height">60dp</dimen>
+    <dimen name="step_background_margin_top">10dp</dimen>
+    <dimen name="step_circle_size">50dp</dimen>
+    <dimen name="step_circle_text">30sp</dimen>
+    <dimen name="distance_from_progress_circles">25dp</dimen>
+    <dimen name="step_text_width">370dp</dimen>
+    <dimen name="step_text_height">70dp</dimen>
+    <dimen name="step_text_margin_top">100dp</dimen>
+    <dimen name="step_and_buttons_gap">500dp</dimen>
+    <dimen name="choose_file_and_data_preview_gap">50dp</dimen>
+    <dimen name="choose_file_and_next_gap">50dp</dimen>
+    <dimen name="back_and_next_gap">50dp</dimen>
 </resources>

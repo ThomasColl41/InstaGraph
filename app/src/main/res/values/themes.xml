@@ -15,9 +15,73 @@
         <item name="materialButtonStyle">@style/Theme.InstaGraph.Button</item>
     </style>
 
+    <!--Theme for progress circle-->
+    <style name="Theme.InstaGraph.Step.Circle" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">@dimen/step_circle_size</item>
+        <item name="android:layout_height">@dimen/step_circle_size</item>
+        <item name="android:background">@drawable/instagraph_step_circle</item>
+        <item name="android:textSize">@dimen/step_circle_text</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
+
+    <!--Theme for focused progress circle-->
+    <style name="Theme.InstaGraph.Step.Circle.Focused" parent="Theme.InstaGraph.Step.Circle">
+        <item name="android:background">@drawable/instagraph_step_circle_focused</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!--Theme for step text-->
+    <style name="Theme.InstaGraph.Step.Text" parent="Widget.AppCompat.TextView">
+        <item name="android:id">@id/step_text</item>
+        <item name="android:layout_width">@dimen/step_text_width</item>
+        <item name="android:layout_height">@dimen/step_text_height</item>
+        <item name="android:background">@drawable/instagraph_step_text</item>
+        <item name="android:textSize">@dimen/step_text</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">@dimen/step_text_margin_top</item>
+    </style>
+
     <!--Theme for buttons-->
     <style name="Theme.InstaGraph.Button" parent="Widget.AppCompat.ActionButton">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:background">@drawable/instagraph_button</item>
     </style>
+
+    <!--Theme for big buttons-->
+    <style name="Theme.InstaGraph.Button.Big" parent="Theme.InstaGraph.Button">
+        <item name="android:layout_width">@dimen/big_button_width</item>
+        <item name="android:layout_height">@dimen/big_button_height</item>
+        <item name="android:textSize">@dimen/big_button_text</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">@dimen/step_text_margin_top</item>
+    </style>
+
+    <!--Theme for small buttons-->
+    <style name="Theme.InstaGraph.Button.Small" parent="Theme.InstaGraph.Button">
+        <item name="android:layout_width">@dimen/small_button_width</item>
+        <item name="android:layout_height">@dimen/small_button_height</item>
+        <item name="android:textSize">@dimen/small_button_text</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_alignParentBottom">true</item>
+    </style>
+
+    <!--Theme for back buttons on step pages-->
+    <style name="Theme.InstaGraph.Button.Small.Back" parent="Theme.InstaGraph.Button.Small">
+        <item name="android:text">@string/back_button_text</item>
+        <item name="android:contentDescription">@string/back_button_content</item>
+    </style>
+
+    <!--Theme for next buttons on step pages-->
+    <style name="Theme.InstaGraph.Button.Small.Next" parent="Theme.InstaGraph.Button.Small">
+        <item name="android:text">@string/next_button_text</item>
+        <item name="android:contentDescription">@string/next_button_content</item>
+        <item name="android:layout_toEndOf">@id/back</item>
+        <item name="android:layout_marginStart">@dimen/back_and_next_gap</item>
+    </style>
+
 </resources>

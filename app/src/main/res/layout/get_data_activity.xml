@@ -16,52 +16,93 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!--Step Text-->
+            <!--Progress bar background-->
             <TextView
-                android:layout_width="370dp"
-                android:layout_height="70dp"
-                android:background="@drawable/instagraph_step_text"
-                android:text="@string/step_one"
-                android:textSize="@dimen/step_text"
-                android:textColor="@color/black"
-                android:layout_centerHorizontal="true"
-                android:gravity="center"
-                android:layout_marginTop="100dp"/>
+                android:id="@+id/progress_background"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/step_background_height"
+                android:background="@drawable/instagraph_step_bar_background"
+                android:layout_marginTop="@dimen/step_background_margin_top"/>
 
-            <!--Data Preview window-->
+            <!--Circles indicating progress-->
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignTop="@id/progress_background">
+
+                <!--Step one circle-->
+                <TextView
+                    android:id="@+id/progress_one"
+                    style="@style/Theme.InstaGraph.Step.Circle.Focused"
+                    android:text="@string/progress_one"/>
+
+                <!--Step two circle-->
+                <TextView
+                    android:id="@+id/progress_two"
+                    style="@style/Theme.InstaGraph.Step.Circle"
+                    android:text="@string/progress_two"
+                    android:layout_toEndOf="@id/progress_one"
+                    android:layout_marginStart="@dimen/distance_from_progress_circles"/>
+
+                <!--Step three circle-->
+                <TextView
+                    android:id="@+id/progress_three"
+                    style="@style/Theme.InstaGraph.Step.Circle"
+                    android:text="@string/progress_three"
+                    android:layout_toEndOf="@id/progress_two"
+                    android:layout_marginStart="@dimen/distance_from_progress_circles"/>
+
+                <!--Step four circle-->
+                <TextView
+                    android:id="@+id/progress_four"
+                    style="@style/Theme.InstaGraph.Step.Circle"
+                    android:text="@string/progress_four"
+                    android:layout_toEndOf="@id/progress_three"
+                    android:layout_marginStart="@dimen/distance_from_progress_circles"/>
+
+                <!--Step five circle-->
+                <TextView
+                    android:id="@+id/five"
+                    style="@style/Theme.InstaGraph.Step.Circle"
+                    android:text="@string/progress_five"
+                    android:layout_toEndOf="@id/progress_four"
+                    android:layout_marginStart="@dimen/distance_from_progress_circles"/>
+            </RelativeLayout>
+
+            <!--Step text-->
+            <TextView
+                android:id="@+id/step_text"
+                style="@style/Theme.InstaGraph.Step.Text"
+                android:text="@string/step_one" />
+
+            <!--Data preview window-->
             <ImageView
                 android:id="@+id/data_preview"
                 android:layout_width="250dp"
                 android:layout_height="250dp"
                 android:layout_centerHorizontal="true"
-                android:background="@color/white"
                 android:layout_marginTop="200dp"
-                android:contentDescription="@string/empty_content_description"/>
+                android:background="@color/white"
+                android:contentDescription="@string/empty_content_description" />
 
             <!--Choose File... button-->
             <Button
                 android:id="@+id/choose_file"
-                android:layout_width="@dimen/big_button_width"
-                android:layout_height="@dimen/big_button_height"
-                android:layout_centerHorizontal="true"
+                style="@style/Theme.InstaGraph.Button.Big"
                 android:text="@string/choose_file_button_text"
-                android:textColor="@color/black"
                 android:textSize="@dimen/small_button_text"
                 android:layout_below="@id/data_preview"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="@dimen/choose_file_and_data_preview_gap"
                 android:contentDescription="@string/start_button_content"/>
 
             <!--Next button-->
             <Button
                 android:id="@+id/next"
-                android:layout_width="@dimen/big_button_width"
-                android:layout_height="@dimen/big_button_height"
-                android:layout_centerHorizontal="true"
+                style="@style/Theme.InstaGraph.Button.Big"
                 android:text="@string/next_button_text"
-                android:textColor="@color/black"
-                android:textSize="@dimen/big_button_text"
                 android:layout_below="@id/choose_file"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="@dimen/choose_file_and_next_gap"
                 android:contentDescription="@string/start_button_content"/>
         </RelativeLayout>
     </ScrollView>
