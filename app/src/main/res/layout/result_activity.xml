@@ -94,10 +94,12 @@
                 <Button
                     android:id="@+id/back"
                     style="@style/Theme.InstaGraph.Button.Small.Back"/>
-                <!--Next button-->
+                <!--Finish button-->
                 <Button
                     android:id="@+id/next"
-                    style="@style/Theme.InstaGraph.Button.Small.Next"/>
+                    style="@style/Theme.InstaGraph.Button.Small.Next"
+                    android:text="@string/finish_button_text"
+                    android:contentDescription="@string/finish_button_content"/>
             </RelativeLayout>
 
         </RelativeLayout>

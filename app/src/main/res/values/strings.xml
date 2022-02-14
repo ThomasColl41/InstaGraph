@@ -8,6 +8,8 @@
     <string name="next_button_content">Tap to proceed</string>
     <string name="back_button_text">Back</string>
     <string name="back_button_content">Tap to go back</string>
+    <string name="finish_button_text">Finish</string>
+    <string name="finish_button_content">Tap to finish</string>
     <string name="empty_content_description"> </string>
     <string name="step_one">1. Get Data</string>
     <string name="step_two">2. Select Graph</string>
