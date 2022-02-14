@@ -77,15 +77,43 @@
                 android:id="@+id/step_text"
                 android:text="@string/step_three" />
 
-            <!--Data Preview window-->
-            <ImageView
-                android:id="@+id/data_preview"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
+            <!--Spinners-->
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:background="@color/white"
-                android:layout_marginTop="200dp"
-                android:contentDescription="@string/empty_content_description"/>
+                android:layout_below="@id/step_text"
+                android:layout_marginTop="@dimen/spinner_gap">
+
+                <!--Model spinner-->
+                <Spinner
+                    android:id="@+id/model_spinner"
+                    android:layout_width="@dimen/model_spinner_width"
+                    android:layout_height="@dimen/model_spinner_height"
+                    android:background="@drawable/instagraph_spinner_background"
+                    android:layout_marginStart="@dimen/model_spinner_gap"
+                    android:prompt="@string/model_spinner_prompt"/>
+
+                <!--Column one spinner-->
+                <Spinner
+                    android:id="@+id/column_one"
+                    android:layout_width="@dimen/spinner_width"
+                    android:layout_height="@dimen/spinner_height"
+                    android:background="@drawable/instagraph_spinner_background"
+                    android:layout_below="@id/model_spinner"
+                    android:layout_marginTop="@dimen/spinner_gap"
+                    android:prompt="@string/column_one_spinner_prompt"/>
+
+                <!--Column two spinner-->
+                <Spinner
+                    android:id="@+id/column_two"
+                    android:layout_width="@dimen/spinner_width"
+                    android:layout_height="@dimen/spinner_height"
+                    android:background="@drawable/instagraph_spinner_background"
+                    android:layout_below="@id/column_one"
+                    android:layout_marginTop="@dimen/spinner_gap"
+                    android:prompt="@string/column_two_spinner_prompt"/>
+            </RelativeLayout>
 
             <!--Next and back buttons-->
             <RelativeLayout
