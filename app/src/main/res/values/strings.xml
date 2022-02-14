@@ -19,4 +19,5 @@
     <string name="progress_three">3</string>
     <string name="progress_four">4</string>
     <string name="progress_five">5</string>
+    <string name="instagraph_information">[Information about what the app does]</string>
 </resources>

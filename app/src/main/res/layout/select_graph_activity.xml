@@ -44,7 +44,7 @@
                     style="@style/Theme.InstaGraph.Step.Circle.Focused"
                     android:text="@string/progress_two"
                     android:layout_toEndOf="@id/progress_one"
-                    android:layout_marginStart="@dimen/distance_from_progress_circles"/>
+                    android:layout_marginStart="@dimen/distance_from_step_circles"/>
 
                 <!--Step three circle-->
                 <TextView
@@ -52,7 +52,7 @@
                     style="@style/Theme.InstaGraph.Step.Circle"
                     android:text="@string/progress_three"
                     android:layout_toEndOf="@id/progress_two"
-                    android:layout_marginStart="@dimen/distance_from_progress_circles"/>
+                    android:layout_marginStart="@dimen/distance_from_step_circles"/>
 
                 <!--Step four circle-->
                 <TextView
@@ -60,7 +60,7 @@
                     style="@style/Theme.InstaGraph.Step.Circle"
                     android:text="@string/progress_four"
                     android:layout_toEndOf="@id/progress_three"
-                    android:layout_marginStart="@dimen/distance_from_progress_circles"/>
+                    android:layout_marginStart="@dimen/distance_from_step_circles"/>
 
                 <!--Step five circle-->
                 <TextView
@@ -68,7 +68,7 @@
                     style="@style/Theme.InstaGraph.Step.Circle"
                     android:text="@string/progress_five"
                     android:layout_toEndOf="@id/progress_four"
-                    android:layout_marginStart="@dimen/distance_from_progress_circles"/>
+                    android:layout_marginStart="@dimen/distance_from_step_circles"/>
             </RelativeLayout>
 
             <!--Step Text-->
@@ -88,46 +88,32 @@
                 <!--Visualisation window-->
                 <ImageView
                     android:id="@+id/visualisation_one"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@color/white"
+                    style="@style/Theme.InstaGraph.Visualisation.Window"
                     android:contentDescription="@string/empty_content_description"/>
 
                 <!--Visualisation window-->
                 <ImageView
                     android:id="@+id/visualisation_two"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@color/white"
+                    style="@style/Theme.InstaGraph.Visualisation.Window"
                     android:layout_toEndOf="@id/visualisation_one"
-                    android:layout_marginStart="50dp"
+                    android:layout_marginStart="@dimen/visualisation_window_gap"
                     android:contentDescription="@string/empty_content_description"/>
-            </RelativeLayout>
 
-            <!--Row of visualisation options-->
-            <RelativeLayout
-                android:id="@+id/row_two"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_alignTop="@id/row_one"
-                android:layout_marginTop="100dp">
-                <!--Visualisation window-->
                 <ImageView
                     android:id="@+id/visualisation_three"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@color/white"
+                    style="@style/Theme.InstaGraph.Visualisation.Window"
+                    android:layout_below="@id/visualisation_one"
+                    android:layout_marginTop="@dimen/visualisation_window_gap"
                     android:contentDescription="@string/empty_content_description"/>
 
                 <!--Visualisation window-->
                 <ImageView
                     android:id="@+id/visualisation_four"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@color/white"
+                    style="@style/Theme.InstaGraph.Visualisation.Window"
+                    android:layout_below="@id/visualisation_two"
+                    android:layout_marginTop="@dimen/visualisation_window_gap"
                     android:layout_toEndOf="@id/visualisation_three"
-                    android:layout_marginStart="50dp"
+                    android:layout_marginStart="@dimen/visualisation_window_gap"
                     android:contentDescription="@string/empty_content_description"/>
             </RelativeLayout>
 

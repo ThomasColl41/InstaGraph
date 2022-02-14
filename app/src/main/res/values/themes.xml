@@ -84,4 +84,32 @@
         <item name="android:layout_marginStart">@dimen/back_and_next_gap</item>
     </style>
 
+    <!--Theme for info window-->
+    <style name="Theme.InstaGraph.Info" parent="Widget.AppCompat.TextView">
+        <item name="android:text">@string/instagraph_information</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/instagraph_info_background</item>
+        <item name="android:layout_below">@id/title</item>
+        <item name="android:layout_marginTop">@dimen/title_info_gap</item>
+        <item name="android:layout_toStartOf">@id/info</item>
+    </style>
+
+    <!--Theme for data windows-->
+    <style name="Theme.InstaGraph.Data.Window" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">@dimen/data_window_width</item>
+        <item name="android:layout_height">@dimen/data_window_height</item>
+        <item name="android:background">@drawable/instagraph_data_window</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_below">@id/step_text</item>
+        <item name="android:layout_marginTop">@dimen/step_text_and_data_preview_gap</item>
+    </style>
+
+    <!--Theme for visualisation windows-->
+    <style name="Theme.InstaGraph.Visualisation.Window" parent="Widget.AppCompat.ActionButton">
+        <item name="android:layout_width">@dimen/visualisation_window_width</item>
+        <item name="android:layout_height">@dimen/visualisation_window_height</item>
+        <item name="android:background">@drawable/instagraph_visualisation_background</item>
+    </style>
+
 </resources>

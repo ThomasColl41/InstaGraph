@@ -44,7 +44,7 @@
                     style="@style/Theme.InstaGraph.Step.Circle"
                     android:text="@string/progress_two"
                     android:layout_toEndOf="@id/progress_one"
-                    android:layout_marginStart="@dimen/distance_from_progress_circles"/>
+                    android:layout_marginStart="@dimen/distance_from_step_circles"/>
 
                 <!--Step three circle-->
                 <TextView
@@ -52,7 +52,7 @@
                     style="@style/Theme.InstaGraph.Step.Circle"
                     android:text="@string/progress_three"
                     android:layout_toEndOf="@id/progress_two"
-                    android:layout_marginStart="@dimen/distance_from_progress_circles"/>
+                    android:layout_marginStart="@dimen/distance_from_step_circles"/>
 
                 <!--Step four circle-->
                 <TextView
@@ -60,7 +60,7 @@
                     style="@style/Theme.InstaGraph.Step.Circle.Focused"
                     android:text="@string/progress_four"
                     android:layout_toEndOf="@id/progress_three"
-                    android:layout_marginStart="@dimen/distance_from_progress_circles"/>
+                    android:layout_marginStart="@dimen/distance_from_step_circles"/>
 
                 <!--Step five circle-->
                 <TextView
@@ -68,7 +68,7 @@
                     style="@style/Theme.InstaGraph.Step.Circle"
                     android:text="@string/progress_five"
                     android:layout_toEndOf="@id/progress_four"
-                    android:layout_marginStart="@dimen/distance_from_progress_circles"/>
+                    android:layout_marginStart="@dimen/distance_from_step_circles"/>
             </RelativeLayout>
 
             <!--Step Text-->
@@ -77,14 +77,10 @@
                 style="@style/Theme.InstaGraph.Step.Text"
                 android:text="@string/step_four"/>
 
-            <!--Data Preview window-->
+            <!--Data preview window-->
             <ImageView
                 android:id="@+id/data_preview"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:layout_centerHorizontal="true"
-                android:background="@color/white"
-                android:layout_marginTop="200dp"
+                style="@style/Theme.InstaGraph.Data.Window"
                 android:contentDescription="@string/empty_content_description"/>
 
             <!--Next and back buttons-->
