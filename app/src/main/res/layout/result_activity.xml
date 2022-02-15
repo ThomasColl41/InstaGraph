@@ -96,7 +96,7 @@
                     style="@style/Theme.InstaGraph.Button.Small.Back"/>
                 <!--Finish button-->
                 <Button
-                    android:id="@+id/next"
+                    android:id="@+id/finish"
                     style="@style/Theme.InstaGraph.Button.Small.Next"
                     android:text="@string/finish_button_text"
                     android:contentDescription="@string/finish_button_content"/>

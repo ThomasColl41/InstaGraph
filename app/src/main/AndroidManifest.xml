@@ -18,6 +18,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".GetDataActivity">
+        </activity>
+        <activity
+            android:name=".SelectGraphActivity">
+        </activity>
+        <activity
+            android:name=".SelectColumnsActivity">
+        </activity>
+        <activity
+            android:name=".PredictActivity">
+        </activity>
+        <activity
+            android:name=".ResultActivity">
+        </activity>
     </application>
 
 </manifest>
