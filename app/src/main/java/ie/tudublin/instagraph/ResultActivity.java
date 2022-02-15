@@ -28,6 +28,7 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
         switch(view.getId()) {
             case(R.id.finish):
                 Intent goToMain = new Intent(ResultActivity.this, MainActivity.class);
+                goToMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(goToMain);
                 break;
 
