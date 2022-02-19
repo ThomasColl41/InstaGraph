@@ -24,7 +24,7 @@
     <string name="progress_three">3</string>
     <string name="progress_four">4</string>
     <string name="progress_five">5</string>
-    <string name="instagraph_information">[Information about what the app does]</string>
+    <string name="instagraph_information">Information about what the app does\n\n\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n\n\nTap the information button to close.</string>
     <string name="model_spinner_prompt">Model</string>
     <string name="column_one_spinner_prompt">Column 1</string>
     <string name="column_two_spinner_prompt">Column 2</string>

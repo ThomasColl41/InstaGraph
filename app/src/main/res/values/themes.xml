@@ -15,6 +15,54 @@
         <item name="materialButtonStyle">@style/Theme.InstaGraph.Button</item>
     </style>
 
+    <!--Theme for title-->
+    <style name="Theme.InstaGraph.Title" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginTop">@dimen/title_margin_top</item>
+        <item name="android:gravity">center</item>
+        <item name="android:text">@string/app_name</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/title_text</item>
+    </style>
+
+    <!--Theme for logo-->
+    <style name="Theme.InstaGraph.Logo">
+        <item name="android:layout_width">@dimen/logo_width</item>
+        <item name="android:layout_height">@dimen/logo_height</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:background">@drawable/instagraph_logo</item>
+        <item name="android:layout_below">@id/title</item>
+        <item name="android:layout_marginTop">@dimen/title_and_logo_gap</item>
+    </style>
+
+    <!--Theme for information button-->
+    <style name="Theme.InstaGraph.Info.Button" parent="Widget.AppCompat.ActionButton">
+        <item name="android:layout_width">@dimen/info_button_height</item>
+        <item name="android:layout_height">@dimen/info_button_height</item>
+        <item name="android:background">@drawable/instagraph_info</item>
+        <item name="android:layout_below">@id/title</item>
+        <item name="android:layout_toEndOf">@id/logo</item>
+        <item name="android:layout_marginTop">@dimen/title_and_info_button_gap</item>
+        <item name="android:contentDescription">@string/empty_content_description</item>
+    </style>
+
+    <!--Theme for info window-->
+    <style name="Theme.InstaGraph.Info.Window" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/instagraph_info_background</item>
+        <item name="android:text">@string/instagraph_information</item>
+        <item name="android:textColor">@color/orange</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/info_padding</item>
+        <item name="android:layout_alignTop">@id/info_button</item>
+        <item name="android:layout_alignStart">@id/logo</item>
+        <item name="android:layout_alignEnd">@id/logo</item>
+        <item name="android:visibility">invisible</item>
+    </style>
+
     <!--Theme for RelativeLayout containing progress circles-->
     <style name="Theme.InstaGraph.Progress.Layout" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">wrap_content</item>
@@ -92,17 +140,6 @@
         <item name="android:contentDescription">@string/next_button_content</item>
         <item name="android:layout_toEndOf">@id/back</item>
         <item name="android:layout_marginStart">@dimen/back_and_next_gap</item>
-    </style>
-
-    <!--Theme for info window-->
-    <style name="Theme.InstaGraph.Info" parent="Widget.AppCompat.TextView">
-        <item name="android:text">@string/instagraph_information</item>
-        <item name="android:layout_centerHorizontal">true</item>
-        <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/instagraph_info_background</item>
-        <item name="android:layout_below">@id/title</item>
-        <item name="android:layout_marginTop">@dimen/title_and_info_gap</item>
-        <item name="android:layout_toStartOf">@id/info</item>
     </style>
 
     <!--Theme for data windows-->

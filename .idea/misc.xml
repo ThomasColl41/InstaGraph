@@ -14,7 +14,7 @@
         <entry key="app/src/main/res/drawable/instagraph_step_text.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/instagraph_visualisation_background.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/instagraph_visualisation_background_focused.xml" value="0.2085" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.30497180932854945" />
         <entry key="app/src/main/res/layout/get_data_activity.xml" value="0.29347826086956524" />
         <entry key="app/src/main/res/layout/get_url_activity.xml" value="0.29347826086956524" />
         <entry key="app/src/main/res/layout/predict_activity.xml" value="0.26321379009046053" />

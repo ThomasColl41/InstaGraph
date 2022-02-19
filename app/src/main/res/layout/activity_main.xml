@@ -19,35 +19,18 @@
             <!--Title-->
             <TextView
                 android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="25dp"
-                android:gravity="center"
-                android:text="@string/app_name"
-                android:textColor="@color/black"
-                android:textSize="@dimen/title_text" />
+                style="@style/Theme.InstaGraph.Title"/>
 
             <!--Logo image-->
             <ImageView
                 android:id="@+id/logo"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/instagraph_logo"
-                android:layout_marginTop="275dp"
+                style="@style/Theme.InstaGraph.Logo"
                 android:contentDescription="@string/empty_content_description"/>
 
             <!--Info button-->
             <Button
-                android:id="@+id/info"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/instagraph_info"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="25dp"
-                android:layout_marginTop="210dp"
-                android:contentDescription="@string/info_button_content"/>
+                android:id="@+id/info_button"
+                style="@style/Theme.InstaGraph.Info.Button"/>
 
             <!--Start button-->
             <Button
@@ -55,15 +38,13 @@
                 style="@style/Theme.InstaGraph.Button.Big"
                 android:text="@string/start_button_text"
                 android:layout_below="@id/logo"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="@dimen/logo_and_start_gap"
                 android:contentDescription="@string/start_button_content"/>
 
             <!--Information window-->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Theme.InstaGraph.Info"
-                android:visibility="invisible"/>
+                android:id="@+id/info_window"
+                style="@style/Theme.InstaGraph.Info.Window"/>
 
         </RelativeLayout>
     </ScrollView>
