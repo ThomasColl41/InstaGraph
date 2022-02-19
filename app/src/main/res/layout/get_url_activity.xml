@@ -71,31 +71,24 @@
             <TextView
                 android:id="@+id/step_text"
                 style="@style/Theme.InstaGraph.Step.Text"
-                android:text="@string/step_one" />
+                android:text="@string/URL_step_text"
+                android:textSize="@dimen/url_step_text"/>
 
-            <!--Data preview window-->
-            <ImageView
-                android:id="@+id/data_preview"
-                style="@style/Theme.InstaGraph.Data.Window"
-                android:contentDescription="@string/empty_content_description"/>
+            <!--URL input-->
+            <EditText
+                android:id="@+id/url_input"
+                style="@style/Theme.InstaGraph.Input.URL"
+                android:hint="@string/URL_input_hint"
+                android:autofillHints="https://"/>
 
-            <!--Choose File... button-->
+            <!--Submit button-->
             <Button
-                android:id="@+id/choose_file"
+                android:id="@+id/submit"
                 style="@style/Theme.InstaGraph.Button.Big"
-                android:text="@string/choose_file_button_text"
-                android:textSize="@dimen/small_button_text"
-                android:layout_below="@id/data_preview"
-                android:layout_marginTop="@dimen/choose_file_and_data_preview_gap"
-                android:contentDescription="@string/start_button_content"/>
-
-            <!--Next button-->
-            <Button
-                android:id="@+id/next"
-                style="@style/Theme.InstaGraph.Button.Big"
-                android:text="@string/next_button_text"
-                android:layout_below="@id/choose_file"
-                android:layout_marginTop="@dimen/choose_file_and_next_gap"
+                android:text="@string/submit_button_text"
+                android:textSize="@dimen/submit_button_text"
+                android:layout_below="@id/url_input"
+                android:layout_marginTop="@dimen/url_input_and_submit_gap"
                 android:contentDescription="@string/start_button_content"/>
         </RelativeLayout>
     </ScrollView>

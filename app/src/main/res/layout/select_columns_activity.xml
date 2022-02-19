@@ -27,10 +27,7 @@
 
             <!--Circles indicating progress-->
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_alignTop="@id/progress_background">
+                style="@style/Theme.InstaGraph.Progress.Layout">
 
                 <!--Step one circle-->
                 <TextView

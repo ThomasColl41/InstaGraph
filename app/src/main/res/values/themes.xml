@@ -15,6 +15,16 @@
         <item name="materialButtonStyle">@style/Theme.InstaGraph.Button</item>
     </style>
 
+    <!--Theme for RelativeLayout containing progress circles-->
+    <style name="Theme.InstaGraph.Progress.Layout" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_alignTop">@id/progress_background</item>
+        <item name="android:layout_marginTop">@dimen/progress_background_and_circles_gap</item>
+
+    </style>
+
     <!--Theme for progress circle-->
     <style name="Theme.InstaGraph.Step.Circle" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">@dimen/step_circle_size</item>
@@ -23,7 +33,6 @@
         <item name="android:textSize">@dimen/step_circle_text</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:gravity">center</item>
-        <item name="android:layout_marginTop">5dp</item>
     </style>
 
     <!--Theme for focused progress circle-->
@@ -43,6 +52,7 @@
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_marginTop">@dimen/step_text_margin_top</item>
+        <item name="android:layout_marginStart">@dimen/step_text_margin_start</item>
     </style>
 
     <!--Theme for buttons-->
@@ -91,7 +101,7 @@
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/instagraph_info_background</item>
         <item name="android:layout_below">@id/title</item>
-        <item name="android:layout_marginTop">@dimen/title_info_gap</item>
+        <item name="android:layout_marginTop">@dimen/title_and_info_gap</item>
         <item name="android:layout_toStartOf">@id/info</item>
     </style>
 
@@ -103,6 +113,18 @@
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_below">@id/step_text</item>
         <item name="android:layout_marginTop">@dimen/step_text_and_data_preview_gap</item>
+    </style>
+
+    <!--Theme for URL input-->
+    <style name="Theme.InstaGraph.Input.URL" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/url_input_text</item>
+        <item name="android:inputType">textUri</item>
+        <item name="android:layout_below">@id/step_text</item>
+        <item name="android:layout_marginTop">@dimen/step_text_and_url_input_gap</item>
+        <item name="android:layout_alignStart">@id/step_text</item>
+        <item name="android:layout_alignEnd">@id/step_text</item>
     </style>
 
     <!--Theme for visualisation windows-->

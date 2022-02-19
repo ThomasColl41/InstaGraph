@@ -10,6 +10,7 @@
     <dimen name="step_text_width">370dp</dimen>
     <dimen name="step_text_height">70dp</dimen>
     <dimen name="step_text_margin_top">100dp</dimen>
+    <dimen name="step_text_margin_start">50dp</dimen>
     <dimen name="step_and_buttons_gap">500dp</dimen>
     <dimen name="big_button_width">150dp</dimen>
     <dimen name="big_button_height">70dp</dimen>
@@ -19,16 +20,23 @@
     <dimen name="small_button_text">20sp</dimen>
     <dimen name="data_window_width">250dp</dimen>
     <dimen name="data_window_height">250dp</dimen>
+    <dimen name="url_step_text">26sp</dimen>
+    <dimen name="url_input_text">20sp</dimen>
+    <dimen name="submit_button_text">38sp</dimen>
     <dimen name="visualisation_window_width">100dp</dimen>
     <dimen name="visualisation_window_height">100dp</dimen>
     <dimen name="visualisation_window_gap">50dp</dimen>
     <dimen name="model_spinner_width">100dp</dimen>
     <dimen name="model_spinner_height">25dp</dimen>
     <dimen name="spinner_width">250dp</dimen>
-    <dimen name="spinner_height">50dp</dimen><dimen name="title_info_gap">50dp</dimen>
+    <dimen name="spinner_height">50dp</dimen>
+    <dimen name="title_and_info_gap">50dp</dimen>
+    <dimen name="progress_background_and_circles_gap">5dp</dimen>
     <dimen name="step_text_and_data_preview_gap">25dp</dimen>
     <dimen name="choose_file_and_data_preview_gap">50dp</dimen>
     <dimen name="choose_file_and_next_gap">50dp</dimen>
+    <dimen name="step_text_and_url_input_gap">100dp</dimen>
+    <dimen name="url_input_and_submit_gap">100dp</dimen>
     <dimen name="back_and_next_gap">50dp</dimen>
     <dimen name="model_spinner_gap">200dp</dimen>
     <dimen name="spinner_gap">50dp</dimen>

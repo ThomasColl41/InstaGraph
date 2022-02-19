@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class GetDataActivity extends AppCompatActivity implements View.OnClickListener {
     Button chooseFile;
@@ -27,7 +28,9 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch(view.getId()) {
             case(R.id.choose_file):
-                // Choose file
+                Intent goToChooseFile = new Intent(GetDataActivity.this, GetURLActivity.class);
+                startActivity(goToChooseFile);
+//                Toast.makeText(this, "YOOOOOOO", Toast.LENGTH_SHORT).show();
                 break;
 
             case(R.id.next):
