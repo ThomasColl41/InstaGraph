@@ -20,7 +20,7 @@ android {
         }
 
         python {
-            buildPython "/Applications/Python 3.9"
+            buildPython "/Library/Frameworks/Python.framework/Versions/Python-3.8.11/python.exe"
         }
 
         sourceSets {
