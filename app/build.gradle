@@ -20,7 +20,14 @@ android {
         }
 
         python {
-            buildPython "/Library/Frameworks/Python.framework/Versions/Python-3.8.11/python.exe"
+            buildPython "/Library/Frameworks/Python.framework/Versions/3.8/bin/python3.8"
+
+            pip {
+                install "sklearn"
+                install "pandas"
+                install "matplotlib"
+                install "numpy"
+            }
         }
 
         sourceSets {

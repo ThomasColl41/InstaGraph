@@ -22,12 +22,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialise Python (using Chaquopy)
-        if(!Python.isStarted()) {
-            Python.start(new AndroidPlatform(this));
-        }
-
-        Python py = Python.getInstance();
+//        // Initialise Python (using Chaquopy)
+//        if(!Python.isStarted()) {
+//            Python.start(new AndroidPlatform(this));
+//        }
+//
+//        Python py = Python.getInstance();
 
         start = findViewById(R.id.start);
         info_button = findViewById(R.id.info_button);
