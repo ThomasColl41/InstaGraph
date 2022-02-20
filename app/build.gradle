@@ -20,6 +20,7 @@ android {
         }
 
         python {
+            // path to Python 3.8 executable on build machine
             buildPython "/Library/Frameworks/Python.framework/Versions/3.8/bin/python3.8"
 
             pip {

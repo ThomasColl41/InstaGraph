@@ -3,14 +3,18 @@ package ie.tudublin.instagraph;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class GetDataActivity extends AppCompatActivity implements View.OnClickListener {
     Button chooseFile;
     Button next;
+    ImageView dataPreview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,9 +23,23 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
 
         chooseFile = findViewById(R.id.choose_file);
         next = findViewById(R.id.next);
+        dataPreview = findViewById(R.id.data_preview);
 
         chooseFile.setOnClickListener(this);
         next.setOnClickListener(this);
+
+        Intent intent = getIntent();
+
+        try {
+            byte[] image = intent.getByteArrayExtra("dataPreview");
+
+            Bitmap bmp = BitmapFactory.decodeByteArray(image,0,image.length);
+
+            dataPreview.setImageBitmap(bmp);
+        }
+        catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -30,7 +48,6 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
             case(R.id.choose_file):
                 Intent goToChooseFile = new Intent(GetDataActivity.this, GetURLActivity.class);
                 startActivity(goToChooseFile);
-//                Toast.makeText(this, "YOOOOOOO", Toast.LENGTH_SHORT).show();
                 break;
 
             case(R.id.next):

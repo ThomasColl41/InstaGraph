@@ -13,8 +13,6 @@ import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 
-import java.net.URL;
-
 public class GetURLActivity extends AppCompatActivity implements View.OnClickListener {
     EditText URL_input;
     Button submit;
@@ -48,10 +46,13 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
             case(R.id.submit):
                 PyObject obj = pyobj.callAttr("main", URL_input.getText().toString());
                 Toast.makeText(this, obj.toString(), Toast.LENGTH_LONG).show();
-//                Toast.makeText(this, URL_input.getText().toString(), Toast.LENGTH_LONG).show();
-//                Intent returnToGetData = new Intent(GetURLActivity.this, GetDataActivity.class);
-//                returnToGetData.putExtra("URL", URL_input.getText().toString());
-//                startActivity(returnToGetData);
+
+//                Inspired from https://github.com/Robbi-Blechdose/FT-TXT/blob/8751afe7fd0f74efb05f1635bb5b9a28d107013e/app/src/main/java/de/rbgs/ft_txt_app/Main.java#L264
+                byte[] data = obj.toJava(byte[].class);
+
+                Intent returnToGetData = new Intent(GetURLActivity.this, GetDataActivity.class);
+                returnToGetData.putExtra("dataPreview", data);
+                startActivity(returnToGetData);
                 break;
         }
     }
