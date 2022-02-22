@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,15 +48,26 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
         switch(view.getId()) {
             case(R.id.submit):
                 // Run the specified function in the script and get the return value
-                PyObject step_one = instaGraphPyObject.callAttr("step_one", URL_input.getText().toString());
+                PyObject dataPreview = instaGraphPyObject.callAttr("step_one", URL_input.getText().toString());
 
 //                Inspired from https://github.com/Robbi-Blechdose/FT-TXT/blob/8751afe7fd0f74efb05f1635bb5b9a28d107013e/app/src/main/java/de/rbgs/ft_txt_app/Main.java#L264
-                byte[] data = step_one.toJava(byte[].class);
-
-                Intent returnToGetData = new Intent(GetURLActivity.this, GetDataActivity.class);
-                returnToGetData.putExtra("dataPreview", data);
-                startActivity(returnToGetData);
+                try {
+                    byte[] data = dataPreview.toJava(byte[].class);
+                    Intent returnToGetData = new Intent(GetURLActivity.this, GetDataActivity.class);
+                    returnToGetData.putExtra("dataPreview", data);
+                    startActivity(returnToGetData);
+                }
+                catch (java.lang.ClassCastException cce) {
+//                    Toast.makeText(this, cce.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.i("InstaGraph", cce.getMessage());
+                    String data = dataPreview.toString();
+                    Intent returnToGetData = new Intent(GetURLActivity.this, GetDataActivity.class);
+                    returnToGetData.putExtra("dataPreview", data);
+                    startActivity(returnToGetData);
+                }
                 break;
+
+
         }
     }
 }
