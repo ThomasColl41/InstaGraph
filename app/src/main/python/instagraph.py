@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import io
 
-def main(url):
+def step_one(url):
     # Handle exceptions
     dataset = pd.DataFrame()
     try:
@@ -20,9 +20,8 @@ def main(url):
     # Get the first five rows to display as a preview
     ds_head = dataset.head()
 
-    # Create the subplot, figure size is (the number of columns/2) wide, 1 high
-    fig, ax = plt.subplots(figsize=(len(ds_head.columns)/2,1))
-
+    # Create the subplot, figure size is (the number of columns/1.5) wide, 1.2 high
+    fig, ax = plt.subplots(figsize=(len(ds_head.columns)/1.5,1.2))
     # Plot the table
     ds_table = ax.table(
         cellText=ds_head.values,    # The contents of each cell

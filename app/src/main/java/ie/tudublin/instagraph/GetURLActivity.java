@@ -18,7 +18,7 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
     Button submit;
 
     Python py;
-    PyObject pyobj;
+    PyObject instaGraphPyObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +30,11 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
             Python.start(new AndroidPlatform(this));
         }
 
+        // Get an instance of Python to run scripts
         py = Python.getInstance();
 
-        pyobj = py.getModule("step_one");
+        // Run the script associated with the parameter
+        instaGraphPyObject = py.getModule("instagraph");
 
         URL_input = findViewById(R.id.url_input);
         submit = findViewById(R.id.submit);
@@ -44,11 +46,11 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch(view.getId()) {
             case(R.id.submit):
-                PyObject obj = pyobj.callAttr("main", URL_input.getText().toString());
-                Toast.makeText(this, obj.toString(), Toast.LENGTH_LONG).show();
+                // Run the specified function in the script and get the return value
+                PyObject step_one = instaGraphPyObject.callAttr("step_one", URL_input.getText().toString());
 
 //                Inspired from https://github.com/Robbi-Blechdose/FT-TXT/blob/8751afe7fd0f74efb05f1635bb5b9a28d107013e/app/src/main/java/de/rbgs/ft_txt_app/Main.java#L264
-                byte[] data = obj.toJava(byte[].class);
+                byte[] data = step_one.toJava(byte[].class);
 
                 Intent returnToGetData = new Intent(GetURLActivity.this, GetDataActivity.class);
                 returnToGetData.putExtra("dataPreview", data);
