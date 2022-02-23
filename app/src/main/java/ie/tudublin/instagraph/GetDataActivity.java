@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -38,7 +39,7 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
             dataPreview.setImageBitmap(bmp);
         }
         catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.i("InstaGraph", e.getMessage());
         }
     }
 
