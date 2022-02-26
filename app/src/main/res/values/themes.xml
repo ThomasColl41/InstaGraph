@@ -171,4 +171,12 @@
         <item name="android:background">@drawable/instagraph_visualisation_background</item>
     </style>
 
+    <!--Theme for visualisation border-->
+    <style name="Theme.InstaGraph.Visualisation.Border" parent="Widget.AppCompat.ActionButton">
+        <item name="android:layout_width">@dimen/visualisation_window_width</item>
+        <item name="android:layout_height">@dimen/visualisation_window_height</item>
+        <item name="android:background">@drawable/instagraph_visualisation_background_focused</item>
+        <item name="android:visibility">invisible</item>
+    </style>
+
 </resources>

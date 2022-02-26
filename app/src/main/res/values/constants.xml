@@ -30,8 +30,8 @@
     <dimen name="url_step_text">26sp</dimen>
     <dimen name="url_input_text">20sp</dimen>
     <dimen name="submit_button_text">38sp</dimen>
-    <dimen name="visualisation_window_width">100dp</dimen>
-    <dimen name="visualisation_window_height">100dp</dimen>
+    <dimen name="visualisation_window_width">150dp</dimen>
+    <dimen name="visualisation_window_height">150dp</dimen>
     <dimen name="visualisation_window_gap">50dp</dimen>
     <dimen name="model_spinner_width">100dp</dimen>
     <dimen name="model_spinner_height">25dp</dimen>
