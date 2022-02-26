@@ -94,7 +94,7 @@
                 <ImageView
                     android:id="@+id/line_graph_border"
                     style="@style/Theme.InstaGraph.Visualisation.Border"
-                    android:contentDescription="@string/empty_content_description" />
+                    android:contentDescription="@string/empty_content_description"/>
 
                 <!--Bar chart window-->
                 <ImageView
