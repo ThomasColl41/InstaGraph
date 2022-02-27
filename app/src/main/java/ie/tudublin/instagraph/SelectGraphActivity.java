@@ -99,7 +99,10 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
                 findViewById(highlighted).setVisibility(View.INVISIBLE);
                 findViewById(R.id.line_graph_border).setVisibility(View.VISIBLE);
                 highlighted = R.id.line_graph_border;
-                Toast.makeText(this, npe + " occurred, Please try again.", Toast.LENGTH_LONG).show();
+                Toast.makeText(
+                        this,
+                        npe.getMessage() + " occurred, Please try again.",
+                        Toast.LENGTH_LONG).show();
                 return "Line Graph";
             }
         }
