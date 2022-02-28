@@ -45,29 +45,22 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
-        switch(view.getId()) {
-            case(R.id.submit):
-                // Run the specified function in the script and get the return value
-                PyObject dataPreview = instaGraphPyObject.callAttr("step_one", URL_input.getText().toString());
+        if(view.getId() == R.id.submit) {
+            // Run the specified function in the script and get the return value
+            PyObject dataPreview = instaGraphPyObject.callAttr("step_one", URL_input.getText().toString());
 
 //                Inspired from https://github.com/Robbi-Blechdose/FT-TXT/blob/8751afe7fd0f74efb05f1635bb5b9a28d107013e/app/src/main/java/de/rbgs/ft_txt_app/Main.java#L264
-                try {
-                    byte[] data = dataPreview.toJava(byte[].class);
-                    Intent returnToGetData = new Intent(GetURLActivity.this, GetDataActivity.class);
-                    returnToGetData.putExtra("dataPreview", data);
-                    startActivity(returnToGetData);
-                }
-                catch (java.lang.ClassCastException cce) {
-//                    Toast.makeText(this, cce.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.i("InstaGraph", cce.getMessage());
-                    String data = dataPreview.toString();
-                    Intent returnToGetData = new Intent(GetURLActivity.this, GetDataActivity.class);
-                    returnToGetData.putExtra("dataPreview", data);
-                    startActivity(returnToGetData);
-                }
-                break;
-
-
+            try {
+                byte[] data = dataPreview.toJava(byte[].class);
+                Intent returnToGetData = new Intent(GetURLActivity.this, GetDataActivity.class);
+                returnToGetData.putExtra("dataPreview", data);
+                setResult(RESULT_OK, returnToGetData);
+                finish();
+            }
+            catch (java.lang.ClassCastException cce) {
+                Toast.makeText(this, cce.getMessage(), Toast.LENGTH_LONG).show();
+                Log.i("InstaGraph", cce.getMessage());
+            }
         }
     }
 }

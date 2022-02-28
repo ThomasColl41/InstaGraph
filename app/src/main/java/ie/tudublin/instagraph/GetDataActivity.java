@@ -1,12 +1,15 @@
 package ie.tudublin.instagraph;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,6 +19,40 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
     Button chooseFile;
     Button next;
     ImageView dataPreview;
+
+    // Inspired from https://www.youtube.com/watch?v=-y5eF0u1bZQ and https://www.youtube.com/watch?v=Ke9PaRdMcgc
+    // StartActivityForResult alternative implementation
+    ActivityResultLauncher<Intent> getUrlLauncher =
+        registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    // When GetURLActivity returns a value, this method is called
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        // Get the result code and data
+                        int resCode = result.getResultCode();
+                        Intent data = result.getData();
+
+                        // if things went ok (the user pressed submit)
+                        if(resCode == RESULT_OK && data != null) {
+                            try {
+                                byte[] image = data.getByteArrayExtra("dataPreview");
+                                Bitmap bmp = BitmapFactory.decodeByteArray(image,0,image.length);
+
+                                dataPreview.setImageBitmap(bmp);
+                            }
+                            catch (NullPointerException npe) {
+                                Toast.makeText(GetDataActivity.this, npe.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else {
+                            // Otherwise, something went wrong
+                            Toast.makeText(GetDataActivity.this, "Something went wrong " + resCode, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+        );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,19 +65,6 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
 
         chooseFile.setOnClickListener(this);
         next.setOnClickListener(this);
-
-        Intent intent = getIntent();
-
-        try {
-            byte[] image = intent.getByteArrayExtra("dataPreview");
-
-            Bitmap bmp = BitmapFactory.decodeByteArray(image,0,image.length);
-
-            dataPreview.setImageBitmap(bmp);
-        }
-        catch (Exception e) {
-            Log.i("InstaGraph", e.getMessage());
-        }
     }
 
     @Override
@@ -48,7 +72,7 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
         switch(view.getId()) {
             case(R.id.choose_file):
                 Intent goToChooseFile = new Intent(GetDataActivity.this, GetURLActivity.class);
-                startActivity(goToChooseFile);
+                getUrlLauncher.launch(goToChooseFile);
                 break;
 
             case(R.id.next):
