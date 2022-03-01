@@ -4,19 +4,22 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.InflateException;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     Button start;
     Button info_button;
+
+    RelativeLayout mainLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         start = findViewById(R.id.start);
         info_button = findViewById(R.id.info_button);
+        mainLayout = findViewById(R.id.main_layout);
 
         start.setOnClickListener(this);
         info_button.setOnClickListener(this);
@@ -40,24 +44,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case(R.id.info_button):
                 // Display info pop-up
-                RelativeLayout parent = findViewById(R.id.main_layout);
-                LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-                View information = inflater.inflate(R.layout.popup,null);
-                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                PopupWindow info_popup = new PopupWindow(information, width, height, true);
-                TextView textForPopup = information.findViewById(R.id.info_popup);
-                textForPopup.setText(R.string.instagraph_information);
-                info_popup.showAtLocation(parent, Gravity.CENTER, 0,0);
-                information.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        info_popup.dismiss();
-                        return true;
-                    }
-                });
-
+                showInfoPopup();
                 break;
         }
+    }
+
+    public void showInfoPopup() {
+        View infoView;
+
+        // Create inflater
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        try {
+            // Inflate the popup (resource (xml), root, attachToRoot)
+            // attachToRoot is false because only the LayoutParams of mainLayout are required
+            infoView = inflater.inflate(R.layout.popup, mainLayout, false);
+        }
+        catch (InflateException ie) {
+            Log.i("InstaGraph", ie.getMessage());
+            Toast.makeText(
+                    this,
+                    "Error displaying information (" + ie.getMessage() + ")",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Create PopupWindow (view, width, height, focusable)
+        // focusable is true so the popup can be dismissed by tapping anywhere
+        PopupWindow infoPopup = new PopupWindow(
+                infoView,
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                true);
+
+        // Identify the TexView in the popup xml and set its text dynamically
+        TextView popupText = infoView.findViewById(R.id.popup_textview);
+        popupText.setText(R.string.instagraph_information);
+
+        // Display the popup in the center of the screen (layout)
+        infoPopup.showAtLocation(mainLayout, Gravity.CENTER, 0,0);
+
+        // Set up an onTouchListener to react to the user tapping the screen
+        // A lambda method is used for the onTouch method
+        infoView.setOnTouchListener((view, motionEvent) -> {
+            // Hide the popup
+            infoPopup.dismiss();
+
+            // Perform a click to call the OnClickListener and register the clicking event
+            // for sound preferences and accessibility features
+            view.performClick();
+            return true;
+        });
     }
 }
