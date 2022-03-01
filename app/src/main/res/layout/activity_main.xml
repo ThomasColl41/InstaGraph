@@ -13,6 +13,7 @@
 
         <!--Main layouts begin here-->
         <RelativeLayout
+            android:id="@+id/main_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -40,11 +41,6 @@
                 android:layout_below="@id/logo"
                 android:layout_marginTop="@dimen/logo_and_start_gap"
                 android:contentDescription="@string/start_button_content"/>
-
-            <!--Information window-->
-            <TextView
-                android:id="@+id/info_window"
-                style="@style/Theme.InstaGraph.Info.Window"/>
 
         </RelativeLayout>
     </ScrollView>

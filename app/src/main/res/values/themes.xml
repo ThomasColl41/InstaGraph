@@ -49,18 +49,14 @@
     </style>
 
     <!--Theme for info window-->
-    <style name="Theme.InstaGraph.Info.Window" parent="Widget.AppCompat.TextView">
+    <style name="Theme.InstaGraph.Popup" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@drawable/instagraph_info_background</item>
-        <item name="android:text">@string/instagraph_information</item>
+        <item name="android:background">@drawable/instagraph_popup_background</item>
+        <item name="android:textSize">@dimen/popup_text</item>
         <item name="android:textColor">@color/orange</item>
         <item name="android:gravity">center</item>
-        <item name="android:padding">@dimen/info_padding</item>
-        <item name="android:layout_alignTop">@id/info_button</item>
-        <item name="android:layout_alignStart">@id/logo</item>
-        <item name="android:layout_alignEnd">@id/logo</item>
-        <item name="android:visibility">invisible</item>
+        <item name="android:padding">@dimen/popup_padding</item>
     </style>
 
     <!--Theme for RelativeLayout containing progress circles-->
