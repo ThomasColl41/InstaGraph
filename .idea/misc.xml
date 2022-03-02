@@ -6,6 +6,7 @@
         <entry key="app/src/main/res/drawable/instagraph_button.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/instagraph_data_window.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/instagraph_info_background.xml" value="0.2085" />
+        <entry key="app/src/main/res/drawable/instagraph_popup_background.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/instagraph_progress_bar_background.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/instagraph_progress_bar_circle.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/instagraph_progress_bar_circle_focused.xml" value="0.2085" />

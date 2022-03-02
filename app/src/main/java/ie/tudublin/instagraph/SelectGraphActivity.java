@@ -32,10 +32,10 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
         next = findViewById(R.id.next);
         back = findViewById(R.id.back);
 
-        lineGraph = findViewById(R.id.line_graph);
-        barChart = findViewById(R.id.bar_chart);
-        pieChart = findViewById(R.id.pie_chart);
-        horizontalBarChart = findViewById(R.id.horizontal_bar_chart);
+        lineGraph = findViewById(R.id.line_graph_window);
+        barChart = findViewById(R.id.bar_chart_window);
+        pieChart = findViewById(R.id.pie_chart_window);
+        horizontalBarChart = findViewById(R.id.horizontal_bar_chart_window);
 
         next.setOnClickListener(this);
         back.setOnClickListener(this);
@@ -62,19 +62,19 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
                 finish();
                 break;
 
-            case(R.id.line_graph):
+            case(R.id.line_graph_window):
                 graphName = selectGraph(R.id.line_graph_border);
                 break;
 
-            case(R.id.bar_chart):
+            case(R.id.bar_chart_window):
                 graphName = selectGraph(R.id.bar_chart_border);
                 break;
 
-            case(R.id.pie_chart):
+            case(R.id.pie_chart_window):
                 graphName = selectGraph(R.id.pie_chart_border);
                 break;
 
-            case(R.id.horizontal_bar_chart):
+            case(R.id.horizontal_bar_chart_window):
                 graphName = selectGraph(R.id.horizontal_bar_chart_border);
                 break;
         }

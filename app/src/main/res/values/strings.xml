@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">InstaGraph</string>
+    <string name="popup_placeholder">This is a placeholder string for popups.</string>
+    <string name="instagraph_information">Information about what the app does\n\n\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n\n\nTap the information button to close.</string>
+    <string name="error_general">An error occurred</string>
     <string name="start_button_text">Start</string>
     <string name="start_button_content">Tap to start InstaGraph.</string>
     <string name="info_button_content">Tap to display information about InstaGraph.</string>
@@ -24,9 +27,10 @@
     <string name="progress_three">3</string>
     <string name="progress_four">4</string>
     <string name="progress_five">5</string>
-    <string name="popup_placeholder">This is a placeholder string for popups.</string>
-    <string name="instagraph_information">Information about what the app does\n\n\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n\n\nTap the information button to close.</string>
-    <string name="error_general">An error occurred</string>
+    <string name="line_graph">Line Graph</string>
+    <string name="bar_chart">Bar Chart</string>
+    <string name="pie_chart">Pie Chart</string>
+    <string name="horizontal_bar_chart">Horizontal Bar Chart</string>
     <string name="model_spinner_prompt">Model</string>
     <string name="column_one_spinner_prompt">Column 1</string>
     <string name="column_two_spinner_prompt">Column 2</string>

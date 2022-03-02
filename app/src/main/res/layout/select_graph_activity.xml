@@ -80,95 +80,151 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_alignTop="@id/step_text"
-                android:layout_marginTop="100dp">
+                android:layout_below="@id/step_text"
+                android:layout_marginTop="@dimen/step_and_graphs_gap">
 
-                <!--Line graph window-->
-                <ImageView
+                <!--Line graph-->
+                <RelativeLayout
                     android:id="@+id/line_graph"
-                    style="@style/Theme.InstaGraph.Visualisation.Window"
-                    android:contentDescription="@string/empty_content_description"
-                    android:background="@drawable/line_graph"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-                <!--Line graph border-->
-                <ImageView
-                    android:id="@+id/line_graph_border"
-                    style="@style/Theme.InstaGraph.Visualisation.Border"
-                    android:contentDescription="@string/empty_content_description"/>
+                    <!--Line graph text-->
+                    <TextView
+                        android:id="@+id/line_graph_text"
+                        style="@style/Theme.InstaGraph.Visualisation.Text"
+                        android:text="@string/line_graph"
+                        android:contentDescription="@string/empty_content_description"/>
 
-                <!--Bar chart window-->
-                <ImageView
+                    <!--Line graph window-->
+                    <ImageView
+                        android:id="@+id/line_graph_window"
+                        style="@style/Theme.InstaGraph.Visualisation.Window"
+                        android:background="@drawable/line_graph"
+                        android:layout_below="@id/line_graph_text"
+                        android:contentDescription="@string/empty_content_description"/>
+
+                    <!--Line graph border-->
+                    <ImageView
+                        android:id="@+id/line_graph_border"
+                        style="@style/Theme.InstaGraph.Visualisation.Border"
+                        android:layout_below="@id/line_graph_text"
+                        android:contentDescription="@string/empty_content_description"/>
+                </RelativeLayout>
+
+                <!--Bar chart-->
+                <RelativeLayout
                     android:id="@+id/bar_chart"
-                    style="@style/Theme.InstaGraph.Visualisation.Window"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/line_graph"
-                    android:layout_marginStart="@dimen/visualisation_window_gap"
-                    android:contentDescription="@string/empty_content_description"
-                    android:background="@drawable/bar_chart"/>
+                    android:layout_marginStart="@dimen/visualisation_window_gap">
 
-                <!--Bar chart border-->
-                <ImageView
-                    android:id="@+id/bar_chart_border"
-                    style="@style/Theme.InstaGraph.Visualisation.Border"
-                    android:layout_toEndOf="@id/line_graph"
-                    android:layout_marginStart="@dimen/visualisation_window_gap"
-                    android:contentDescription="@string/empty_content_description"/>
+                    <!--Bar chart text-->
+                    <TextView
+                        android:id="@+id/bar_chart_text"
+                        style="@style/Theme.InstaGraph.Visualisation.Text"
+                        android:text="@string/bar_chart"
+                        android:contentDescription="@string/empty_content_description"/>
 
-                <!--Pie chart window-->
-                <ImageView
+                    <!--Bar chart window-->
+                    <ImageView
+                        android:id="@+id/bar_chart_window"
+                        style="@style/Theme.InstaGraph.Visualisation.Window"
+                        android:background="@drawable/bar_chart"
+                        android:layout_below="@id/bar_chart_text"
+                        android:contentDescription="@string/empty_content_description"/>
+
+                    <!--Bar chart border-->
+                    <ImageView
+                        android:id="@+id/bar_chart_border"
+                        style="@style/Theme.InstaGraph.Visualisation.Border"
+                        android:layout_below="@id/bar_chart_text"
+                        android:contentDescription="@string/empty_content_description"/>
+                </RelativeLayout>
+
+                <!--Pie chart-->
+                <RelativeLayout
                     android:id="@+id/pie_chart"
-                    style="@style/Theme.InstaGraph.Visualisation.Window"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/line_graph"
-                    android:layout_marginTop="@dimen/visualisation_window_gap"
-                    android:contentDescription="@string/empty_content_description"
-                    android:background="@drawable/pie_chart"/>
+                    android:layout_marginTop="@dimen/visualisation_window_gap">
 
-                <!--Pie chart border-->
-                <ImageView
-                    android:id="@+id/pie_chart_border"
-                    style="@style/Theme.InstaGraph.Visualisation.Border"
-                    android:layout_below="@id/line_graph"
-                    android:layout_marginTop="@dimen/visualisation_window_gap"
-                    android:contentDescription="@string/empty_content_description"/>
+                    <!--Pie chart text-->
+                    <TextView
+                        android:id="@+id/pie_chart_text"
+                        style="@style/Theme.InstaGraph.Visualisation.Text"
+                        android:text="@string/pie_chart"
+                        android:contentDescription="@string/empty_content_description"/>
 
-                <!--Horizontal bar chart window-->
-                <ImageView
+                    <!--Pie chart window-->
+                    <ImageView
+                        android:id="@+id/pie_chart_window"
+                        style="@style/Theme.InstaGraph.Visualisation.Window"
+                        android:layout_below="@id/pie_chart_text"
+                        android:contentDescription="@string/empty_content_description"
+                        android:background="@drawable/pie_chart"/>
+
+                    <!--Pie chart border-->
+                    <ImageView
+                        android:id="@+id/pie_chart_border"
+                        style="@style/Theme.InstaGraph.Visualisation.Border"
+                        android:layout_below="@id/pie_chart_text"
+                        android:contentDescription="@string/empty_content_description"/>
+                </RelativeLayout>
+
+                <!--Horizontal bar chart-->
+                <RelativeLayout
                     android:id="@+id/horizontal_bar_chart"
-                    style="@style/Theme.InstaGraph.Visualisation.Window"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/bar_chart"
                     android:layout_marginTop="@dimen/visualisation_window_gap"
                     android:layout_toEndOf="@id/pie_chart"
-                    android:layout_marginStart="@dimen/visualisation_window_gap"
-                    android:contentDescription="@string/empty_content_description"
-                    android:background="@drawable/horizontal_bar_chart"/>
+                    android:layout_marginStart="@dimen/visualisation_window_gap">
 
-                <!--Horizontal bar chart border-->
-                <ImageView
-                    android:id="@+id/horizontal_bar_chart_border"
-                    style="@style/Theme.InstaGraph.Visualisation.Border"
-                    android:layout_below="@id/bar_chart"
-                    android:layout_marginTop="@dimen/visualisation_window_gap"
-                    android:layout_toEndOf="@id/pie_chart"
-                    android:layout_marginStart="@dimen/visualisation_window_gap"
-                    android:contentDescription="@string/empty_content_description"/>
+                    <!--Horizontal bar chart text-->
+                    <TextView
+                        android:id="@+id/horizontal_bar_chart_text"
+                        style="@style/Theme.InstaGraph.Visualisation.Text"
+                        android:text="@string/horizontal_bar_chart"
+                        android:contentDescription="@string/empty_content_description"/>
+
+                    <!--Horizontal bar chart window-->
+                    <ImageView
+                        android:id="@+id/horizontal_bar_chart_window"
+                        style="@style/Theme.InstaGraph.Visualisation.Window"
+                        android:background="@drawable/horizontal_bar_chart"
+                        android:layout_below="@id/horizontal_bar_chart_text"
+                        android:contentDescription="@string/empty_content_description"/>
+
+                    <!--Horizontal bar chart border-->
+                    <ImageView
+                        android:id="@+id/horizontal_bar_chart_border"
+                        style="@style/Theme.InstaGraph.Visualisation.Border"
+                        android:layout_below="@id/horizontal_bar_chart_text"
+                        android:contentDescription="@string/empty_content_description"/>
+                </RelativeLayout>
             </RelativeLayout>
 
             <!--Next and back buttons-->
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/step_and_buttons_gap"
-                android:layout_below="@id/step_text"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/graphs"
+                android:layout_marginTop="@dimen/graphs_and_buttons_gap"
                 android:layout_centerHorizontal="true">
 
                 <!--Back button-->
                 <Button
                     android:id="@+id/back"
-                    style="@style/Theme.InstaGraph.Button.Small.Back"/>
+                    style="@style/Theme.InstaGraph.Button.Small.Back" />
                 <!--Next button-->
                 <Button
                     android:id="@+id/next"
-                    style="@style/Theme.InstaGraph.Button.Small.Next"/>
+                    style="@style/Theme.InstaGraph.Button.Small.Next" />
             </RelativeLayout>
-
         </RelativeLayout>
     </ScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>

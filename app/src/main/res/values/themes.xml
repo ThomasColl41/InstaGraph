@@ -52,7 +52,7 @@
     <style name="Theme.InstaGraph.Popup" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@drawable/instagraph_popup_background</item>
+        <item name="android:background">@drawable/instagraph_text_background</item>
         <item name="android:textSize">@dimen/popup_text</item>
         <item name="android:textColor">@color/orange</item>
         <item name="android:gravity">center</item>
@@ -173,6 +173,17 @@
         <item name="android:layout_height">@dimen/visualisation_window_height</item>
         <item name="android:background">@drawable/instagraph_visualisation_background_focused</item>
         <item name="android:visibility">invisible</item>
+    </style>
+
+    <!--Theme for visualisation text-->
+    <style name="Theme.InstaGraph.Visualisation.Text" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">@dimen/visualisation_window_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/instagraph_text_background</item>
+        <item name="android:textSize">@dimen/visualisation_text</item>
+        <item name="android:textColor">@color/orange</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/visualisation_text_padding</item>
     </style>
 
 </resources>
