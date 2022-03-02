@@ -3,19 +3,40 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import io
+import csv
+import urllib.request
+from os.path import dirname, join
 
 def step_one(url):
+
+    # Check if file at url has a header
+    has_header = check_for_header(url)
+
     # Handle exceptions
     dataset = pd.DataFrame()
-    try:
+    if has_header:
         dataset = pd.read_csv(url)
-    except Exception as e:
-        return e
-    finally:
         try:
-            assert not dataset.empty
-        except AssertionError:
-            return "Dataset is empty"
+            dataset = pd.read_csv(url)
+        except Exception as e:
+            return e
+        finally:
+            try:
+                assert not dataset.empty
+            except AssertionError:
+                return "Dataset is empty"
+    else:
+        try:
+            dataset = pd.read_csv(url, header=None, prefix='Column ')
+        except Exception as e:
+            return e
+        finally:
+            try:
+                assert not dataset.empty
+            except AssertionError:
+                return "Dataset is empty"
+
+
 
     # Get the first five rows to display as a preview
     ds_head = dataset.head()
@@ -42,3 +63,20 @@ def step_one(url):
     buffer = io_buff.getvalue()
 
     return buffer
+
+# Function to determine if a csv file has a header
+def check_for_header(url):
+    # Write contents of url to a file (temp.csv)
+    temp_filename = join(dirname(__file__), 'temp.csv')
+
+    # Use urlretrieve to write the contents of the url to a file (temp.csv)
+    try:
+        urllib.request.urlretrieve(url, temp_filename)
+    except Exception as e:
+        print(e)
+
+    # Open the file
+    with open(temp_filename) as file:
+        # Read the first 1024 characters to determine whether the first row is consistent with subsequent rows (i.e. string vs. integer)
+        header = csv.Sniffer().has_header(file.read(1024))
+    return header
