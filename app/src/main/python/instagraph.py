@@ -77,6 +77,38 @@ def check_for_header(url):
 
     # Open the file
     with open(temp_filename) as file:
-        # Read the first 1024 characters to determine whether the first row is consistent with subsequent rows (i.e. string vs. integer)
+        # Read the first 1024 characters to determine whether the first row is consistent with
+        # subsequent rows (i.e. string vs. integer)
         header = csv.Sniffer().has_header(file.read(1024))
     return header
+
+# Function to return the names of a dataset's columns
+def get_column_names(url):
+    # Check if file at url has a header
+    has_header = check_for_header(url)
+
+    # Handle exceptions
+    dataset = pd.DataFrame()
+    if has_header:
+        dataset = pd.read_csv(url)
+        try:
+            dataset = pd.read_csv(url)
+        except Exception as e:
+            return e
+        finally:
+            try:
+                assert not dataset.empty
+            except AssertionError:
+                return "Dataset is empty"
+    else:
+        try:
+            dataset = pd.read_csv(url, header=None, prefix='Column ')
+        except Exception as e:
+            return e
+        finally:
+            try:
+                assert not dataset.empty
+            except AssertionError:
+                return "Dataset is empty"
+
+    return list(dataset.columns.values)
