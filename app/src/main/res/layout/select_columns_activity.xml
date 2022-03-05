@@ -74,41 +74,76 @@
                 android:id="@+id/step_text"
                 android:text="@string/step_three" />
 
-            <!--Spinners-->
+            <!--Model-->
             <RelativeLayout
+                android:id="@+id/model"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@id/step_text"
+                android:layout_alignStart="@id/step_text"
                 android:layout_marginTop="@dimen/spinner_gap">
+                <!--Model text-->
+                <TextView
+                    android:id="@+id/model_text"
+                    style="@style/Theme.InstaGraph.Column.Text"
+                    android:text="@string/model_spinner_prompt"/>
 
                 <!--Model spinner-->
                 <Spinner
                     android:id="@+id/model_spinner"
-                    android:layout_width="@dimen/model_spinner_width"
-                    android:layout_height="@dimen/model_spinner_height"
+                    android:layout_width="@dimen/spinner_width"
+                    android:layout_height="@dimen/spinner_height"
+                    android:layout_toEndOf="@id/model_text"
                     android:background="@drawable/instagraph_spinner_background"
-                    android:layout_marginStart="@dimen/model_spinner_gap"
                     android:prompt="@string/model_spinner_prompt"/>
+            </RelativeLayout>
+
+            <!--Column one-->
+            <RelativeLayout
+                android:id="@+id/column_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/model"
+                android:layout_alignStart="@id/step_text"
+                android:layout_marginTop="@dimen/spinner_gap">
+
+                <!--Column one text-->
+                <TextView
+                    android:id="@+id/column_one_text"
+                    style="@style/Theme.InstaGraph.Column.Text"
+                    android:text="@string/column_one_spinner_prompt"/>
 
                 <!--Column one spinner-->
                 <Spinner
-                    android:id="@+id/column_one"
+                    android:id="@+id/column_one_spinner"
                     android:layout_width="@dimen/spinner_width"
                     android:layout_height="@dimen/spinner_height"
+                    android:layout_toEndOf="@id/column_one_text"
                     android:background="@drawable/instagraph_spinner_background"
-                    android:layout_below="@id/model_spinner"
-                    android:layout_marginTop="@dimen/spinner_gap"
                     android:prompt="@string/column_one_spinner_prompt"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/column_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/column_one"
+                android:layout_alignStart="@id/step_text"
+                android:layout_marginTop="@dimen/spinner_gap">
+
+                <!--Column two text-->
+                <TextView
+                    android:id="@+id/column_two_text"
+                    style="@style/Theme.InstaGraph.Column.Text"
+                    android:text="@string/column_two_spinner_prompt"/>
 
                 <!--Column two spinner-->
                 <Spinner
-                    android:id="@+id/column_two"
+                    android:id="@+id/column_two_spinner"
                     android:layout_width="@dimen/spinner_width"
                     android:layout_height="@dimen/spinner_height"
+                    android:layout_toEndOf="@id/column_two_text"
                     android:background="@drawable/instagraph_spinner_background"
-                    android:layout_below="@id/column_one"
-                    android:layout_marginTop="@dimen/spinner_gap"
                     android:prompt="@string/column_two_spinner_prompt"/>
             </RelativeLayout>
 

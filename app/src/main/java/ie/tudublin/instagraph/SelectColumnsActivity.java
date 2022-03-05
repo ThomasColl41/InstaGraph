@@ -39,6 +39,9 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_columns_activity);
 
+        Intent fromSelectGraph = getIntent();
+        url = fromSelectGraph.getStringExtra("URL");
+
         // Initialise Python (using Chaquopy)
         if(!Python.isStarted()) {
             Python.start(new AndroidPlatform(this));
@@ -59,14 +62,11 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
             Log.i("InstaGraph", name);
         }
 
-        Intent fromSelectGraph = getIntent();
-        url = fromSelectGraph.getStringExtra("URL");
-
         next = findViewById(R.id.next);
         back = findViewById(R.id.back);
         modelSpinner = findViewById(R.id.model_spinner);
-        col1Spinner = findViewById(R.id.column_one);
-        col2Spinner = findViewById(R.id.column_two);
+        col1Spinner = findViewById(R.id.column_one_spinner);
+        col2Spinner = findViewById(R.id.column_two_spinner);
 
         next.setOnClickListener(this);
         back.setOnClickListener(this);

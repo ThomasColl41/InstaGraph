@@ -186,4 +186,16 @@
         <item name="android:padding">@dimen/visualisation_text_padding</item>
     </style>
 
+    <!--Theme for column text-->
+    <style name="Theme.InstaGraph.Column.Text" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">@dimen/column_text_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/instagraph_text_background</item>
+        <item name="android:textSize">@dimen/column_text</item>
+        <item name="android:textColor">@color/orange</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/visualisation_text_padding</item>
+        <item name="android:layout_marginEnd">@dimen/column_text_and_spinner_gap</item>
+    </style>
+
 </resources>
