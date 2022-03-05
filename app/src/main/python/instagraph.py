@@ -112,3 +112,61 @@ def get_column_names(url):
                 return "Dataset is empty"
 
     return list(dataset.columns.values)
+
+# Functions to plot the specified graph
+def line_graph_plot(url, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph', other_data=pd.DataFrame()):
+
+    # Check if file at url has a header
+    has_header = check_for_header(url)
+
+    # Handle exceptions
+    dataset = pd.DataFrame()
+    if has_header:
+        dataset = pd.read_csv(url)
+        try:
+            dataset = pd.read_csv(url)
+        except Exception as e:
+            return e
+        finally:
+            try:
+                assert not dataset.empty
+            except AssertionError:
+                return "Dataset is empty"
+    else:
+        try:
+            dataset = pd.read_csv(url, header=None, prefix='Column ')
+        except Exception as e:
+            return e
+        finally:
+            try:
+                assert not dataset.empty
+            except AssertionError:
+                return "Dataset is empty"
+
+    model_data = pd.DataFrame(dataset[ylabel])
+    model_data.index = dataset[xlabel]
+
+    fig, ax = plt.subplots()
+
+    # Catch incorrect data type execeptions when trying to plot data
+    try:
+        ax.plot(model_data)
+        # if not other_data.empty:
+        #     ax.plot(other_data, color='red')
+    except TypeError as te:
+        return str(te + ' has occurred, check column choices')
+
+    # Set axis labels and title
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    plt.title(title)
+
+    # Display plot
+    plt.show()
+
+    # Return plot as buffer
+    io_buff = io.BytesIO()
+    plt.savefig(io_buff, format="png")
+    buffer = io_buff.getvalue()
+
+    return buffer

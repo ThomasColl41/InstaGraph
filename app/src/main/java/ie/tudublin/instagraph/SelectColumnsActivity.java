@@ -82,6 +82,7 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
                 goToPredict.putExtra("model", modelSpinner.getSelectedItem().toString());
                 goToPredict.putExtra("col1", col1Spinner.getSelectedItem().toString());
                 goToPredict.putExtra("col2", col2Spinner.getSelectedItem().toString());
+                goToPredict.putExtra("URL", url);
                 startActivity(goToPredict);
                 break;
 
