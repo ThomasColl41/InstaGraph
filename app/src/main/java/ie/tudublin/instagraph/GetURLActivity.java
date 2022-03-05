@@ -54,6 +54,7 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
                 byte[] data = dataPreview.toJava(byte[].class);
                 Intent returnToGetData = new Intent(GetURLActivity.this, GetDataActivity.class);
                 returnToGetData.putExtra("dataPreview", data);
+                returnToGetData.putExtra("URL", URL_input.getText().toString());
                 setResult(RESULT_OK, returnToGetData);
                 finish();
             }

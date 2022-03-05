@@ -21,6 +21,7 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
 
     int highlighted = 0;
     String graphName;
+    String url;
 
 
 
@@ -47,6 +48,9 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
 
         // Set the line graph as default
         graphName = selectGraph(R.id.line_graph_border);
+
+        Intent fromGetData = getIntent();
+        url = fromGetData.getStringExtra("URL");
     }
 
     @Override
@@ -55,6 +59,7 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
             case(R.id.next):
                 Intent goToSelectColumns = new Intent(SelectGraphActivity.this, SelectColumnsActivity.class);
                 goToSelectColumns.putExtra("graphType", graphName);
+                goToSelectColumns.putExtra("URL", url);
                 startActivity(goToSelectColumns);
                 break;
 

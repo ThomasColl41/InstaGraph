@@ -19,6 +19,7 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
     Button chooseFile;
     Button next;
     ImageView dataPreview;
+    String url;
 
     // Inspired from https://www.youtube.com/watch?v=-y5eF0u1bZQ and https://www.youtube.com/watch?v=Ke9PaRdMcgc
     // StartActivityForResult alternative implementation
@@ -38,6 +39,7 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
                             try {
                                 byte[] image = data.getByteArrayExtra("dataPreview");
                                 Bitmap bmp = BitmapFactory.decodeByteArray(image,0,image.length);
+                                url = data.getStringExtra("URL");
 
                                 dataPreview.setImageBitmap(bmp);
                             }
@@ -77,6 +79,7 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
 
             case(R.id.next):
                 Intent goToSelectGraph = new Intent(GetDataActivity.this, SelectGraphActivity.class);
+                goToSelectGraph.putExtra("URL", url);
                 startActivity(goToSelectGraph);
                 break;
         }
