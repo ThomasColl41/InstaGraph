@@ -7,17 +7,16 @@ import csv
 import urllib.request
 from os.path import dirname, join
 
-def step_one(url):
-
+# Function to read in a dataset at a specified url
+def read_dataset(url):
     # Check if file at url has a header
     has_header = check_for_header(url)
 
     # Handle exceptions
     dataset = pd.DataFrame()
     if has_header:
-        dataset = pd.read_csv(url)
         try:
-            dataset = pd.read_csv(url)
+            dataset = pd.read_csv(url, skip_blank_lines=True)
         except Exception as e:
             return e
         finally:
@@ -27,7 +26,7 @@ def step_one(url):
                 return "Dataset is empty"
     else:
         try:
-            dataset = pd.read_csv(url, header=None, prefix='Column ')
+            dataset = pd.read_csv(url, header=None, prefix='Column ', skip_blank_lines=True)
         except Exception as e:
             return e
         finally:
@@ -35,8 +34,15 @@ def step_one(url):
                 assert not dataset.empty
             except AssertionError:
                 return "Dataset is empty"
+    return dataset
 
+def step_one(url):
+    dataset = read_dataset(url)
 
+    # dataset could be an error message,
+    # Check if it is a DataFrame
+    if isinstance(dataset, pd.DataFrame):
+        return str('Not a dataset ' + dataset)
 
     # Get the first five rows to display as a preview
     ds_head = dataset.head()
@@ -84,64 +90,23 @@ def check_for_header(url):
 
 # Function to return the names of a dataset's columns
 def get_column_names(url):
-    # Check if file at url has a header
-    has_header = check_for_header(url)
+    dataset = read_dataset(url)
 
-    # Handle exceptions
-    dataset = pd.DataFrame()
-    if has_header:
-        dataset = pd.read_csv(url)
-        try:
-            dataset = pd.read_csv(url)
-        except Exception as e:
-            return e
-        finally:
-            try:
-                assert not dataset.empty
-            except AssertionError:
-                return "Dataset is empty"
-    else:
-        try:
-            dataset = pd.read_csv(url, header=None, prefix='Column ')
-        except Exception as e:
-            return e
-        finally:
-            try:
-                assert not dataset.empty
-            except AssertionError:
-                return "Dataset is empty"
+    # dataset could be an error message,
+    # Check if it is a DataFrame
+    if isinstance(dataset, pd.DataFrame):
+        return str('Not a dataset ' + dataset)
 
     return list(dataset.columns.values)
 
 # Functions to plot the specified graph
 def line_graph_plot(url, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph', other_data=pd.DataFrame()):
+    dataset = read_dataset(url)
 
-    # Check if file at url has a header
-    has_header = check_for_header(url)
-
-    # Handle exceptions
-    dataset = pd.DataFrame()
-    if has_header:
-        dataset = pd.read_csv(url)
-        try:
-            dataset = pd.read_csv(url)
-        except Exception as e:
-            return e
-        finally:
-            try:
-                assert not dataset.empty
-            except AssertionError:
-                return "Dataset is empty"
-    else:
-        try:
-            dataset = pd.read_csv(url, header=None, prefix='Column ')
-        except Exception as e:
-            return e
-        finally:
-            try:
-                assert not dataset.empty
-            except AssertionError:
-                return "Dataset is empty"
+    # dataset could be an error message,
+    # Check if it is a DataFrame
+    if isinstance(dataset, pd.DataFrame):
+        return str('Not a dataset ' + dataset)
 
     model_data = pd.DataFrame(dataset[ylabel])
     model_data.index = dataset[xlabel]
