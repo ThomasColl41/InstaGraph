@@ -41,7 +41,7 @@ def step_one(url):
 
     # dataset could be an error message,
     # Check if it is a DataFrame
-    if isinstance(dataset, pd.DataFrame):
+    if not isinstance(dataset, pd.DataFrame):
         return str('Not a dataset ' + dataset)
 
     # Get the first five rows to display as a preview
@@ -94,18 +94,18 @@ def get_column_names(url):
 
     # dataset could be an error message,
     # Check if it is a DataFrame
-    if isinstance(dataset, pd.DataFrame):
+    if not isinstance(dataset, pd.DataFrame):
         return str('Not a dataset ' + dataset)
 
     return list(dataset.columns.values)
 
-# Functions to plot the specified graph
+# Function to plot a line graph
 def line_graph_plot(url, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph', other_data=pd.DataFrame()):
     dataset = read_dataset(url)
 
     # dataset could be an error message,
     # Check if it is a DataFrame
-    if isinstance(dataset, pd.DataFrame):
+    if not isinstance(dataset, pd.DataFrame):
         return str('Not a dataset ' + dataset)
 
     model_data = pd.DataFrame(dataset[ylabel])
@@ -116,6 +116,117 @@ def line_graph_plot(url, xlabel='x-axis', ylabel='y-axis', title='Title of Line 
     # Catch incorrect data type execeptions when trying to plot data
     try:
         ax.plot(model_data)
+        # if not other_data.empty:
+        #     ax.plot(other_data, color='red')
+    except TypeError as te:
+        return str(te + ' has occurred, check column choices')
+
+    # Set axis labels and title
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    plt.title(title)
+
+    # Display plot
+    plt.show()
+
+    # Return plot as buffer
+    io_buff = io.BytesIO()
+    plt.savefig(io_buff, format="png")
+    buffer = io_buff.getvalue()
+
+    return buffer
+
+# Function to plot a bar chart
+def bar_chart_plot(url, xlabel='x-axis', ylabel='y-axis', title='Title of Bar Chart', other_data=pd.DataFrame()):
+    dataset = read_dataset(url)
+
+    # dataset could be an error message,
+    # Check if it is a DataFrame
+    if not isinstance(dataset, pd.DataFrame):
+        return str('Not a dataset ' + dataset)
+
+    model_data = pd.DataFrame(dataset[xlabel])
+    model_data.index = dataset[ylabel]
+
+    fig, ax = plt.subplots()
+
+    # Catch incorrect data type execeptions when trying to plot data
+    try:
+        ax.bar(model_data[model_data.columns[0]], model_data.index.values)
+        # if not other_data.empty:
+        #     ax.plot(other_data, color='red')
+    except TypeError as te:
+        return str(te + ' has occurred, check column choices')
+
+    # Set axis labels and title
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    plt.title(title)
+
+    # Display plot
+    plt.show()
+
+    # Return plot as buffer
+    io_buff = io.BytesIO()
+    plt.savefig(io_buff, format="png")
+    buffer = io_buff.getvalue()
+
+    return buffer
+
+# Function to plot a bar chart
+def pie_chart_plot(url, xlabel='x-axis', ylabel='y-axis', title='Title of Pie Chart', other_data=pd.DataFrame()):
+    dataset = read_dataset(url)
+
+    # dataset could be an error message,
+    # Check if it is a DataFrame
+    if not isinstance(dataset, pd.DataFrame):
+        return str('Not a dataset ' + dataset)
+
+    model_data = pd.DataFrame(dataset[ylabel])
+    model_data.index = dataset[xlabel]
+
+    fig, ax = plt.subplots()
+
+    # Catch incorrect data type execeptions when trying to plot data
+    try:
+        ax.pie(model_data)
+        # if not other_data.empty:
+        #     ax.plot(other_data, color='red')
+    except TypeError as te:
+        return str(te + ' has occurred, check column choices')
+
+    # Set axis labels and title
+    # ax.set_xlabel(xlabel)
+    # ax.set_ylabel(ylabel)
+    plt.title(title)
+
+    # Display plot
+    plt.show()
+
+    # Return plot as buffer
+    io_buff = io.BytesIO()
+    plt.savefig(io_buff, format="png")
+    buffer = io_buff.getvalue()
+
+    return buffer
+
+# Function to plot a bar chart
+def horizontal_bar_chart_plot(url, xlabel='x-axis', ylabel='y-axis', title='Title of Horizontal Bar Chart', other_data=pd.DataFrame()):
+    dataset = read_dataset(url)
+
+    # dataset could be an error message,
+    # Check if it is a DataFrame
+    if not isinstance(dataset, pd.DataFrame):
+        return str('Not a dataset ' + dataset)
+
+    model_data = pd.DataFrame(dataset[xlabel])
+    model_data.index = dataset[ylabel]
+
+    fig, ax = plt.subplots()
+
+    # Catch incorrect data type execeptions when trying to plot data
+    try:
+        ax.barh(model_data[model_data.columns[0]], model_data.index.values)
         # if not other_data.empty:
         #     ax.plot(other_data, color='red')
     except TypeError as te:
