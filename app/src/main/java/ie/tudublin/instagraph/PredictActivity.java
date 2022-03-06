@@ -26,6 +26,11 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
     PyObject instaGraphPyObject;
 
     String url;
+    String graphType;
+    String model;
+    String col1;
+    String col2;
+    String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,11 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
 
         Intent fromSelectColumns = getIntent();
         url = fromSelectColumns.getStringExtra("URL");
+        graphType = fromSelectColumns.getStringExtra("graphType");
+        model = fromSelectColumns.getStringExtra("model");
+        col1 = fromSelectColumns.getStringExtra("col1");
+        col2 = fromSelectColumns.getStringExtra("col2");
+        title = col1 + " over " + col2;
 
         Log.i("InstaGraph", url);
 
@@ -56,7 +66,7 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         instaGraphPyObject = py.getModule("instagraph");
 
         // Run the get_column_names function
-        PyObject plot_image = instaGraphPyObject.callAttr("line_graph_plot", url, "Month", "Sales", "TITLE", url);
+        PyObject plot_image = instaGraphPyObject.callAttr("line_graph_plot", url, col1, col2, title, url);
 
         Log.i("InstaGraph", plot_image.toString());
 
@@ -68,6 +78,9 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         }
         catch (NullPointerException npe) {
             Toast.makeText(PredictActivity.this, npe.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

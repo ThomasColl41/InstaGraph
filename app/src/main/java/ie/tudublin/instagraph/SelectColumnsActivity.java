@@ -33,6 +33,7 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
     private final List<String> columns = new ArrayList<>();
 
     String url;
+    String graphType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
 
         Intent fromSelectGraph = getIntent();
         url = fromSelectGraph.getStringExtra("URL");
+        graphType = fromSelectGraph.getStringExtra("graphType");
 
         // Initialise Python (using Chaquopy)
         if(!Python.isStarted()) {
@@ -79,6 +81,7 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
         switch(view.getId()) {
             case(R.id.next):
                 Intent goToPredict = new Intent(SelectColumnsActivity.this, PredictActivity.class);
+                goToPredict.putExtra("graphType", graphType);
                 goToPredict.putExtra("model", modelSpinner.getSelectedItem().toString());
                 goToPredict.putExtra("col1", col1Spinner.getSelectedItem().toString());
                 goToPredict.putExtra("col2", col2Spinner.getSelectedItem().toString());
