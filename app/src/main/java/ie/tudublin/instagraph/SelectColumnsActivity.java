@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
@@ -25,6 +26,9 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
     Spinner modelSpinner;
     Spinner col1Spinner;
     Spinner col2Spinner;
+
+    TextView col1Text;
+    TextView col2Text;
 
     Python py;
     PyObject instaGraphPyObject;
@@ -69,11 +73,14 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
         modelSpinner = findViewById(R.id.model_spinner);
         col1Spinner = findViewById(R.id.column_one_spinner);
         col2Spinner = findViewById(R.id.column_two_spinner);
+        col1Text = findViewById(R.id.column_one_text);
+        col2Text = findViewById(R.id.column_two_text);
 
         next.setOnClickListener(this);
         back.setOnClickListener(this);
 
         spinnerSetup(names);
+        columnTextSetup(graphType);
     }
 
     @Override
@@ -118,5 +125,30 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
         col1Spinner.setAdapter(columnArray);
         col2Spinner.setAdapter(columnArray);
         columnArray.notifyDataSetChanged();
+    }
+
+    // Method that sets the text for the column Spinners depending on the graph choice
+    public void columnTextSetup(String graphType) {
+        switch (graphType) {
+            case "Line Graph":
+                col1Text.setText(R.string.line_graph_col1);
+                col2Text.setText(R.string.line_graph_col2);
+                break;
+
+            case "Bar Chart":
+                col1Text.setText(R.string.bar_chart_col1);
+                col2Text.setText(R.string.bar_chart_col2);
+                break;
+
+            case "Pie Chart":
+                col1Text.setText(R.string.pie_chart_col1);
+                col2Text.setText(R.string.pie_chart_col2);
+                break;
+
+            case "Horizontal Bar Chart":
+                col1Text.setText(R.string.horizontal_bar_chart_col1);
+                col2Text.setText(R.string.horizontal_bar_chart_col2);
+                break;
+        }
     }
 }

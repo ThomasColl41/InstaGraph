@@ -34,4 +34,12 @@
     <string name="model_spinner_prompt">Model</string>
     <string name="column_one_spinner_prompt">Column 1</string>
     <string name="column_two_spinner_prompt">Column 2</string>
+    <string name="line_graph_col1">x-Axis</string>
+    <string name="line_graph_col2">y-Axis</string>
+    <string name="bar_chart_col1">Labels</string>
+    <string name="bar_chart_col2">Data</string>
+    <string name="pie_chart_col1">Labels</string>
+    <string name="pie_chart_col2">Data</string>
+    <string name="horizontal_bar_chart_col1">Labels</string>
+    <string name="horizontal_bar_chart_col2">Data</string>
 </resources>
