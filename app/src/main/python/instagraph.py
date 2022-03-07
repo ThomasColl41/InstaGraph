@@ -44,11 +44,15 @@ def step_one(url):
     if not isinstance(dataset, pd.DataFrame):
         return str('Not a dataset ' + dataset)
 
-    # Get the first five rows to display as a preview
-    ds_head = dataset.head()
+    nrows = 5   # Number of rows to display
+    ncols = len(dataset.columns)    # Number of columns in the dataset
 
-    # Create the subplot, figure size is (the number of columns/1.5) wide, 1.2 high
-    fig, ax = plt.subplots(figsize=(len(ds_head.columns)/1.5,1.2))
+    # Display the first few rows as a preview
+    ds_head = dataset.head(nrows)
+
+    # Create the plot, figure size is (number of columns * 3.5 wide, number of rows high)
+    fig, ax = plt.subplots(figsize=(ncols * 3.5,nrows))
+
     # Plot the table
     ds_table = ax.table(
         cellText=ds_head.values,    # The contents of each cell
@@ -57,11 +61,16 @@ def step_one(url):
         loc='center'                # The location of the table in the figure
     )
 
-    # Set auto column width and font size to reduce white space
-    ds_table.auto_set_column_width(np.arange(len(ds_head.columns)))
-    ds_table.auto_set_font_size(True)
+    fontsize = 40   # Font size of the table cells
+    ds_table.set_fontsize(fontsize)
 
-    # Disable original plot window
+    # Scale the table to increase row height (column width handled below)
+    ds_table.scale(1,4)
+
+    # Set auto column width to reduce white space
+    ds_table.auto_set_column_width(np.arange(len(ds_head.columns)))
+
+    # Disable original plot window (axes)
     ax.set_axis_off()
 
     io_buff = io.BytesIO()

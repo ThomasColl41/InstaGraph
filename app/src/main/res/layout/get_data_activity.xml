@@ -73,11 +73,16 @@
                 style="@style/Theme.InstaGraph.Step.Text"
                 android:text="@string/step_one" />
 
-            <!--Data preview window-->
-            <ImageView
-                android:id="@+id/data_preview"
-                style="@style/Theme.InstaGraph.Data.Window"
-                android:contentDescription="@string/empty_content_description"/>
+            <!-- Data preview-->
+            <HorizontalScrollView
+                android:id="@+id/data_preview_window"
+                style="@style/Theme.InstaGraph.Data.Window">
+                <ImageView
+                    android:id="@+id/data_preview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/empty_content_description"/>
+            </HorizontalScrollView>
 
             <!--Choose File... button-->
             <Button
@@ -85,7 +90,7 @@
                 style="@style/Theme.InstaGraph.Button.Big"
                 android:text="@string/choose_file_button_text"
                 android:textSize="@dimen/small_button_text"
-                android:layout_below="@id/data_preview"
+                android:layout_below="@id/data_preview_window"
                 android:layout_marginTop="@dimen/choose_file_and_data_preview_gap"
                 android:contentDescription="@string/start_button_content"/>
 
