@@ -44,6 +44,17 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_columns_activity);
 
+        next = findViewById(R.id.next);
+        back = findViewById(R.id.back);
+        modelSpinner = findViewById(R.id.model_spinner);
+        col1Spinner = findViewById(R.id.column_one_spinner);
+        col2Spinner = findViewById(R.id.column_two_spinner);
+        col1Text = findViewById(R.id.column_one_text);
+        col2Text = findViewById(R.id.column_two_text);
+
+        next.setOnClickListener(this);
+        back.setOnClickListener(this);
+
         Intent fromSelectGraph = getIntent();
         url = fromSelectGraph.getStringExtra("URL");
         graphType = fromSelectGraph.getStringExtra("graphType");
@@ -62,22 +73,13 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
         // Run the get_column_names function
         PyObject columnNames = instaGraphPyObject.callAttr("get_column_names", url);
 
+        // Store the returned names in a String array
         String[] names = columnNames.toJava(String[].class);
 
+        // Log the column names
         for (String name : names) {
             Log.i("InstaGraph", name);
         }
-
-        next = findViewById(R.id.next);
-        back = findViewById(R.id.back);
-        modelSpinner = findViewById(R.id.model_spinner);
-        col1Spinner = findViewById(R.id.column_one_spinner);
-        col2Spinner = findViewById(R.id.column_two_spinner);
-        col1Text = findViewById(R.id.column_one_text);
-        col2Text = findViewById(R.id.column_two_text);
-
-        next.setOnClickListener(this);
-        back.setOnClickListener(this);
 
         spinnerSetup(names);
         columnTextSetup(graphType);
@@ -103,27 +105,46 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
     }
 
     public void spinnerSetup(String[] colNames) {
+        // Add the forecasting models to the list
         models.add("AR");
         models.add("ARIMA");
         models.add("SES");
         models.add("HWES");
+
+        // Create an ArrayAdapter to handle the model spinner
+        // Set the context, appearance and data
         ArrayAdapter<String> modelArray = new ArrayAdapter<>(
                 this,
                 androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
                 models);
+
+        // Set the appearance of dropdown items
         modelArray.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+
+        // Fill the spinner with the values in modelArray
         modelSpinner.setAdapter(modelArray);
+
+        // Refresh the view if the data changes
         modelArray.notifyDataSetChanged();
 
+        // Add all the dataset's columns into the columns String list
         columns.addAll(Arrays.asList(colNames));
 
+        // Create an ArrayAdapter to handle spinners for picking columns
+        // Set the context, appearance and data
         ArrayAdapter<String> columnArray = new ArrayAdapter<>(
                 this,
                 androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
                 columns);
+
+        // Set the appearance of dropdown items
         columnArray.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+
+        // Fill the spinners with the values in columnArray
         col1Spinner.setAdapter(columnArray);
         col2Spinner.setAdapter(columnArray);
+
+        // Refresh the view if the data changes
         columnArray.notifyDataSetChanged();
     }
 

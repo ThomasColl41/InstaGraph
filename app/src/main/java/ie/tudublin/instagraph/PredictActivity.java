@@ -45,6 +45,8 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         next.setOnClickListener(this);
         back.setOnClickListener(this);
 
+        // Get user choices from previous activities
+        // URL, graph choice, columns, etc.
         Intent fromSelectColumns = getIntent();
         url = fromSelectColumns.getStringExtra("URL");
         graphType = fromSelectColumns.getStringExtra("graphType");
@@ -53,6 +55,7 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         col2 = fromSelectColumns.getStringExtra("col2");
         title = col1 + " over " + col2;
 
+        // Log the provided URL
         Log.i("InstaGraph", url);
 
         // Initialise Python (using Chaquopy)
@@ -85,8 +88,10 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
                 break;
         }
 
+        // Log the contents of the PyObject (should be a byte array)
         Log.i("InstaGraph", plot_image.toString());
 
+        // Decode the byte array and display the visualisation bitmap
         try {
             byte[] plot = plot_image.toJava(byte[].class);
             Bitmap bmp = BitmapFactory.decodeByteArray(plot,0, plot.length);
