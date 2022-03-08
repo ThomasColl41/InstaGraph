@@ -27,7 +27,7 @@
     <dimen name="small_button_width">100dp</dimen>
     <dimen name="small_button_height">60dp</dimen>
     <dimen name="small_button_text">20sp</dimen>
-    <dimen name="data_window_width">250dp</dimen>
+    <dimen name="data_window_width">350dp</dimen>
     <dimen name="data_window_height">250dp</dimen>
     <dimen name="url_step_text">26sp</dimen>
     <dimen name="url_input_text">20sp</dimen>

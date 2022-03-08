@@ -72,19 +72,23 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         // Run the plot function depending on user choice
         switch(graphType) {
             case "Line Graph":
-                plot_image = instaGraphPyObject.callAttr("line_graph_plot", url, col1, col2, title, url);
+                plot_image = instaGraphPyObject.callAttr(
+                        "line_graph_plot", url, col1, col2, title, url);
                 break;
 
             case "Bar Chart":
-                plot_image = instaGraphPyObject.callAttr("bar_chart_plot", url, col1, col2, title, url);
+                plot_image = instaGraphPyObject.callAttr(
+                        "bar_chart_plot", url, col1, col2, title, url);
                 break;
 
             case "Pie Chart":
-                plot_image = instaGraphPyObject.callAttr("pie_chart_plot", url, col1, col2, title, url);
+                plot_image = instaGraphPyObject.callAttr(
+                        "pie_chart_plot", url, col1, col2, title, url);
                 break;
 
             case "Horizontal Bar Chart":
-                plot_image = instaGraphPyObject.callAttr("horizontal_bar_chart_plot", url, col1, col2, title, url);
+                plot_image = instaGraphPyObject.callAttr(
+                        "horizontal_bar_chart_plot", url, col1, col2, title, url);
                 break;
         }
 
@@ -99,10 +103,16 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
             plot_window.setImageBitmap(bmp);
         }
         catch (NullPointerException npe) {
-            Toast.makeText(PredictActivity.this, npe.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(
+                    PredictActivity.this,
+                    npe.getMessage(),
+                    Toast.LENGTH_SHORT).show();
         }
         catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(
+                    this,
+                    e.getMessage(),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
