@@ -28,6 +28,7 @@ android {
                 install "pandas"
                 install "matplotlib"
                 install "numpy"
+                install "statsmodels"
             }
         }
 

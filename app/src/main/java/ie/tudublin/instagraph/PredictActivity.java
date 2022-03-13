@@ -121,6 +121,12 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         switch(view.getId()) {
             case(R.id.next):
                 Intent goToResult = new Intent(PredictActivity.this, ResultActivity.class);
+                goToResult.putExtra("graphType", graphType);
+                goToResult.putExtra("model", model);
+                goToResult.putExtra("col1", col1);
+                goToResult.putExtra("col2", col2);
+                goToResult.putExtra("title", title);
+                goToResult.putExtra("URL", url);
                 startActivity(goToResult);
                 break;
 

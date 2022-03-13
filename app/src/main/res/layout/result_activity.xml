@@ -76,7 +76,7 @@
 
             <!--Data preview window-->
             <ImageView
-                android:id="@+id/data_preview"
+                android:id="@+id/plot_window"
                 style="@style/Theme.InstaGraph.Data.Window"
                 android:contentDescription="@string/empty_content_description"/>
 
