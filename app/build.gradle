@@ -24,10 +24,10 @@ android {
             buildPython "/Library/Frameworks/Python.framework/Versions/3.8/bin/python3.8"
 
             pip {
-                install "sklearn"
+                install "scikit-learn"
+                install "numpy"
                 install "pandas"
                 install "matplotlib"
-                install "numpy"
                 install "statsmodels"
             }
         }
