@@ -13,12 +13,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class GetDataActivity extends AppCompatActivity implements View.OnClickListener {
     Button chooseFile;
     Button next;
     ImageView dataPreview;
+    TextView dataSummary;
     String url;
 
     // Inspired from https://www.youtube.com/watch?v=-y5eF0u1bZQ and https://www.youtube.com/watch?v=Ke9PaRdMcgc
@@ -42,6 +44,10 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
                                 url = data.getStringExtra("URL");
 
                                 dataPreview.setImageBitmap(bmp);
+
+                                String summary = data.getStringExtra("summary");
+                                dataSummary.setText(summary);
+                                dataSummary.setVisibility(View.VISIBLE);
                             }
                             catch (NullPointerException npe) {
                                 Toast.makeText(GetDataActivity.this, npe.getMessage(), Toast.LENGTH_SHORT).show();
@@ -64,6 +70,7 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
         chooseFile = findViewById(R.id.choose_file);
         next = findViewById(R.id.next);
         dataPreview = findViewById(R.id.data_preview);
+        dataSummary = findViewById(R.id.data_summary);
 
         chooseFile.setOnClickListener(this);
         next.setOnClickListener(this);

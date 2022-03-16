@@ -49,7 +49,8 @@
     <dimen name="logo_and_start_gap">50dp</dimen>
     <dimen name="progress_background_and_circles_gap">5dp</dimen>
     <dimen name="step_text_and_data_preview_gap">25dp</dimen>
-    <dimen name="choose_file_and_data_preview_gap">50dp</dimen>
+    <dimen name="data_preview_and_data_summary_gap">30dp</dimen>
+    <dimen name="choose_file_and_data_summary_gap">50dp</dimen>
     <dimen name="choose_file_and_next_gap">50dp</dimen>
     <dimen name="step_text_and_url_input_gap">100dp</dimen>
     <dimen name="url_input_and_submit_gap">100dp</dimen>

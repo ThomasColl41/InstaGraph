@@ -49,12 +49,17 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
             // Run the specified function in the script and get the return value
             PyObject dataPreview = instaGraphPyObject.callAttr("step_one", URL_input.getText().toString());
 
+            // Run the dataset_summary function
+            PyObject datasetSummary = instaGraphPyObject.callAttr("dataset_summary", URL_input.getText().toString());
+
 //                Inspired from https://github.com/Robbi-Blechdose/FT-TXT/blob/8751afe7fd0f74efb05f1635bb5b9a28d107013e/app/src/main/java/de/rbgs/ft_txt_app/Main.java#L264
             try {
                 byte[] data = dataPreview.toJava(byte[].class);
+                String summary = datasetSummary.toJava(String.class);
                 Intent returnToGetData = new Intent(GetURLActivity.this, GetDataActivity.class);
                 returnToGetData.putExtra("dataPreview", data);
                 returnToGetData.putExtra("URL", URL_input.getText().toString());
+                returnToGetData.putExtra("summary", summary);
                 setResult(RESULT_OK, returnToGetData);
                 finish();
             }

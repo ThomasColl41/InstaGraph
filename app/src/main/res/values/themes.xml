@@ -49,7 +49,7 @@
     </style>
 
     <!--Theme for info window-->
-    <style name="Theme.InstaGraph.Popup" parent="Widget.AppCompat.TextView">
+    <style name="Theme.InstaGraph.Text" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/instagraph_text_background</item>

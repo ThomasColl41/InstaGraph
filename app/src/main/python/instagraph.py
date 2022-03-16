@@ -345,3 +345,14 @@ def predict(url, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph', 
     buffer = io_buff.getvalue()
 
     return buffer
+
+# Function to generate a summary of the dataset
+def dataset_summary(url):
+    dataset = read_dataset(url)
+    preview_rows = 5
+    nrows = dataset.shape[0]
+    ncols = dataset.shape[1]
+    summary =   ('The dataset has ' + str(nrows) + ' rows and ' +
+                 str(ncols) + ' columns. ' +
+                 'The above is a preview of the first ' + str(preview_rows) + ' rows.')
+    return summary

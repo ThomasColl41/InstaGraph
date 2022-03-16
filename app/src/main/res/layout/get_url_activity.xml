@@ -79,7 +79,7 @@
                 android:id="@+id/url_input"
                 style="@style/Theme.InstaGraph.Input.URL"
                 android:hint="@string/URL_input_hint"
-                android:autofillHints="https://"/>
+                android:importantForAutofill="no"/>
 
             <!--Submit button-->
             <Button

@@ -5,7 +5,7 @@
 
     <TextView
         android:id="@+id/popup_textview"
-        style="@style/Theme.InstaGraph.Popup"
+        style="@style/Theme.InstaGraph.Text"
         android:text="@string/popup_placeholder"/>
 
 </RelativeLayout>
