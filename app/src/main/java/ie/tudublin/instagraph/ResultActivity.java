@@ -53,7 +53,7 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
         model = fromPredict.getStringExtra("model");
         col1 = fromPredict.getStringExtra("col1");
         col2 = fromPredict.getStringExtra("col2");
-//        title = fromPredict.getStringExtra("title");
+        title = fromPredict.getStringExtra("title");
 
         // Log the provided URL
         Log.i("InstaGraph", url);
