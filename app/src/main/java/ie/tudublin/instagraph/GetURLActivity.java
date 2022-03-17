@@ -31,6 +31,16 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
             Python.start(new AndroidPlatform(this));
         }
 
+        try {
+            Bundle fromGetData = getIntent().getExtras();
+            PythonParcel testParcel = (PythonParcel) fromGetData.getParcelable("testParcel");
+
+            Log.i("InstaGraph", "From Parcelable: " + testParcel.getNumber());
+        }
+        catch (Exception e) {
+            Log.i("InstaGraph", "ERROR with Parcelable: " + e.getMessage());
+        }
+
         // Get an instance of Python to run scripts
         py = Python.getInstance();
 
