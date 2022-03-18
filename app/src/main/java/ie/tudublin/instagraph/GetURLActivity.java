@@ -53,7 +53,9 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
             // Run the specified function in the script and get the return value
             String datasetPath = instaGraphPyObject.callAttr("read_dataset", URL_input.getText().toString()).toString();
             Log.i("InstaGraph", "file path to dataset: " + datasetPath);
+            userParameters.setUrl(URL_input.getText().toString());
             userParameters.setDatasetPath(datasetPath);
+
             PyObject dataPreview = instaGraphPyObject.callAttr("step_one", datasetPath);
 
             // Run the dataset_summary function
@@ -65,7 +67,6 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
                 String summary = datasetSummary.toJava(String.class);
                 Intent returnToGetData = new Intent(GetURLActivity.this, GetDataActivity.class);
                 returnToGetData.putExtra("dataPreview", data);
-                returnToGetData.putExtra("URL", URL_input.getText().toString());
                 returnToGetData.putExtra("summary", summary);
                 returnToGetData.putExtra("userParameters", userParameters);
                 setResult(RESULT_OK, returnToGetData);

@@ -104,154 +104,54 @@ def check_for_header(url):
         header = csv.Sniffer().has_header(file.read(1024))
     return header
 
+# Function to generate a summary of the dataset
+def dataset_summary(file_name):
+    dataset = pd.read_csv(file_name)
+    preview_rows = 5
+    nrows = dataset.shape[0]
+    ncols = dataset.shape[1]
+    summary =   ('The dataset has ' + str(nrows) + ' rows and ' +
+                 str(ncols) + ' columns. ' +
+                 'Above is a preview of the first ' + str(preview_rows) + ' rows.')
+    return summary
+
 # Function to return the names of a dataset's columns
-def get_column_names(url):
-    dataset = read_dataset(url)
-
-    # dataset could be an error message,
-    # Check if it is a DataFrame
-    if not isinstance(dataset, pd.DataFrame):
-        return str('Not a dataset ' + dataset)
-
+def get_column_names(file_name):
+    dataset = pd.read_csv(file_name)
     return list(dataset.columns.values)
 
-# Function to plot a line graph
-def line_graph_plot(url, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph', other_data=pd.DataFrame()):
-    dataset = read_dataset(url)
-
-    # dataset could be an error message,
-    # Check if it is a DataFrame
-    if not isinstance(dataset, pd.DataFrame):
-        return str('Not a dataset ' + dataset)
+# Function to plot a graph based on user choice
+def graph_plot(file_name, graph_choice, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph'):
+    dataset = pd.read_csv(file_name)
 
     model_data = pd.DataFrame(dataset[ylabel])
     model_data.index = dataset[xlabel]
 
     fig, ax = plt.subplots()
 
-    # Catch incorrect data type execeptions when trying to plot data
-    try:
-        ax.plot(model_data)
-        # if not other_data.empty:
-        #     ax.plot(other_data, color='red')
-    except TypeError as te:
-        return str(te + ' has occurred, check column choices')
-
     # Set axis labels and title
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     plt.title(title)
 
-    # Display plot
-    plt.show()
-
-    # Return plot as buffer
-    io_buff = io.BytesIO()
-    plt.savefig(io_buff, format="png")
-    buffer = io_buff.getvalue()
-
-    return buffer
-
-# Function to plot a bar chart
-def bar_chart_plot(url, xlabel='x-axis', ylabel='y-axis', title='Title of Bar Chart', other_data=pd.DataFrame()):
-    dataset = read_dataset(url)
-
-    # dataset could be an error message,
-    # Check if it is a DataFrame
-    if not isinstance(dataset, pd.DataFrame):
-        return str('Not a dataset ' + dataset)
-
-    model_data = pd.DataFrame(dataset[xlabel])
-    model_data.index = dataset[ylabel]
-
-    fig, ax = plt.subplots()
-
-    # Catch incorrect data type execeptions when trying to plot data
+    # Catch incorrect data type exceptions when trying to plot data
     try:
-        ax.bar(model_data[model_data.columns[0]], model_data.index.values)
-        # if not other_data.empty:
-        #     ax.plot(other_data, color='red')
+        if graph_choice == 'Line Graph':
+            ax.plot(model_data)
+        elif graph_choice == 'Bar Chart':
+            ax.bar(model_data.index.values, model_data[model_data.columns[0]])
+        elif graph_choice == 'Pie Chart':
+            ax.pie(model_data)
+            # No labels for pie chart
+            ax.set_xlabel('')
+            ax.set_ylabel('')
+        elif graph_choice == 'Horizontal Bar Chart':
+            ax.barh(model_data.index.values, model_data[model_data.columns[0]])
+            # Opposite labels for horizontal bar chart
+            ax.set_xlabel(ylabel)
+            ax.set_ylabel(xlabel)
     except TypeError as te:
         return str(te + ' has occurred, check column choices')
-
-    # Set axis labels and title
-    ax.set_xlabel(xlabel)
-    ax.set_ylabel(ylabel)
-    plt.title(title)
-
-    # Display plot
-    plt.show()
-
-    # Return plot as buffer
-    io_buff = io.BytesIO()
-    plt.savefig(io_buff, format="png")
-    buffer = io_buff.getvalue()
-
-    return buffer
-
-# Function to plot a bar chart
-def pie_chart_plot(url, xlabel='x-axis', ylabel='y-axis', title='Title of Pie Chart', other_data=pd.DataFrame()):
-    dataset = read_dataset(url)
-
-    # dataset could be an error message,
-    # Check if it is a DataFrame
-    if not isinstance(dataset, pd.DataFrame):
-        return str('Not a dataset ' + dataset)
-
-    model_data = pd.DataFrame(dataset[ylabel])
-    model_data.index = dataset[xlabel]
-
-    fig, ax = plt.subplots()
-
-    # Catch incorrect data type execeptions when trying to plot data
-    try:
-        ax.pie(model_data)
-        # if not other_data.empty:
-        #     ax.plot(other_data, color='red')
-    except TypeError as te:
-        return str(te + ' has occurred, check column choices')
-
-    # Set axis labels and title
-    # ax.set_xlabel(xlabel)
-    # ax.set_ylabel(ylabel)
-    plt.title(title)
-
-    # Display plot
-    plt.show()
-
-    # Return plot as buffer
-    io_buff = io.BytesIO()
-    plt.savefig(io_buff, format="png")
-    buffer = io_buff.getvalue()
-
-    return buffer
-
-# Function to plot a bar chart
-def horizontal_bar_chart_plot(url, xlabel='x-axis', ylabel='y-axis', title='Title of Horizontal Bar Chart', other_data=pd.DataFrame()):
-    dataset = read_dataset(url)
-
-    # dataset could be an error message,
-    # Check if it is a DataFrame
-    if not isinstance(dataset, pd.DataFrame):
-        return str('Not a dataset ' + dataset)
-
-    model_data = pd.DataFrame(dataset[xlabel])
-    model_data.index = dataset[ylabel]
-
-    fig, ax = plt.subplots()
-
-    # Catch incorrect data type execeptions when trying to plot data
-    try:
-        ax.barh(model_data[model_data.columns[0]], model_data.index.values)
-        # if not other_data.empty:
-        #     ax.plot(other_data, color='red')
-    except TypeError as te:
-        return str(te + ' has occurred, check column choices')
-
-    # Set axis labels and title
-    ax.set_xlabel(ylabel)
-    ax.set_ylabel(xlabel)
-    plt.title(title)
 
     # Display plot
     plt.show()
@@ -287,13 +187,8 @@ def replace_index(data, index_name='Index'):
     return pd.DataFrame(data)
 
 # Function to predict future values
-def predict(url, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph', graph_choice='Line Graph', model_choice='AR', other_data=pd.DataFrame()):
-    dataset = read_dataset(url)
-
-    # dataset could be an error message,
-    # Check if it is a DataFrame
-    if not isinstance(dataset, pd.DataFrame):
-        return str('Not a dataset ' + dataset)
+def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph', graph_choice='Line Graph', model_choice='AR'):
+    dataset = pd.read_csv(file_name)
 
     model_data = pd.DataFrame(dataset[ylabel])
     model_data.index = dataset[xlabel]
@@ -305,7 +200,7 @@ def predict(url, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph', 
     num_predictions = 12
 
     # Determine appropriate lag structure
-    model_lags = ar_select_order(model_data, maxlag = max_lag, ic='aic').ar_lags
+    model_lags = ar_select_order(model_data, maxlag=max_lag, ic='aic').ar_lags
 
     # Try and create a model with the appropriate lag structure
     model = AutoReg(model_data, lags = model_lags).fit()
@@ -351,14 +246,3 @@ def predict(url, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph', 
     buffer = io_buff.getvalue()
 
     return buffer
-
-# Function to generate a summary of the dataset
-def dataset_summary(file_name):
-    dataset = pd.read_csv(file_name)
-    preview_rows = 5
-    nrows = dataset.shape[0]
-    ncols = dataset.shape[1]
-    summary =   ('The dataset has ' + str(nrows) + ' rows and ' +
-                 str(ncols) + ' columns. ' +
-                 'The above is a preview of the first ' + str(preview_rows) + ' rows.')
-    return summary

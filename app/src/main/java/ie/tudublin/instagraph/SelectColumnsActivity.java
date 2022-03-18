@@ -36,8 +36,7 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
     private final List<String> models = new ArrayList<>();
     private final List<String> columns = new ArrayList<>();
 
-    String url;
-    String graphType;
+    ParameterParcel userParameters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +55,7 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
         back.setOnClickListener(this);
 
         Intent fromSelectGraph = getIntent();
-        url = fromSelectGraph.getStringExtra("URL");
-        graphType = fromSelectGraph.getStringExtra("graphType");
+        userParameters = fromSelectGraph.getParcelableExtra("userParameters");
 
         // Initialise Python (using Chaquopy)
         if(!Python.isStarted()) {
@@ -71,7 +69,7 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
         instaGraphPyObject = py.getModule("instagraph");
 
         // Run the get_column_names function
-        PyObject columnNames = instaGraphPyObject.callAttr("get_column_names", url);
+        PyObject columnNames = instaGraphPyObject.callAttr("get_column_names", userParameters.getDatasetPath());
 
         // Store the returned names in a String array
         String[] names = columnNames.toJava(String[].class);
@@ -82,19 +80,20 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
         }
 
         spinnerSetup(names);
-        columnTextSetup(graphType);
+        columnTextSetup(userParameters.getGraphType());
     }
 
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
             case(R.id.next):
+                String title = col1Spinner.getSelectedItem().toString() + " over " + col2Spinner.getSelectedItem().toString();
+                userParameters.setModel(modelSpinner.getSelectedItem().toString());
+                userParameters.setCol1(col1Spinner.getSelectedItem().toString());
+                userParameters.setCol2(col2Spinner.getSelectedItem().toString());
+                userParameters.setTitle(title);
                 Intent goToPredict = new Intent(SelectColumnsActivity.this, PredictActivity.class);
-                goToPredict.putExtra("graphType", graphType);
-                goToPredict.putExtra("model", modelSpinner.getSelectedItem().toString());
-                goToPredict.putExtra("col1", col1Spinner.getSelectedItem().toString());
-                goToPredict.putExtra("col2", col2Spinner.getSelectedItem().toString());
-                goToPredict.putExtra("URL", url);
+                goToPredict.putExtra("userParameters", userParameters);
                 startActivity(goToPredict);
                 break;
 

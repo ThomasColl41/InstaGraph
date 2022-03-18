@@ -26,12 +26,7 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
     PyObject instaGraphPyObject;
     PyObject plot_image;
 
-    String url;
-    String graphType;
-    String model;
-    String col1;
-    String col2;
-    String title;
+    ParameterParcel userParameters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,15 +43,10 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         // Get user choices from previous activities
         // URL, graph choice, columns, etc.
         Intent fromSelectColumns = getIntent();
-        url = fromSelectColumns.getStringExtra("URL");
-        graphType = fromSelectColumns.getStringExtra("graphType");
-        model = fromSelectColumns.getStringExtra("model");
-        col1 = fromSelectColumns.getStringExtra("col1");
-        col2 = fromSelectColumns.getStringExtra("col2");
-        title = col1 + " over " + col2;
+        userParameters = fromSelectColumns.getParcelableExtra("userParameters");
 
         // Log the provided URL
-        Log.i("InstaGraph", url);
+        Log.i("InstaGraph", userParameters.getUrl());
 
         // Initialise Python (using Chaquopy)
         if(!Python.isStarted()) {
@@ -69,28 +59,15 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         // Run the script associated with the parameter
         instaGraphPyObject = py.getModule("instagraph");
 
-        // Run the plot function depending on user choice
-        switch(graphType) {
-            case "Line Graph":
-                plot_image = instaGraphPyObject.callAttr(
-                        "line_graph_plot", url, col1, col2, title, url);
-                break;
-
-            case "Bar Chart":
-                plot_image = instaGraphPyObject.callAttr(
-                        "bar_chart_plot", url, col1, col2, title, url);
-                break;
-
-            case "Pie Chart":
-                plot_image = instaGraphPyObject.callAttr(
-                        "pie_chart_plot", url, col1, col2, title, url);
-                break;
-
-            case "Horizontal Bar Chart":
-                plot_image = instaGraphPyObject.callAttr(
-                        "horizontal_bar_chart_plot", url, col1, col2, title, url);
-                break;
-        }
+        // Plot the graph depending on user choice
+        plot_image = instaGraphPyObject.callAttr(
+                "graph_plot",
+                userParameters.getDatasetPath(),
+                userParameters.getGraphType(),
+                userParameters.getCol1(),
+                userParameters.getCol2(),
+                userParameters.getTitle()
+        );
 
         // Log the contents of the PyObject (should be a byte array)
         Log.i("InstaGraph", plot_image.toString());
@@ -121,12 +98,7 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         switch(view.getId()) {
             case(R.id.next):
                 Intent goToResult = new Intent(PredictActivity.this, ResultActivity.class);
-                goToResult.putExtra("graphType", graphType);
-                goToResult.putExtra("model", model);
-                goToResult.putExtra("col1", col1);
-                goToResult.putExtra("col2", col2);
-                goToResult.putExtra("title", title);
-                goToResult.putExtra("URL", url);
+                goToResult.putExtra("userParameters", userParameters);
                 startActivity(goToResult);
                 break;
 

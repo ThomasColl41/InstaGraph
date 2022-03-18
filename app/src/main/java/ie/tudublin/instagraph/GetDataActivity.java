@@ -22,7 +22,6 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
     Button next;
     ImageView dataPreview;
     TextView dataSummary;
-    String url;
 
     ParameterParcel userParameters;
 
@@ -45,7 +44,6 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
                             try {
                                 byte[] image = data.getByteArrayExtra("dataPreview");
                                 Bitmap bmp = BitmapFactory.decodeByteArray(image,0,image.length);
-                                url = data.getStringExtra("URL");
                                 userParameters = data.getParcelableExtra("userParameters");
                                 Log.i("InstaGraph", "Returned dataset path: " + userParameters.getDatasetPath());
 
@@ -93,7 +91,6 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
 
             case(R.id.next):
                 Intent goToSelectGraph = new Intent(GetDataActivity.this, SelectGraphActivity.class);
-                goToSelectGraph.putExtra("URL", url);
                 goToSelectGraph.putExtra("userParameters", userParameters);
                 startActivity(goToSelectGraph);
                 break;

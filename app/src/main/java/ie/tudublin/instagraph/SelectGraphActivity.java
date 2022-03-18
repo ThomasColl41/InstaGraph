@@ -20,8 +20,9 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
     ImageView horizontalBarChart;
 
     int highlighted = 0;
-    String graphName;
-    String url;
+    String graphType;
+
+    ParameterParcel userParameters;
 
 
 
@@ -47,19 +48,19 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
         horizontalBarChart.setOnClickListener(this);
 
         // Set the line graph as default
-        graphName = selectGraph(R.id.line_graph_border);
+        graphType = selectGraph(R.id.line_graph_border);
 
         Intent fromGetData = getIntent();
-        url = fromGetData.getStringExtra("URL");
+        userParameters = fromGetData.getParcelableExtra("userParameters");
     }
 
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
             case(R.id.next):
+                userParameters.setGraphType(graphType);
                 Intent goToSelectColumns = new Intent(SelectGraphActivity.this, SelectColumnsActivity.class);
-                goToSelectColumns.putExtra("graphType", graphName);
-                goToSelectColumns.putExtra("URL", url);
+                goToSelectColumns.putExtra("userParameters", userParameters);
                 startActivity(goToSelectColumns);
                 break;
 
@@ -68,19 +69,19 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case(R.id.line_graph_window):
-                graphName = selectGraph(R.id.line_graph_border);
+                graphType = selectGraph(R.id.line_graph_border);
                 break;
 
             case(R.id.bar_chart_window):
-                graphName = selectGraph(R.id.bar_chart_border);
+                graphType = selectGraph(R.id.bar_chart_border);
                 break;
 
             case(R.id.pie_chart_window):
-                graphName = selectGraph(R.id.pie_chart_border);
+                graphType = selectGraph(R.id.pie_chart_border);
                 break;
 
             case(R.id.horizontal_bar_chart_window):
-                graphName = selectGraph(R.id.horizontal_bar_chart_border);
+                graphType = selectGraph(R.id.horizontal_bar_chart_border);
                 break;
         }
     }
@@ -89,14 +90,14 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
         if (highlighted == 0) {
             findViewById(id).setVisibility(View.VISIBLE);
             highlighted = id;
-            return getGraphName(id);
+            return getGraphType(id);
         }
         else if (id != highlighted) {
             try {
                 findViewById(highlighted).setVisibility(View.INVISIBLE);
                 findViewById(id).setVisibility(View.VISIBLE);
                 highlighted = id;
-                return getGraphName(id);
+                return getGraphType(id);
             }
             catch (NullPointerException npe) {
                 Log.i("InstaGraph", npe.getMessage());
@@ -111,10 +112,10 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
                 return "Line Graph";
             }
         }
-        return getGraphName(id);
+        return getGraphType(id);
     }
 
-    public String getGraphName(int id) {
+    public String getGraphType(int id) {
         // Return name of selected graph
         switch(id) {
             case(R.id.line_graph_border):

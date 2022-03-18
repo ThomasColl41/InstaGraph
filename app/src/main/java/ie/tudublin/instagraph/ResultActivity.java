@@ -26,12 +26,7 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
     PyObject instaGraphPyObject;
     PyObject plot_image;
 
-    String url;
-    String graphType;
-    String model;
-    String col1;
-    String col2;
-    String title;
+    ParameterParcel userParameters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,15 +43,10 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
         // Get user choices from previous activities
         // URL, graph choice, columns, etc.
         Intent fromPredict = getIntent();
-        url = fromPredict.getStringExtra("URL");
-        graphType = fromPredict.getStringExtra("graphType");
-        model = fromPredict.getStringExtra("model");
-        col1 = fromPredict.getStringExtra("col1");
-        col2 = fromPredict.getStringExtra("col2");
-        title = fromPredict.getStringExtra("title");
+        userParameters = fromPredict.getParcelableExtra("userParameters");
 
         // Log the provided URL
-        Log.i("InstaGraph", url);
+        Log.i("InstaGraph", userParameters.getUrl());
 
         // Initialise Python (using Chaquopy)
         if(!Python.isStarted()) {
@@ -71,7 +61,14 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
 
         // Run the predict function
         plot_image = instaGraphPyObject.callAttr(
-                "predict", url, col1, col2, title, graphType, model, url);
+                "predict",
+                userParameters.getDatasetPath(),
+                userParameters.getCol1(),
+                userParameters.getCol2(),
+                userParameters.getTitle(),
+                userParameters.getGraphType(),
+                userParameters.getModel()
+        );
 
         // Log the contents of the PyObject (should be a byte array)
         Log.i("InstaGraph", plot_image.toString());
