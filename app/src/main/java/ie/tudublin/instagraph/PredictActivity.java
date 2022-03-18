@@ -59,10 +59,19 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         // Run the script associated with the parameter
         instaGraphPyObject = py.getModule("instagraph");
 
+        String modelDataPath = instaGraphPyObject.callAttr(
+                "read_model_data",
+                userParameters.getDatasetPath(),
+                userParameters.getCol1(),
+                userParameters.getCol2()
+        ).toString();
+
+        userParameters.setModelDataPath(modelDataPath);
+
         // Plot the graph depending on user choice
         plot_image = instaGraphPyObject.callAttr(
                 "graph_plot",
-                userParameters.getDatasetPath(),
+                userParameters.getModelDataPath(),
                 userParameters.getGraphType(),
                 userParameters.getCol1(),
                 userParameters.getCol2(),

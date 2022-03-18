@@ -62,7 +62,7 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
         // Run the predict function
         plot_image = instaGraphPyObject.callAttr(
                 "predict",
-                userParameters.getDatasetPath(),
+                userParameters.getModelDataPath(),
                 userParameters.getCol1(),
                 userParameters.getCol2(),
                 userParameters.getTitle(),

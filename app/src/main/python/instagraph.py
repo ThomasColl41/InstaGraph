@@ -44,7 +44,7 @@ def read_dataset(url):
     return file_name
 
 def step_one(file_name):
-    dataset = pd.read_csv(file_name)
+    dataset = pd.read_csv(file_name, skip_blank_lines=True)
 
     # dataset could be an error message,
     # Check if it is a DataFrame
@@ -106,7 +106,7 @@ def check_for_header(url):
 
 # Function to generate a summary of the dataset
 def dataset_summary(file_name):
-    dataset = pd.read_csv(file_name)
+    dataset = pd.read_csv(file_name, skip_blank_lines=True)
     preview_rows = 5
     nrows = dataset.shape[0]
     ncols = dataset.shape[1]
@@ -117,15 +117,27 @@ def dataset_summary(file_name):
 
 # Function to return the names of a dataset's columns
 def get_column_names(file_name):
-    dataset = pd.read_csv(file_name)
+    dataset = pd.read_csv(file_name, skip_blank_lines=True)
     return list(dataset.columns.values)
 
-# Function to plot a graph based on user choice
-def graph_plot(file_name, graph_choice, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph'):
-    dataset = pd.read_csv(file_name)
+# Function to generate the model_data DataFrame and save it
+def read_model_data(file_name, xlabel='x-axis', ylabel='y-axis'):
+    dataset = pd.read_csv(file_name, skip_blank_lines=True)
 
     model_data = pd.DataFrame(dataset[ylabel])
     model_data.index = dataset[xlabel]
+
+    # Inspired from https://www.youtube.com/watch?v=sm02Q91ujfs&list=PLeOtHc_su2eXZuiqCH4pBgV6vamBbP88K&index=7
+    files_dir = str(Python.getPlatform().getApplication().getFilesDir())
+    file_name = join(dirname(files_dir),'model_data.csv')
+    model_data.to_csv(file_name, index=False)
+    return file_name
+
+# Function to plot a graph based on user choice
+def graph_plot(file_name, graph_choice, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph'):
+    model_data = pd.read_csv(file_name, skip_blank_lines=True, header=0)
+
+    model_data = replace_index(model_data, model_data.index.name)
 
     fig, ax = plt.subplots()
 
@@ -169,7 +181,7 @@ def replace_index(data, index_name='Index'):
     if data.index.dtype == 'int64':
         # Assuming the data is not missing any steps
         index_step = data.index[1] - data.index[0]
-        data.index = pd.RangeIndex(start=data.index[0], stop=len(data.index) + index_step, step=index_step)
+        data.index = pd.RangeIndex(start=data.index[0], stop=(len(data.index) - 1) + index_step, step=index_step)
     else:
         # Assuming a non-integer index contains dates, attempt to convert to DatetimeIndex
         try:
@@ -188,10 +200,7 @@ def replace_index(data, index_name='Index'):
 
 # Function to predict future values
 def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph', graph_choice='Line Graph', model_choice='AR'):
-    dataset = pd.read_csv(file_name)
-
-    model_data = pd.DataFrame(dataset[ylabel])
-    model_data.index = dataset[xlabel]
+    model_data = pd.read_csv(file_name, skip_blank_lines=True)
 
     model_data = replace_index(model_data, model_data.index.name)
 
