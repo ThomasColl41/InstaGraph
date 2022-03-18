@@ -21,10 +21,14 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
     Python py;
     PyObject instaGraphPyObject;
 
+    ParameterParcel userParameters;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.get_url_activity);
+
+        userParameters = new ParameterParcel();
 
         // Initialise Python (using Chaquopy)
         if(!Python.isStarted()) {
@@ -47,7 +51,10 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         if(view.getId() == R.id.submit) {
             // Run the specified function in the script and get the return value
-            PyObject dataPreview = instaGraphPyObject.callAttr("step_one", URL_input.getText().toString());
+            String datasetPath = instaGraphPyObject.callAttr("read_dataset", URL_input.getText().toString()).toString();
+            Log.i("InstaGraph", "file path to dataset: " + datasetPath);
+            userParameters.setDatasetPath(datasetPath);
+            PyObject dataPreview = instaGraphPyObject.callAttr("step_one", datasetPath);
 
             // Run the dataset_summary function
             PyObject datasetSummary = instaGraphPyObject.callAttr("dataset_summary", URL_input.getText().toString());
@@ -60,6 +67,7 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
                 returnToGetData.putExtra("dataPreview", data);
                 returnToGetData.putExtra("URL", URL_input.getText().toString());
                 returnToGetData.putExtra("summary", summary);
+                returnToGetData.putExtra("userParameters", userParameters);
                 setResult(RESULT_OK, returnToGetData);
                 finish();
             }

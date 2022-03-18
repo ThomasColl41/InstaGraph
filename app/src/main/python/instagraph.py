@@ -7,6 +7,7 @@ import csv
 import urllib.request
 from os.path import dirname, join
 from statsmodels.tsa.ar_model import AutoReg, ar_select_order
+from com.chaquo.python import Python
 
 # Function to read in a dataset at a specified url
 def read_dataset(url):
@@ -35,10 +36,15 @@ def read_dataset(url):
                 assert not dataset.empty
             except AssertionError:
                 return "Dataset is empty"
-    return dataset
 
-def step_one(url):
-    dataset = read_dataset(url)
+    # Inspired from https://www.youtube.com/watch?v=sm02Q91ujfs&list=PLeOtHc_su2eXZuiqCH4pBgV6vamBbP88K&index=7
+    files_dir = str(Python.getPlatform().getApplication().getFilesDir())
+    file_name = join(dirname(files_dir),'dataset.csv')
+    dataset.to_csv(file_name, index=False)
+    return file_name
+
+def step_one(file_name):
+    dataset = pd.read_csv(file_name)
 
     # dataset could be an error message,
     # Check if it is a DataFrame
@@ -347,8 +353,8 @@ def predict(url, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph', 
     return buffer
 
 # Function to generate a summary of the dataset
-def dataset_summary(url):
-    dataset = read_dataset(url)
+def dataset_summary(file_name):
+    dataset = pd.read_csv(file_name)
     preview_rows = 5
     nrows = dataset.shape[0]
     ncols = dataset.shape[1]

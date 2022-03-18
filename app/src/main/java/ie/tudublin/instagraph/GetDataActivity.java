@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,6 +23,8 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
     ImageView dataPreview;
     TextView dataSummary;
     String url;
+
+    ParameterParcel userParameters;
 
 
     // Inspired from https://www.youtube.com/watch?v=-y5eF0u1bZQ and https://www.youtube.com/watch?v=Ke9PaRdMcgc
@@ -43,6 +46,8 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
                                 byte[] image = data.getByteArrayExtra("dataPreview");
                                 Bitmap bmp = BitmapFactory.decodeByteArray(image,0,image.length);
                                 url = data.getStringExtra("URL");
+                                userParameters = data.getParcelableExtra("userParameters");
+                                Log.i("InstaGraph", "Returned dataset path: " + userParameters.getDatasetPath());
 
                                 dataPreview.setImageBitmap(bmp);
 
@@ -89,6 +94,7 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
             case(R.id.next):
                 Intent goToSelectGraph = new Intent(GetDataActivity.this, SelectGraphActivity.class);
                 goToSelectGraph.putExtra("URL", url);
+                goToSelectGraph.putExtra("userParameters", userParameters);
                 startActivity(goToSelectGraph);
                 break;
         }
