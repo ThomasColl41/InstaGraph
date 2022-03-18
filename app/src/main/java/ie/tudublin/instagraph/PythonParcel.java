@@ -60,12 +60,10 @@ public class PythonParcel implements Parcelable {
     // Parcelling methods (required)
     protected PythonParcel(Parcel in) {
         if(this.dataset != null) {
-            this.dataset = (PyObject) in.readValue(dataset.getClass().getClassLoader());
-//            this.dataset = (PyObject) in.readParcelable(dataset.getClass().getClassLoader());
+            this.dataset = in.readParcelable(dataset.getClass().getClassLoader());
         }
         if(this.model_data != null) {
-            this.model_data = (PyObject) in.readValue(model_data.getClass().getClassLoader());
-//            this.model_data = (PyObject) in.readParcelable(model_data.getClass().getClassLoader());
+            this.model_data = in.readParcelable(model_data.getClass().getClassLoader());
         }
         this.number = in.readInt();
     }
@@ -90,12 +88,10 @@ public class PythonParcel implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         if(this.dataset != null) {
-            parcel.writeValue(this.dataset);
-//            parcel.writeParcelable((Parcelable) this.dataset, i);
+            parcel.writeParcelable((Parcelable) this.dataset, i);
         }
         if(this.model_data != null) {
-            parcel.writeValue(this.model_data);
-//            parcel.writeParcelable((Parcelable) this.model_data, i);
+            parcel.writeParcelable((Parcelable) this.model_data, i);
         }
         parcel.writeInt(this.number);
     }

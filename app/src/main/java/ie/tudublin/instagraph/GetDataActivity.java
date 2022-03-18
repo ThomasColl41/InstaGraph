@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,7 +23,6 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
     TextView dataSummary;
     String url;
 
-    PythonParcel testParcel;
 
     // Inspired from https://www.youtube.com/watch?v=-y5eF0u1bZQ and https://www.youtube.com/watch?v=Ke9PaRdMcgc
     // StartActivityForResult alternative implementation
@@ -78,13 +76,6 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
         chooseFile.setOnClickListener(this);
         next.setOnClickListener(this);
 
-        try {
-            testParcel = new PythonParcel();
-            Log.i("InstaGraph", "Parcel number: " + testParcel.getNumber());
-        }
-        catch (Exception e) {
-            Log.i("InstaGraph", "Parcel number: Error" + e.getMessage());
-        }
     }
 
     @Override
@@ -92,7 +83,6 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
         switch(view.getId()) {
             case(R.id.choose_file):
                 Intent goToChooseFile = new Intent(GetDataActivity.this, GetURLActivity.class);
-                goToChooseFile.putExtra("testParcel", testParcel);
                 getUrlLauncher.launch(goToChooseFile);
                 break;
 
