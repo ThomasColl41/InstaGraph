@@ -42,4 +42,10 @@
     <string name="pie_chart_col2">Data</string>
     <string name="horizontal_bar_chart_col1">Labels</string>
     <string name="horizontal_bar_chart_col2">Data</string>
+    <string-array name="models">
+        <item>AR</item>
+        <item>ARIMA</item>
+        <item>SES</item>
+        <item>HWES</item>
+    </string-array>
 </resources>

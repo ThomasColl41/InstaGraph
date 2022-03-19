@@ -33,7 +33,6 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
     Python py;
     PyObject instaGraphPyObject;
 
-    private final List<String> models = new ArrayList<>();
     private final List<String> columns = new ArrayList<>();
 
     ParameterParcel userParameters;
@@ -104,14 +103,10 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
     }
 
     public void spinnerSetup(String[] colNames) {
-        // Add the forecasting models to the list
-        models.add("AR");
-        models.add("ARIMA");
-        models.add("SES");
-        models.add("HWES");
+        // Get the models string array from strings.xml
+        String[] models = getResources().getStringArray(R.array.models);
 
-        // Create an ArrayAdapter to handle the model spinner
-        // Set the context, appearance and data
+        // Load the models into the ArrayAdapter
         ArrayAdapter<String> modelArray = new ArrayAdapter<>(
                 this,
                 androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
