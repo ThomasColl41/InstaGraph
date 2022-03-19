@@ -74,6 +74,27 @@
                 style="@style/Theme.InstaGraph.Step.Text"
                 android:text="@string/step_five"/>
 
+            <!--Download icons-->
+            <RelativeLayout
+                android:id="@+id/download_icons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/step_text"
+                android:layout_alignEnd="@id/plot_window"
+                android:layout_marginTop="@dimen/step_text_and_download_icons_gap">
+
+                <!--Background for icons-->
+                <TextView
+                    android:id="@+id/icons_background"
+                    style="@style/Theme.InstaGraph.Download.Icon.Background"/>
+
+                <!--Download icon-->
+                <ImageView
+                    android:id="@+id/download_icon"
+                    style="@style/Theme.InstaGraph.Download.Icon"
+                    android:contentDescription="@string/empty_content_description"/>
+            </RelativeLayout>
+
             <!--Data preview window-->
             <ImageView
                 android:id="@+id/plot_window"

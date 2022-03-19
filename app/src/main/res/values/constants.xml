@@ -32,6 +32,11 @@
     <dimen name="url_step_text">26sp</dimen>
     <dimen name="url_input_text">20sp</dimen>
     <dimen name="submit_button_text">38sp</dimen>
+    <dimen name="download_icon_background_width">140dp</dimen>
+    <dimen name="download_icon_background_height">70dp</dimen>
+    <dimen name="download_icon_width">50dp</dimen>
+    <dimen name="download_icon_height">50dp</dimen>
+    <dimen name="download_icon_marginEnd">10dp</dimen>
     <dimen name="visualisation_window_width">150dp</dimen>
     <dimen name="visualisation_window_height">150dp</dimen>
     <dimen name="visualisation_window_gap">50dp</dimen>
@@ -48,7 +53,7 @@
     <dimen name="title_and_info_button_gap">110dp</dimen>
     <dimen name="logo_and_start_gap">50dp</dimen>
     <dimen name="progress_background_and_circles_gap">5dp</dimen>
-    <dimen name="step_text_and_data_preview_gap">25dp</dimen>
+    <dimen name="step_text_and_download_icons_gap">25dp</dimen>
     <dimen name="data_preview_and_data_summary_gap">30dp</dimen>
     <dimen name="choose_file_and_data_summary_gap">50dp</dimen>
     <dimen name="choose_file_and_next_gap">50dp</dimen>

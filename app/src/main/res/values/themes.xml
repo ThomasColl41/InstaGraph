@@ -138,14 +138,31 @@
         <item name="android:layout_marginStart">@dimen/back_and_next_gap</item>
     </style>
 
+    <!--Theme for download icons background-->
+    <style name="Theme.InstaGraph.Download.Icon.Background" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">@dimen/download_icon_background_width</item>
+        <item name="android:layout_height">@dimen/download_icon_background_height</item>
+        <item name="android:background">@drawable/instagraph_text_background</item>
+    </style>
+
+    <!--Theme for download icons-->
+    <style name="Theme.InstaGraph.Download.Icon" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">@dimen/download_icon_width</item>
+        <item name="android:layout_height">@dimen/download_icon_height</item>
+        <item name="android:background">@drawable/download_icon</item>
+        <item name="android:layout_below">@id/step_text</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_alignEnd">@id/icons_background</item>
+        <item name="android:layout_marginEnd">@dimen/download_icon_marginEnd</item>
+    </style>
+
     <!--Theme for data windows-->
     <style name="Theme.InstaGraph.Data.Window" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">@dimen/data_window_width</item>
         <item name="android:layout_height">@dimen/data_window_height</item>
         <item name="android:background">@drawable/instagraph_data_window</item>
         <item name="android:layout_centerHorizontal">true</item>
-        <item name="android:layout_below">@id/step_text</item>
-        <item name="android:layout_marginTop">@dimen/step_text_and_data_preview_gap</item>
+        <item name="android:layout_below">@id/download_icons</item>
     </style>
 
     <!--Theme for URL input-->

@@ -21,12 +21,16 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
     Button back;
 
     ImageView plot_window;
+    ImageView downloadIcon;
 
     Python py;
     PyObject instaGraphPyObject;
     PyObject plot_image;
+    Bitmap bmp;
 
     ParameterParcel userParameters;
+
+    Downloader downloader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +40,11 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         next = findViewById(R.id.next);
         back = findViewById(R.id.back);
         plot_window = findViewById(R.id.plot_window);
+        downloadIcon = findViewById(R.id.download_icon);
 
         next.setOnClickListener(this);
         back.setOnClickListener(this);
+        downloadIcon.setOnClickListener(this);
 
         // Get user choices from previous activities
         // URL, graph choice, columns, etc.
@@ -84,7 +90,7 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         // Decode the byte array and display the visualisation bitmap
         try {
             byte[] plot = plot_image.toJava(byte[].class);
-            Bitmap bmp = BitmapFactory.decodeByteArray(plot,0, plot.length);
+            bmp = BitmapFactory.decodeByteArray(plot,0, plot.length);
 
             plot_window.setImageBitmap(bmp);
         }
@@ -114,6 +120,18 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
             case(R.id.back):
                 finish();
                 break;
+
+            case(R.id.download_icon):
+                if(downloader == null) {
+                    downloader = new Downloader(bmp, PredictActivity.this, this);
+                }
+                else {
+                    downloader.setPlot(bmp);
+                }
+                downloader.savePlot();
+
+                // Inform user
+                Toast.makeText(this, "Plot saved to Download folder", Toast.LENGTH_SHORT).show();
         }
     }
 }

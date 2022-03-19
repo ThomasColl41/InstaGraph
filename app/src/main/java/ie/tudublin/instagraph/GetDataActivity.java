@@ -22,8 +22,13 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
     Button next;
     ImageView dataPreview;
     TextView dataSummary;
+    ImageView downloadIcon;
+
+    Bitmap bmp;
 
     ParameterParcel userParameters;
+
+    Downloader downloader;
 
 
     // Inspired from https://www.youtube.com/watch?v=-y5eF0u1bZQ and https://www.youtube.com/watch?v=Ke9PaRdMcgc
@@ -43,7 +48,7 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
                         if(resCode == RESULT_OK && data != null) {
                             try {
                                 byte[] image = data.getByteArrayExtra("dataPreview");
-                                Bitmap bmp = BitmapFactory.decodeByteArray(image,0,image.length);
+                                bmp = BitmapFactory.decodeByteArray(image,0,image.length);
                                 userParameters = data.getParcelableExtra("userParameters");
                                 Log.i("InstaGraph", "Returned dataset path: " + userParameters.getDatasetPath());
 
@@ -75,10 +80,11 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
         next = findViewById(R.id.next);
         dataPreview = findViewById(R.id.data_preview);
         dataSummary = findViewById(R.id.data_summary);
+        downloadIcon = findViewById(R.id.download_icon);
 
         chooseFile.setOnClickListener(this);
         next.setOnClickListener(this);
-
+        downloadIcon.setOnClickListener(this);
     }
 
     @Override
@@ -94,6 +100,22 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
                 goToSelectGraph.putExtra("userParameters", userParameters);
                 startActivity(goToSelectGraph);
                 break;
+
+            case(R.id.download_icon):
+                if(bmp == null) {
+                    Toast.makeText(this, "No plot to save (Choose File..)", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                if(downloader == null) {
+                    downloader = new Downloader(bmp, GetDataActivity.this, this);
+                }
+                else {
+                    downloader.setPlot(bmp);
+                }
+                downloader.savePlot();
+
+                // Inform user
+                Toast.makeText(this, "Plot saved to Download folder", Toast.LENGTH_SHORT).show();
         }
     }
 }
