@@ -44,55 +44,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case(R.id.info_button):
                 // Display info pop-up
-                showInfoPopup();
+                Popup p = new Popup(MainActivity.this, mainLayout);
+                p.showPopup(R.string.instagraph_information);
                 break;
         }
-    }
-
-    public void showInfoPopup() {
-        View infoView;
-
-        // Create inflater
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        try {
-            // Inflate the popup (resource (xml), root, attachToRoot)
-            // attachToRoot is false because only the LayoutParams of mainLayout are required
-            infoView = inflater.inflate(R.layout.popup, mainLayout, false);
-        }
-        catch (InflateException ie) {
-            Log.i("InstaGraph", ie.getMessage());
-            Toast.makeText(
-                    this,
-                    "Error displaying information (" + ie.getMessage() + ")",
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Create PopupWindow (view, width, height, focusable)
-        // focusable is true so the popup can be dismissed by tapping anywhere
-        PopupWindow infoPopup = new PopupWindow(
-                infoView,
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                true);
-
-        // Identify the TexView in the popup xml and set its text dynamically
-        TextView popupText = infoView.findViewById(R.id.popup_textview);
-        popupText.setText(R.string.instagraph_information);
-
-        // Display the popup in the center of the screen (layout)
-        infoPopup.showAtLocation(mainLayout, Gravity.CENTER, 0,0);
-
-        // Set up an onTouchListener to react to the user tapping the screen
-        // A lambda method is used for the onTouch method
-        infoView.setOnTouchListener((view, motionEvent) -> {
-            // Hide the popup
-            infoPopup.dismiss();
-
-            // Perform a click to call the OnClickListener and register the clicking event
-            // for sound preferences and accessibility features
-            view.performClick();
-            return true;
-        });
     }
 }
