@@ -16,12 +16,15 @@ import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 
+import java.io.IOException;
+
 public class ResultActivity extends AppCompatActivity implements View.OnClickListener {
     Button finish;
     Button back;
 
     ImageView plot_window;
-    ImageView downloadIcon;
+    ImageView jpgIcon;
+    ImageView csvIcon;
 
     Python py;
     PyObject instaGraphPyObject;
@@ -40,11 +43,13 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
         finish = findViewById(R.id.finish);
         back = findViewById(R.id.back);
         plot_window = findViewById(R.id.plot_window);
-        downloadIcon = findViewById(R.id.download_icon);
+        jpgIcon = findViewById(R.id.jpg_icon);
+        csvIcon = findViewById(R.id.csv_icon);
 
         finish.setOnClickListener(this);
         back.setOnClickListener(this);
-        downloadIcon.setOnClickListener(this);
+        jpgIcon.setOnClickListener(this);
+        csvIcon.setOnClickListener(this);
 
         // Get user choices from previous activities
         // URL, graph choice, columns, etc.
@@ -78,6 +83,10 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
 
         // Log the contents of the PyObject (should be a byte array)
         Log.i("InstaGraph", plot_image.toString());
+
+        // Get the directory where the predictions have been saved
+        String predPath = instaGraphPyObject.callAttr("read_predictions").toString();
+        userParameters.setPredictionsPath(predPath);
 
         // Decode the byte array and display the visualisation bitmap
         try {
@@ -113,17 +122,27 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
                 finish();
                 break;
 
-            case(R.id.download_icon):
+            case(R.id.jpg_icon):
                 if(downloader == null) {
-                    downloader = new Downloader(bmp, ResultActivity.this, this);
+                    downloader = new Downloader(ResultActivity.this, this);
                 }
-                else {
-                    downloader.setPlot(bmp);
-                }
-                downloader.savePlot();
+                downloader.savePlot(bmp);
 
                 // Inform user
                 Toast.makeText(this, "Plot saved to Download folder", Toast.LENGTH_SHORT).show();
+
+            case(R.id.csv_icon):
+                if(downloader == null) {
+                    downloader = new Downloader(ResultActivity.this, this);
+                }
+                try {
+                    downloader.saveFile(userParameters.getPredictionsPath());
+                } catch (IOException e) {
+                    Log.i("InstaGraph", "Failed to save predictions " + e.getMessage());
+                }
+
+                // Inform user
+                Toast.makeText(this, "Predictions saved to Download folder", Toast.LENGTH_SHORT).show();
         }
     }
 }

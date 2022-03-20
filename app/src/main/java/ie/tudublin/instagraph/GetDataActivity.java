@@ -103,16 +103,13 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
 
             case(R.id.download_icon):
                 if(bmp == null) {
-                    Toast.makeText(this, "No plot to save (Choose File..)", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "No plot to save (Choose File...)", Toast.LENGTH_SHORT).show();
                     break;
                 }
                 if(downloader == null) {
-                    downloader = new Downloader(bmp, GetDataActivity.this, this);
+                    downloader = new Downloader(GetDataActivity.this, this);
                 }
-                else {
-                    downloader.setPlot(bmp);
-                }
-                downloader.savePlot();
+                downloader.savePlot(bmp);
 
                 // Inform user
                 Toast.makeText(this, "Plot saved to Download folder", Toast.LENGTH_SHORT).show();

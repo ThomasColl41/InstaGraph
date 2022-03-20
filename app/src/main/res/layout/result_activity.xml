@@ -88,10 +88,19 @@
                     android:id="@+id/icons_background"
                     style="@style/Theme.InstaGraph.Download.Icon.Background"/>
 
-                <!--Download icon-->
+                <!--jpg icon-->
                 <ImageView
-                    android:id="@+id/download_icon"
+                    android:id="@+id/jpg_icon"
                     style="@style/Theme.InstaGraph.Download.Icon"
+                    android:background="@drawable/jpg_icon"
+                    android:contentDescription="@string/empty_content_description"/>
+
+                <!--csv icon-->
+                <ImageView
+                    android:id="@+id/csv_icon"
+                    style="@style/Theme.InstaGraph.Download.Icon"
+                    android:background="@drawable/csv_icon"
+                    android:layout_marginEnd="@dimen/csv_icon_marginEnd"
                     android:contentDescription="@string/empty_content_description"/>
             </RelativeLayout>
 

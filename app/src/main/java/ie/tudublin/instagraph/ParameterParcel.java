@@ -10,6 +10,7 @@ public class ParameterParcel implements Parcelable {
     String url;
     String datasetPath;
     String modelDataPath;
+    String predictionsPath;
     String graphType;
     String model;
     String col1;
@@ -21,6 +22,7 @@ public class ParameterParcel implements Parcelable {
         this.url = "";
         this.datasetPath = "";
         this.modelDataPath = "";
+        this.predictionsPath = "";
         this.graphType = "";
         this.model = "";
         this.col1 = "";
@@ -51,6 +53,14 @@ public class ParameterParcel implements Parcelable {
 
     public void setModelDataPath(String modelDataPath) {
         this.modelDataPath = modelDataPath;
+    }
+
+    public String getPredictionsPath() {
+        return predictionsPath;
+    }
+
+    public void setPredictionsPath(String predictionsPath) {
+        this.predictionsPath = predictionsPath;
     }
 
     public String getGraphType() {
@@ -101,6 +111,7 @@ public class ParameterParcel implements Parcelable {
                 "url='" + url + '\'' +
                 ", datasetPath='" + datasetPath + '\'' +
                 ", modelDataPath='" + modelDataPath + '\'' +
+                ", predictionsPath='" + predictionsPath + '\'' +
                 ", graphType='" + graphType + '\'' +
                 ", model='" + model + '\'' +
                 ", col1='" + col1 + '\'' +
@@ -114,6 +125,7 @@ public class ParameterParcel implements Parcelable {
         this.url = in.readString();
         this.datasetPath = in.readString();
         this.modelDataPath = in.readString();
+        this.predictionsPath = in.readString();
         this.graphType = in.readString();
         this.model = in.readString();
         this.col1 = in.readString();
@@ -143,6 +155,7 @@ public class ParameterParcel implements Parcelable {
         parcel.writeString(this.url);
         parcel.writeString(this.datasetPath);
         parcel.writeString(this.modelDataPath);
+        parcel.writeString(this.predictionsPath);
         parcel.writeString(this.graphType);
         parcel.writeString(this.model);
         parcel.writeString(this.col1);

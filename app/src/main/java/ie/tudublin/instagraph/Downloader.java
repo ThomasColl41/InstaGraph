@@ -16,17 +16,19 @@ import androidx.core.content.ContextCompat;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Calendar;
 
 public class Downloader extends AppCompatActivity {
-    Bitmap plot;
     public static final int writePermission = 1;
     Context context;
     Activity activity;
     boolean permission;
 
-    public Downloader(Bitmap plot, Context context, Activity activity) {
-        this.plot = plot;
+    public Downloader(Context context, Activity activity) {
         this.context = context;
         this.activity = activity;
         this.permission = false;
@@ -34,7 +36,7 @@ public class Downloader extends AppCompatActivity {
 
     // Method to save the bitmap image of the visualisation
     // as a JPEG to the Download folder
-    public void savePlot() {
+    public void savePlot(Bitmap plot) {
         // Check if the application has the appropriate permission to write files
         checkPermission();
 
@@ -47,22 +49,11 @@ public class Downloader extends AppCompatActivity {
         // Get the Download directory
         String downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
 
-        // Get an instance of Calendar, and use it to get the current date and time
-        Calendar cal = Calendar.getInstance();
-        String dateTime =
-                cal.get(Calendar.DAY_OF_MONTH) + "_" +
-                        (cal.get(Calendar.MONTH) + 1) + "_" +
-                        cal.get(Calendar.YEAR) + "_" +
-                        cal.get(Calendar.HOUR_OF_DAY) + "_" +
-                        cal.get(Calendar.MINUTE) + "_" +
-                        cal.get(Calendar.SECOND);
-
         // File path to save the visualisation
-        String fileName = "/InstaGraph_" + dateTime + ".jpg";
-
+        String filePath = downloadsDir + generateFileName() + ".jpg";
         // Save the image
         // Inspired from https://stackoverflow.com/questions/7887078/android-saving-file-to-external-storage/7887114#7887114
-        File file = new File (downloadsDir, fileName);
+        File file = new File(filePath);
         if (file.exists()) {
             if(!file.delete()) {
                 Log.i("InstaGraph", "Duplicate file failed to delete");
@@ -70,7 +61,7 @@ public class Downloader extends AppCompatActivity {
         }
         try {
             FileOutputStream out = new FileOutputStream(file);
-            getPlot().compress(Bitmap.CompressFormat.JPEG, 90, out);
+            plot.compress(Bitmap.CompressFormat.JPEG, 90, out);
             out.flush();
             out.close();
         } catch (Exception e) {
@@ -79,8 +70,34 @@ public class Downloader extends AppCompatActivity {
 
         // Log values
         Log.i("InstaGraph", "Downloads: " + downloadsDir);
-        Log.i("InstaGraph", "Current DateTime: " + dateTime);
-        Log.i("InstaGraph", "Save to: " + downloadsDir + fileName);
+        Log.i("InstaGraph", "Save to: " + downloadsDir + filePath);
+    }
+
+    // Method to save a file as a csv to the Download folder
+    public void saveFile(String fileToSavePath) throws IOException {
+        // Check if the application has the appropriate permission to write files
+        checkPermission();
+
+        if(!isPermission()) {
+            // Permission not granted
+            Toast.makeText(getContext(), "Permission to write files denied", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // Get the Download directory
+        String downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+
+        // File path to save the visualisation
+        String destFilePath = downloadsDir + generateFileName() + ".csv";
+
+        // Create Path variables based on the paths of the source and destination
+        Path srcPath = new File(fileToSavePath).toPath();
+        Path destPath = new File(destFilePath).toPath();
+
+        // Use the Files.copy method to copy the file from source to destination
+        // StandardCopyOption.REPLACE_EXISTING will replace the old file if
+        // There is a file with the same name already in the Download folder
+        Files.copy(srcPath, destPath, StandardCopyOption.REPLACE_EXISTING);
     }
 
     // Method to check application has permission to write to external storage
@@ -99,6 +116,21 @@ public class Downloader extends AppCompatActivity {
         }
     }
 
+    // Method that uses the Calendar class to get the current date and time as a string
+    // And return a String containing InstaGraph_date_and_time for use as a file name
+    public String generateFileName() {
+        // Get an instance of Calendar, and use it to get the current date and time
+        Calendar cal = Calendar.getInstance();
+        String dateTime =
+                cal.get(Calendar.DAY_OF_MONTH) + "_" +
+                        (cal.get(Calendar.MONTH) + 1) + "_" +
+                        cal.get(Calendar.YEAR) + "_" +
+                        cal.get(Calendar.HOUR_OF_DAY) + "_" +
+                        cal.get(Calendar.MINUTE) + "_" +
+                        cal.get(Calendar.SECOND);
+        return "/InstaGraph_" + dateTime;
+    }
+
     // Override onRequestPermissionsResult to check whether the file writing permission was granted.
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -113,14 +145,6 @@ public class Downloader extends AppCompatActivity {
                 setPermission(false);
             }
         }
-    }
-
-    public Bitmap getPlot() {
-        return plot;
-    }
-
-    public void setPlot(Bitmap plot) {
-        this.plot = plot;
     }
 
     public Context getContext() {
@@ -151,7 +175,6 @@ public class Downloader extends AppCompatActivity {
     @Override
     public String toString() {
         return "Downloader{" +
-                "plot=" + plot +
                 ", context=" + context +
                 ", activity=" + activity +
                 ", permission=" + permission +

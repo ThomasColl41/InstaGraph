@@ -220,6 +220,8 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
     predictions = AutoReg(model_data, lags=model_lags).fit().predict(model_data.index[-1], model_data.index[-1] + num_predictions)
     full_data = model_data[model_data.columns[0]].append(predictions).dropna()
 
+    save_predictions(full_data)
+
     fig, ax = plt.subplots()
 
     # Set axis labels and title
@@ -255,3 +257,16 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
     buffer = io_buff.getvalue()
 
     return buffer
+
+# Function to save the predictions dataframe
+def save_predictions(dataset):
+    # Inspired from https://www.youtube.com/watch?v=sm02Q91ujfs&list=PLeOtHc_su2eXZuiqCH4pBgV6vamBbP88K&index=7
+    files_dir = str(Python.getPlatform().getApplication().getFilesDir())
+    file_name = join(dirname(files_dir),'predictions.csv')
+    dataset.to_csv(file_name, index=False)
+
+# Function to return the file directory where the datasets are first saved
+def read_predictions():
+    files_dir = str(Python.getPlatform().getApplication().getFilesDir())
+    file_name = join(dirname(files_dir),'predictions.csv')
+    return file_name

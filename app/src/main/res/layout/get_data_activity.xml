@@ -91,6 +91,7 @@
                 <ImageView
                     android:id="@+id/download_icon"
                     style="@style/Theme.InstaGraph.Download.Icon"
+                    android:background="@drawable/jpg_icon"
                     android:contentDescription="@string/empty_content_description"/>
             </RelativeLayout>
 

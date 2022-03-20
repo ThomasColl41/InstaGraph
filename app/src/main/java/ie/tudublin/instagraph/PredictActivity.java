@@ -123,12 +123,9 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
 
             case(R.id.download_icon):
                 if(downloader == null) {
-                    downloader = new Downloader(bmp, PredictActivity.this, this);
+                    downloader = new Downloader(PredictActivity.this, this);
                 }
-                else {
-                    downloader.setPlot(bmp);
-                }
-                downloader.savePlot();
+                downloader.savePlot(bmp);
 
                 // Inform user
                 Toast.makeText(this, "Plot saved to Download folder", Toast.LENGTH_SHORT).show();
