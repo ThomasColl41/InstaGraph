@@ -130,6 +130,7 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
 
                 // Inform user
                 Toast.makeText(this, "Plot saved to Download folder", Toast.LENGTH_SHORT).show();
+                break;
 
             case(R.id.csv_icon):
                 if(downloader == null) {
@@ -143,6 +144,7 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
 
                 // Inform user
                 Toast.makeText(this, "Predictions saved to Download folder", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 }

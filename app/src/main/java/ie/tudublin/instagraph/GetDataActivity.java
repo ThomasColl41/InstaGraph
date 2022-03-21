@@ -103,7 +103,7 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
 
             case(R.id.download_icon):
                 if(bmp == null) {
-                    Toast.makeText(this, "No plot to save (Choose File...)", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "No preview to save (Choose File...)", Toast.LENGTH_SHORT).show();
                     break;
                 }
                 if(downloader == null) {
@@ -112,7 +112,7 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
                 downloader.savePlot(bmp);
 
                 // Inform user
-                Toast.makeText(this, "Plot saved to Download folder", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Preview saved to Download folder", Toast.LENGTH_SHORT).show();
         }
     }
 }
