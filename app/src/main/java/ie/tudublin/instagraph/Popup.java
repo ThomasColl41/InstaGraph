@@ -7,6 +7,7 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +24,7 @@ public class Popup {
         this.parentLayout = parentLayout;
     }
 
-    public void showPopup(int text) {
+    public void showPopup(int text, boolean hasProgressBar) {
         View popupView;
 
         // Create inflater
@@ -53,6 +54,12 @@ public class Popup {
         // Identify the TextView in the popup xml and set its text dynamically
         TextView popupText = popupView.findViewById(R.id.popup_textview);
         popupText.setText(text);
+
+        // Identify the ProgressBar in the popup xml and set its visibility if needed
+        ProgressBar pBar = popupView.findViewById(R.id.progress_bar);
+        if(hasProgressBar) {
+            pBar.setVisibility(View.VISIBLE);
+        }
 
         // Display the popup in the center of the screen (layout)
         infoPopup.showAtLocation(parentLayout, Gravity.CENTER, 0,0);

@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case(R.id.info_button):
                 // Display info pop-up
                 Popup p = new Popup(MainActivity.this, mainLayout);
-                p.showPopup(R.string.instagraph_information);
+                p.showPopup(R.string.instagraph_information, false);
                 break;
         }
     }

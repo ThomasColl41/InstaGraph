@@ -6,7 +6,7 @@
         <item name="colorPrimaryVariant">@color/black</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/light_orange</item>
+        <item name="colorSecondary">@color/white</item>
         <item name="colorSecondaryVariant">@color/orange</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
@@ -57,6 +57,16 @@
         <item name="android:textColor">@color/orange</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">@dimen/popup_padding</item>
+    </style>
+
+    <!--Theme for progress bar-->
+    <style name="Theme.InstaGraph.Progress.Bar" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">@dimen/progress_bar_width</item>
+        <item name="android:layout_height">@dimen/progress_bar_height</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_below">@id/popup_textview</item>
+        <item name="android:layout_marginTop">@dimen/progress_bar_marginTop</item>
+        <item name="android:visibility">gone</item>
     </style>
 
     <!--Theme for RelativeLayout containing progress circles-->
