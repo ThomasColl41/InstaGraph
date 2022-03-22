@@ -7,6 +7,7 @@
     <string name="start_button_content">Tap to start InstaGraph.</string>
     <string name="info_button_content">Tap to display information about InstaGraph.</string>
     <string name="choose_file_button_text">Choose file…</string>
+    <string name="please_wait">Please Wait…</string>
     <string name="URL_step_text">Enter URL of Dataset</string>
     <string name="URL_input_hint">URL…</string>
     <string name="submit_button_text">Submit</string>

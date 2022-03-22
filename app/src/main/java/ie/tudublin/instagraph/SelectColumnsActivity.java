@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -37,6 +39,12 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
 
     ParameterParcel userParameters;
 
+    RelativeLayout mainLayout;
+
+    Popup waitPopup;
+
+    PopupWindow popWindow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +57,7 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
         col2Spinner = findViewById(R.id.column_two_spinner);
         col1Text = findViewById(R.id.column_one_text);
         col2Text = findViewById(R.id.column_two_text);
+        mainLayout = findViewById(R.id.main_layout);
 
         next.setOnClickListener(this);
         back.setOnClickListener(this);
@@ -93,6 +102,8 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
                 userParameters.setTitle(title);
                 Intent goToPredict = new Intent(SelectColumnsActivity.this, PredictActivity.class);
                 goToPredict.putExtra("userParameters", userParameters);
+                waitPopup = new Popup(SelectColumnsActivity.this, mainLayout);
+                popWindow = waitPopup.showPopup(getResources().getString(R.string.please_wait), true);
                 startActivity(goToPredict);
                 break;
 
@@ -164,6 +175,14 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
                 col1Text.setText(R.string.horizontal_bar_chart_col1);
                 col2Text.setText(R.string.horizontal_bar_chart_col2);
                 break;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(popWindow != null && popWindow.isShowing()) {
+            popWindow.dismiss();
         }
     }
 }

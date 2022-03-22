@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.chaquo.python.PyObject;
@@ -23,10 +25,18 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
 
     ParameterParcel userParameters;
 
+    RelativeLayout mainLayout;
+
+    Popup waitPopup;
+
+    PopupWindow popWindow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.get_url_activity);
+
+        mainLayout = findViewById(R.id.main_layout);
 
         userParameters = new ParameterParcel();
 
@@ -50,6 +60,8 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.submit) {
+            waitPopup = new Popup(GetURLActivity.this, mainLayout);
+            popWindow = waitPopup.showPopup(getResources().getString(R.string.please_wait), true);
             // Run the specified function in the script and get the return value
             String datasetPath = instaGraphPyObject.callAttr("read_dataset", URL_input.getText().toString()).toString();
             Log.i("InstaGraph", "file path to dataset: " + datasetPath);
@@ -75,7 +87,16 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
             catch (java.lang.ClassCastException cce) {
                 Toast.makeText(this, cce.getMessage(), Toast.LENGTH_LONG).show();
                 Log.i("InstaGraph", cce.getMessage());
+                popWindow.dismiss();
             }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(popWindow != null && popWindow.isShowing()) {
+            popWindow.dismiss();
         }
     }
 }

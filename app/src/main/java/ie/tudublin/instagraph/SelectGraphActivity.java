@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class SelectGraphActivity extends AppCompatActivity implements View.OnClickListener {
@@ -24,6 +26,11 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
 
     ParameterParcel userParameters;
 
+    RelativeLayout mainLayout;
+
+    Popup waitPopup;
+
+    PopupWindow popWindow;
 
 
     @Override
@@ -38,6 +45,7 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
         barChart = findViewById(R.id.bar_chart_window);
         pieChart = findViewById(R.id.pie_chart_window);
         horizontalBarChart = findViewById(R.id.horizontal_bar_chart_window);
+        mainLayout = findViewById(R.id.main_layout);
 
         next.setOnClickListener(this);
         back.setOnClickListener(this);
@@ -61,6 +69,8 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
                 userParameters.setGraphType(graphType);
                 Intent goToSelectColumns = new Intent(SelectGraphActivity.this, SelectColumnsActivity.class);
                 goToSelectColumns.putExtra("userParameters", userParameters);
+                waitPopup = new Popup(SelectGraphActivity.this, mainLayout);
+                popWindow = waitPopup.showPopup(getResources().getString(R.string.please_wait), true);
                 startActivity(goToSelectColumns);
                 break;
 
@@ -132,6 +142,14 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
 
             default:
                 return "Line Graph";
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(popWindow != null && popWindow.isShowing()) {
+            popWindow.dismiss();
         }
     }
 }

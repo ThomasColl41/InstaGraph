@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-public class Popup {
+public class Popup extends PopupWindow {
     // Attributes
     Context context;
     RelativeLayout parentLayout;
@@ -24,7 +24,7 @@ public class Popup {
         this.parentLayout = parentLayout;
     }
 
-    public void showPopup(int text, boolean hasProgressBar) {
+    public PopupWindow showPopup(String text, boolean hasProgressBar) {
         View popupView;
 
         // Create inflater
@@ -40,12 +40,12 @@ public class Popup {
                     context,
                     "Error displaying information (" + ie.getMessage() + ")",
                     Toast.LENGTH_SHORT).show();
-            return;
+            return null;
         }
 
         // Create PopupWindow (view, width, height, focusable)
         // focusable is true so the popup can be dismissed by tapping anywhere
-        PopupWindow infoPopup = new PopupWindow(
+        PopupWindow popWindow = new PopupWindow(
                 popupView,
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -56,25 +56,26 @@ public class Popup {
         popupText.setText(text);
 
         // Identify the ProgressBar in the popup xml and set its visibility if needed
-        ProgressBar pBar = popupView.findViewById(R.id.progress_bar);
         if(hasProgressBar) {
+            ProgressBar pBar = popupView.findViewById(R.id.progress_bar);
             pBar.setVisibility(View.VISIBLE);
         }
 
         // Display the popup in the center of the screen (layout)
-        infoPopup.showAtLocation(parentLayout, Gravity.CENTER, 0,0);
+        popWindow.showAtLocation(parentLayout, Gravity.CENTER, 0,0);
 
         // Set up an onTouchListener to react to the user tapping the screen
         // A lambda method is used for the onTouch method
         popupView.setOnTouchListener((view, motionEvent) -> {
             // Hide the popup
-            infoPopup.dismiss();
+            popWindow.dismiss();
 
             // Perform a click to call the OnClickListener and register the clicking event
             // for sound preferences and accessibility features
             view.performClick();
             return true;
         });
+        return popWindow;
     }
 
     // Getters and Setters

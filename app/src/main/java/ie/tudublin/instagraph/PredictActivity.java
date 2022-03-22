@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.chaquo.python.PyObject;
@@ -32,6 +34,12 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
 
     Downloader downloader;
 
+    RelativeLayout mainLayout;
+
+    Popup waitPopup;
+
+    PopupWindow popWindow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +49,7 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         back = findViewById(R.id.back);
         plot_window = findViewById(R.id.plot_window);
         downloadIcon = findViewById(R.id.download_icon);
+        mainLayout = findViewById(R.id.main_layout);
 
         next.setOnClickListener(this);
         back.setOnClickListener(this);
@@ -114,6 +123,8 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
             case(R.id.next):
                 Intent goToResult = new Intent(PredictActivity.this, ResultActivity.class);
                 goToResult.putExtra("userParameters", userParameters);
+                waitPopup = new Popup(PredictActivity.this, mainLayout);
+                popWindow = waitPopup.showPopup(getResources().getString(R.string.please_wait), true);
                 startActivity(goToResult);
                 break;
 
@@ -129,6 +140,14 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
 
                 // Inform user
                 Toast.makeText(this, "Plot saved to Download folder", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(popWindow != null && popWindow.isShowing()) {
+            popWindow.dismiss();
         }
     }
 }

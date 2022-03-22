@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +31,12 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
     ParameterParcel userParameters;
 
     Downloader downloader;
+
+    Popup waitPopup;
+
+    RelativeLayout mainLayout;
+
+    PopupWindow popWindow;
 
 
     // Inspired from https://www.youtube.com/watch?v=-y5eF0u1bZQ and https://www.youtube.com/watch?v=Ke9PaRdMcgc
@@ -81,6 +89,7 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
         dataPreview = findViewById(R.id.data_preview);
         dataSummary = findViewById(R.id.data_summary);
         downloadIcon = findViewById(R.id.download_icon);
+        mainLayout = findViewById(R.id.main_layout);
 
         chooseFile.setOnClickListener(this);
         next.setOnClickListener(this);
@@ -92,6 +101,8 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
         switch(view.getId()) {
             case(R.id.choose_file):
                 Intent goToChooseFile = new Intent(GetDataActivity.this, GetURLActivity.class);
+                waitPopup = new Popup(GetDataActivity.this, mainLayout);
+                popWindow = waitPopup.showPopup(getResources().getString(R.string.please_wait), true);
                 getUrlLauncher.launch(goToChooseFile);
                 break;
 
@@ -113,6 +124,14 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
 
                 // Inform user
                 Toast.makeText(this, "Preview saved to Download folder", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(popWindow != null && popWindow.isShowing()) {
+            popWindow.dismiss();
         }
     }
 }
