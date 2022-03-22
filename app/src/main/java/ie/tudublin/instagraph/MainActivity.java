@@ -15,8 +15,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     RelativeLayout mainLayout;
 
-    Popup waitPopup;
-    PopupWindow popWindow;
+    PopupWindow infoWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +35,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch(view.getId()) {
             case(R.id.start):
                 Intent goToGetData = new Intent(MainActivity.this, GetDataActivity.class);
-                waitPopup = new Popup(MainActivity.this, mainLayout);
-                popWindow = waitPopup.showPopup(getResources().getString(R.string.please_wait), true);
                 startActivity(goToGetData);
                 break;
 
             case(R.id.info_button):
                 // Display info pop-up
                 Popup infoPopup = new Popup(MainActivity.this, mainLayout);
-                infoPopup.showPopup(getResources().getString(R.string.instagraph_information), false);
+                infoWindow = infoPopup.showPopup(getResources().getString(R.string.instagraph_information), false);
                 break;
         }
     }
@@ -52,8 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        if(popWindow != null && popWindow.isShowing()) {
-            popWindow.dismiss();
+        if(infoWindow != null && infoWindow.isShowing()) {
+            infoWindow.dismiss();
         }
 
     }

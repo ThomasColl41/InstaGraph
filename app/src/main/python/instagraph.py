@@ -5,37 +5,45 @@ import numpy as np
 import io
 import csv
 import urllib.request
+from urllib.error import HTTPError
 from os.path import dirname, join
 from statsmodels.tsa.ar_model import AutoReg, ar_select_order
 from com.chaquo.python import Python
 
+# A custom Exception to raise and return to the app
+class Error(Exception):
+    pass
+
 # Function to read in a dataset at a specified url
 def read_dataset(url):
+    # Variable to store the dataset at the specified URL
+    dataset = None
+
     # Check if file at url has a header
     has_header = check_for_header(url)
 
+    # has_header could be an error message
+    # If so, return it without proceeding
+    if isinstance(has_header, str):
+        return has_header
+
     # Handle exceptions
-    dataset = pd.DataFrame()
-    if has_header:
-        try:
+    try:
+        if has_header:
             dataset = pd.read_csv(url, skip_blank_lines=True)
-        except Exception as e:
-            return e
-        finally:
-            try:
-                assert not dataset.empty
-            except AssertionError:
-                return "Dataset is empty"
-    else:
-        try:
+        else:
             dataset = pd.read_csv(url, header=None, prefix='Column ', skip_blank_lines=True)
-        except Exception as e:
-            return e
-        finally:
-            try:
-                assert not dataset.empty
-            except AssertionError:
-                return "Dataset is empty"
+    except Exception:
+        raise Error('An unknown error occurred when reading from the URL. '
+                    'Please ensure the URL is correct and try again.')
+    finally:
+        try:
+            assert dataset is not None
+            assert isinstance(dataset, pd.DataFrame)
+            assert not dataset.empty
+        except AssertionError:
+            raise Error('The file located at the URL provided is either not a .csv, or is empty. '
+                        'Please try again with a different URL.')
 
     # Inspired from https://www.youtube.com/watch?v=sm02Q91ujfs&list=PLeOtHc_su2eXZuiqCH4pBgV6vamBbP88K&index=7
     files_dir = str(Python.getPlatform().getApplication().getFilesDir())
@@ -44,12 +52,16 @@ def read_dataset(url):
     return file_name
 
 def step_one(file_name):
-    dataset = pd.read_csv(file_name, skip_blank_lines=True)
+    try:
+        # Read the local copy of the dataset
+        dataset = pd.read_csv(file_name, skip_blank_lines=True)
+    except FileNotFoundError:
+        raise Error('Local copy of dataset could not be read.')
 
-    # dataset could be an error message,
     # Check if it is a DataFrame
     if not isinstance(dataset, pd.DataFrame):
-        return str('Not a dataset ' + dataset)
+        raise Error('Local copy of file is not a dataset. '
+                    'Please try again with a different URL.')
 
     nrows = 5   # Number of rows to display
     ncols = len(dataset.columns)    # Number of columns in the dataset
@@ -94,19 +106,36 @@ def check_for_header(url):
     # Use urlretrieve to write the contents of the url to a file (temp.csv)
     try:
         urllib.request.urlretrieve(url, temp_filename)
-    except Exception as e:
-        print(e)
+    except HTTPError as httpe:
+        if httpe.code == 404:
+            raise Error('A file could not be found at the specified URL. '
+                        'Please ensure the URL is correct and try again')
+        else:
+            raise Error('A HTTP ' + str(httpe.code) + ' error occurred.')
 
     # Open the file
-    with open(temp_filename) as file:
-        # Read the first 1024 characters to determine whether the first row is consistent with
-        # subsequent rows (i.e. string vs. integer)
-        header = csv.Sniffer().has_header(file.read(1024))
+    try:
+        with open(temp_filename) as file:
+            # Read the first 1024 characters to determine whether the first row is consistent with
+            # subsequent rows (i.e. string vs. integer)
+            try:
+                header = csv.Sniffer().has_header(file.read(1024))
+            except OSError:
+                raise Error('A header could not be determined. '
+                            'Please try again with a different dataset.')
+    except OSError:
+        raise Error('An error occurred when attempting to discover a header in the dataset. '
+                    'Please try again with a different URL')
     return header
 
 # Function to generate a summary of the dataset
 def dataset_summary(file_name):
-    dataset = pd.read_csv(file_name, skip_blank_lines=True)
+    try:
+        # Read the local copy of the dataset
+        dataset = pd.read_csv(file_name, skip_blank_lines=True)
+    except FileNotFoundError:
+        raise Error('Local copy of dataset could not be read.')
+
     preview_rows = 5
     nrows = dataset.shape[0]
     ncols = dataset.shape[1]
@@ -117,12 +146,20 @@ def dataset_summary(file_name):
 
 # Function to return the names of a dataset's columns
 def get_column_names(file_name):
-    dataset = pd.read_csv(file_name, skip_blank_lines=True)
+    try:
+        # Read the local copy of the dataset
+        dataset = pd.read_csv(file_name, skip_blank_lines=True)
+    except FileNotFoundError:
+        raise Error('Local copy of dataset could not be read.')
     return list(dataset.columns.values)
 
 # Function to generate the model_data DataFrame and save it
 def read_model_data(file_name, xlabel='x-axis', ylabel='y-axis'):
-    dataset = pd.read_csv(file_name, skip_blank_lines=True)
+    try:
+        # Read the local copy of the dataset
+        dataset = pd.read_csv(file_name, skip_blank_lines=True)
+    except FileNotFoundError:
+        raise Error('Local copy of dataset could not be read.')
 
     model_data = pd.DataFrame(dataset[ylabel])
     model_data.index = dataset[xlabel]
