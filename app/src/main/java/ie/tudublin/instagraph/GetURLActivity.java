@@ -64,7 +64,7 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.submit) {
-            waitWindow = waitPopup.showPopup(getResources().getString(R.string.please_wait), true);
+            waitWindow = waitPopup.showPopup(getString(R.string.please_wait), true);
 
             // Read in the dataset from the URL, returning the path to a local copy of the dataset
             String datasetPath;
@@ -121,12 +121,12 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
             }
             catch (AssertionError ae) {
                 waitWindow.dismiss();
-                errorWindow = errorPopup.showPopup("A preview of the dataset could not be found. Please try again.\n" + ae.getMessage(), false);
+                errorWindow = errorPopup.showPopup(getString(R.string.preview_not_found), false);
                 return;
             }
             catch (java.lang.ClassCastException cce) {
                 waitWindow.dismiss();
-                errorWindow = errorPopup.showPopup("An error occurred when creating the preview. Please try again.", false);
+                errorWindow = errorPopup.showPopup(getString(R.string.preview_class_cast_error), false);
                 Log.i("InstaGraph", cce.getMessage());
                 return;
             }
@@ -144,12 +144,12 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
             }
             catch (AssertionError ae) {
                 waitWindow.dismiss();
-                errorWindow = errorPopup.showPopup("An the summary could not be found. Please try again.\n" + ae.getMessage(), false);
+                errorWindow = errorPopup.showPopup(getString(R.string.summary_not_found), false);
                 return;
             }
             catch (java.lang.ClassCastException cce) {
                 waitWindow.dismiss();
-                errorWindow = errorPopup.showPopup("An error occurred when generating the summary. Please try again.", false);
+                errorWindow = errorPopup.showPopup(getString(R.string.summary_class_cast_error), false);
                 Log.i("InstaGraph", cce.getMessage());
                 return;
             }

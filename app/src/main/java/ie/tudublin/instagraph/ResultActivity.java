@@ -10,7 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
@@ -35,6 +36,12 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
 
     Downloader downloader;
 
+    RelativeLayout mainLayout;
+
+    Popup pop;
+
+    PopupWindow popWindow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +52,14 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
         plot_window = findViewById(R.id.plot);
         jpgIcon = findViewById(R.id.jpg_icon);
         csvIcon = findViewById(R.id.csv_icon);
+        mainLayout = findViewById(R.id.main_layout);
 
         finish.setOnClickListener(this);
         back.setOnClickListener(this);
         jpgIcon.setOnClickListener(this);
         csvIcon.setOnClickListener(this);
+
+        pop = new Popup(ResultActivity.this, mainLayout);
 
         // Get user choices from previous activities
         // URL, graph choice, columns, etc.
@@ -96,16 +106,10 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
             plot_window.setImageBitmap(bmp);
         }
         catch (NullPointerException npe) {
-            Toast.makeText(
-                    ResultActivity.this,
-                    npe.getMessage(),
-                    Toast.LENGTH_SHORT).show();
+            popWindow = pop.showPopup(getString(R.string.predictions_not_found), false);
         }
         catch (Exception e) {
-            Toast.makeText(
-                    this,
-                    e.getMessage(),
-                    Toast.LENGTH_SHORT).show();
+            popWindow = pop.showPopup(getString(R.string.predictions_unknown_error), false);
         }
     }
 
@@ -129,7 +133,7 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
                 downloader.savePlot(bmp);
 
                 // Inform user
-                Toast.makeText(this, "Plot saved to Download folder", Toast.LENGTH_SHORT).show();
+                popWindow = pop.showPopup(getString(R.string.graph_saved), false);
                 break;
 
             case(R.id.csv_icon):
@@ -143,8 +147,16 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
                 }
 
                 // Inform user
-                Toast.makeText(this, "Predictions saved to Download folder", Toast.LENGTH_SHORT).show();
+                popWindow = pop.showPopup(getString(R.string.predictions_saved), false);
                 break;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(popWindow != null && popWindow.isShowing()) {
+            popWindow.dismiss();
         }
     }
 }

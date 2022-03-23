@@ -103,7 +103,7 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
                 Intent goToPredict = new Intent(SelectColumnsActivity.this, PredictActivity.class);
                 goToPredict.putExtra("userParameters", userParameters);
                 waitPopup = new Popup(SelectColumnsActivity.this, mainLayout);
-                popWindow = waitPopup.showPopup(getResources().getString(R.string.please_wait), true);
+                popWindow = waitPopup.showPopup(getString(R.string.please_wait), true);
                 startActivity(goToPredict);
                 break;
 

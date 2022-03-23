@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 public class SelectGraphActivity extends AppCompatActivity implements View.OnClickListener {
     Button next;
@@ -28,7 +27,7 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
 
     RelativeLayout mainLayout;
 
-    Popup waitPopup;
+    Popup pop;
 
     PopupWindow popWindow;
 
@@ -55,6 +54,8 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
         pieChart.setOnClickListener(this);
         horizontalBarChart.setOnClickListener(this);
 
+        pop = new Popup(SelectGraphActivity.this, mainLayout);
+
         // Set the line graph as default
         graphType = selectGraph(R.id.line_graph_border);
 
@@ -69,8 +70,7 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
                 userParameters.setGraphType(graphType);
                 Intent goToSelectColumns = new Intent(SelectGraphActivity.this, SelectColumnsActivity.class);
                 goToSelectColumns.putExtra("userParameters", userParameters);
-                waitPopup = new Popup(SelectGraphActivity.this, mainLayout);
-                popWindow = waitPopup.showPopup(getResources().getString(R.string.please_wait), true);
+                popWindow = pop.showPopup(getString(R.string.please_wait), true);
                 startActivity(goToSelectColumns);
                 break;
 
@@ -98,9 +98,19 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
 
     public String selectGraph(int id) {
         if (highlighted == 0) {
-            findViewById(id).setVisibility(View.VISIBLE);
-            highlighted = id;
-            return getGraphType(id);
+            try {
+                findViewById(id).setVisibility(View.VISIBLE);
+                highlighted = id;
+                return getGraphType(id);
+            }
+            catch (NullPointerException npe) {
+                // Line Graph is the default
+                findViewById(highlighted).setVisibility(View.INVISIBLE);
+                findViewById(R.id.line_graph_border).setVisibility(View.VISIBLE);
+                highlighted = R.id.line_graph_border;
+                popWindow = pop.showPopup(getString(R.string.graph_not_highlighted), false);
+                return "Line Graph";
+            }
         }
         else if (id != highlighted) {
             try {
@@ -115,10 +125,7 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
                 findViewById(highlighted).setVisibility(View.INVISIBLE);
                 findViewById(R.id.line_graph_border).setVisibility(View.VISIBLE);
                 highlighted = R.id.line_graph_border;
-                Toast.makeText(
-                        this,
-                        npe.getMessage() + " occurred, Please try again.",
-                        Toast.LENGTH_LONG).show();
+                popWindow = pop.showPopup(getString(R.string.graph_not_highlighted), false);
                 return "Line Graph";
             }
         }

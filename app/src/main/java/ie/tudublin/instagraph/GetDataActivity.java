@@ -67,13 +67,12 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
                                 dataSummary.setVisibility(View.VISIBLE);
                             }
                             catch (NullPointerException npe) {
-                                popWindow = pop.showPopup("An error occurred when displaying the preview. Please try again.", false);
+                                popWindow = pop.showPopup(getString(R.string.preview_not_found), false);
                             }
                         }
-                        else {
-                            // Otherwise, something went wrong or the user cancelled
-                            Toast.makeText(GetDataActivity.this, "Something went wrong " + resCode, Toast.LENGTH_SHORT).show();
-//                            popWindow = pop.showPopup("A dataset could not be found at the provided URL. Please ensure the URL is correct and try again.", false);
+                        else if (resCode != RESULT_CANCELED) {
+                            // Otherwise, something went wrong
+                            popWindow = pop.showPopup(getString(R.string.preview_unknown_error), false);
                         }
                     }
                 }
@@ -104,7 +103,7 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
         switch(view.getId()) {
             case(R.id.choose_file):
                 Intent goToChooseFile = new Intent(GetDataActivity.this, GetURLActivity.class);
-                popWindow = pop.showPopup(getResources().getString(R.string.please_wait), true);
+                popWindow = pop.showPopup(getString(R.string.please_wait), true);
                 getUrlLauncher.launch(goToChooseFile);
                 break;
 
@@ -116,7 +115,7 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
 
             case(R.id.download_icon):
                 if(bmp == null) {
-                    popWindow = pop.showPopup("No preview to save (Choose File...)", false);
+                    popWindow = pop.showPopup(getString(R.string.no_preview), false);
                     break;
                 }
                 if(downloader == null) {
@@ -125,7 +124,7 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
                 downloader.savePlot(bmp);
 
                 // Inform user
-                popWindow = pop.showPopup("Preview saved to Download folder", false);
+                popWindow = pop.showPopup(getString(R.string.preview_saved), false);
         }
     }
 

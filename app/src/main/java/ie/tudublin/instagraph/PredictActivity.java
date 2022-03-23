@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
@@ -36,7 +35,7 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
 
     RelativeLayout mainLayout;
 
-    Popup waitPopup;
+    Popup pop;
 
     PopupWindow popWindow;
 
@@ -54,6 +53,8 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         next.setOnClickListener(this);
         back.setOnClickListener(this);
         downloadIcon.setOnClickListener(this);
+
+        pop = new Popup(PredictActivity.this, mainLayout);
 
         // Get user choices from previous activities
         // URL, graph choice, columns, etc.
@@ -104,16 +105,10 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
             plot_window.setImageBitmap(bmp);
         }
         catch (NullPointerException npe) {
-            Toast.makeText(
-                    PredictActivity.this,
-                    npe.getMessage(),
-                    Toast.LENGTH_SHORT).show();
+            popWindow = pop.showPopup(getString(R.string.graph_not_found), false);
         }
         catch (Exception e) {
-            Toast.makeText(
-                    this,
-                    e.getMessage(),
-                    Toast.LENGTH_SHORT).show();
+            popWindow = pop.showPopup(getString(R.string.graph_unknown_error), false);
         }
     }
 
@@ -123,8 +118,7 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
             case(R.id.next):
                 Intent goToResult = new Intent(PredictActivity.this, ResultActivity.class);
                 goToResult.putExtra("userParameters", userParameters);
-                waitPopup = new Popup(PredictActivity.this, mainLayout);
-                popWindow = waitPopup.showPopup(getResources().getString(R.string.please_wait), true);
+                popWindow = pop.showPopup(getString(R.string.please_wait), true);
                 startActivity(goToResult);
                 break;
 
@@ -139,7 +133,8 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
                 downloader.savePlot(bmp);
 
                 // Inform user
-                Toast.makeText(this, "Plot saved to Download folder", Toast.LENGTH_SHORT).show();
+                popWindow = pop.showPopup(getString(R.string.graph_saved), false);
+
         }
     }
 

@@ -43,6 +43,20 @@
     <string name="pie_chart_col2">Data</string>
     <string name="horizontal_bar_chart_col1">Labels</string>
     <string name="horizontal_bar_chart_col2">Data</string>
+    <string name="preview_not_found">The preview plot could not be found. Please try again or use a different URL.</string>
+    <string name="preview_unknown_error">An unknown error has occurred. Please ensure the URL is correct and try again.</string>
+    <string name="preview_class_cast_error">An error occurred when creating the preview. Please try again.</string>
+    <string name="no_preview">No preview to save (Choose File…)</string>
+    <string name="preview_saved">Preview saved to Download folder</string>
+    <string name="summary_not_found">The summary of the dataset could not be found. Please try again.\n</string>
+    <string name="summary_class_cast_error">An error occurred when generating the summary. Please try again.</string>
+    <string name="graph_not_highlighted">This graph could not be highlighted. Please choose a different graph.</string>
+    <string name="graph_not_found">The graph plot could not be found. Please try again or use a different URL.</string>
+    <string name="graph_unknown_error">An unknown error occurred when trying to plot the data. Please try again or use a different URL.</string>
+    <string name="graph_saved">Plot saved to Download folder</string>
+    <string name="predictions_not_found">The predictions plot could not be found. Please try again or use a different URL.</string>
+    <string name="predictions_unknown_error">An unknown error occurred when trying to plot the predictions. Please try again or use a different URL.</string>
+    <string name="predictions_saved">Predictions saved to Download folder</string>
     <string-array name="models">
         <item>AR</item>
         <item>ARIMA</item>
