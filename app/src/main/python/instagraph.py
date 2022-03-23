@@ -167,26 +167,59 @@ def read_model_data(file_name, xlabel='x-axis', ylabel='y-axis'):
     # Inspired from https://www.youtube.com/watch?v=sm02Q91ujfs&list=PLeOtHc_su2eXZuiqCH4pBgV6vamBbP88K&index=7
     files_dir = str(Python.getPlatform().getApplication().getFilesDir())
     file_name = join(dirname(files_dir),'model_data.csv')
-    model_data.to_csv(file_name, index=False)
+    model_data.to_csv(file_name, index=True)
     return file_name
 
 # Function to plot a graph based on user choice
 def graph_plot(file_name, graph_choice, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph'):
     model_data = pd.read_csv(file_name, skip_blank_lines=True, header=0)
 
-    model_data = replace_index(model_data, model_data.index.name)
+    # Reassign the index to the dataset and drop the index column
+    model_data.index = model_data[xlabel]
+    model_data = model_data.drop(xlabel, axis=1)
 
-    fig, ax = plt.subplots()
+    # model_data = replace_index(model_data, model_data.index.name)
+
+    nrows = model_data.shape[0]
+
+    # List of place to display the axis ticks
+    # Display a tick for the 10% mark, 20%, 30%, and so on
+    tick_labels = [
+        int(nrows*0.1),
+        int(nrows*0.2),
+        int(nrows*0.3),
+        int(nrows*0.4),
+        int(nrows*0.5),
+        int(nrows*0.6),
+        int(nrows*0.7),
+        int(nrows*0.8),
+        int(nrows*0.9),
+        int(nrows),
+    ]
+
+    # Set the font size for every future plot
+    plt.rcParams['font.size'] = '16'
+
+    fig, ax = plt.subplots(figsize=(11,8))
 
     # Set axis labels and title
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     plt.title(title)
 
+    if graph_choice != 'Horizontal Bar Chart':
+        # Set the tick labels for the x-axis
+        ax.set_xticks(ticks=tick_labels)
+
+        # Rotate the x-axis values by 45 degrees
+        plt.xticks(rotation=45)
+    else:
+        ax.set_yticks(ticks=tick_labels)
+
     # Catch incorrect data type exceptions when trying to plot data
     try:
         if graph_choice == 'Line Graph':
-            ax.plot(model_data)
+            ax.plot(model_data, linewidth=2)
         elif graph_choice == 'Bar Chart':
             ax.bar(model_data.index.values, model_data[model_data.columns[0]])
         elif graph_choice == 'Pie Chart':
@@ -200,7 +233,7 @@ def graph_plot(file_name, graph_choice, xlabel='x-axis', ylabel='y-axis', title=
             ax.set_xlabel(ylabel)
             ax.set_ylabel(xlabel)
     except TypeError as te:
-        return str(te + ' has occurred, check column choices')
+        return str(str(te) + ' has occurred, check column choices')
 
     # Display plot
     plt.show()
@@ -239,7 +272,28 @@ def replace_index(data, index_name='Index'):
 def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph', graph_choice='Line Graph', model_choice='AR'):
     model_data = pd.read_csv(file_name, skip_blank_lines=True)
 
+    # Reassign the index to the dataset and drop the index column
+    model_data.index = model_data[xlabel]
+    model_data = model_data.drop(xlabel, axis=1)
+
     model_data = replace_index(model_data, model_data.index.name)
+
+    nrows = model_data.shape[0]
+
+    # List of place to display the axis ticks
+    # Display a tick for the 10% mark, 20%, 30%, and so on
+    tick_labels = [
+        int(nrows*0.1),
+        int(nrows*0.2),
+        int(nrows*0.3),
+        int(nrows*0.4),
+        int(nrows*0.5),
+        int(nrows*0.6),
+        int(nrows*0.7),
+        int(nrows*0.8),
+        int(nrows*0.9),
+        int(nrows),
+    ]
 
     # Limit number of lags to check to 12 to reduce execution time
     max_lag = 12
@@ -259,18 +313,44 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
 
     save_predictions(full_data)
 
-    fig, ax = plt.subplots()
+    nrows = full_data.shape[0]
+
+    # List of place to display the axis ticks
+    # Display a tick for the 10% mark, 20%, 30%, and so on
+    tick_labels = [
+        int(nrows*0.1),
+        int(nrows*0.2),
+        int(nrows*0.3),
+        int(nrows*0.4),
+        int(nrows*0.5),
+        int(nrows*0.6),
+        int(nrows*0.7),
+        int(nrows*0.8),
+        int(nrows*0.9),
+        int(nrows),
+    ]
+
+    fig, ax = plt.subplots(figsize=(11,8))
 
     # Set axis labels and title
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     plt.title(title)
 
+    if graph_choice != 'Horizontal Bar Chart':
+        # Set the tick labels for the x-axis
+        ax.set_xticks(ticks=tick_labels)
+
+        # Rotate the x-axis values by 45 degrees
+        plt.xticks(rotation=45)
+    else:
+        ax.set_yticks(ticks=tick_labels)
+
     # Catch incorrect data type execeptions when trying to plot data
     try:
         if graph_choice == 'Line Graph':
-            ax.plot(full_data[:-num_predictions + 1])
-            ax.plot(full_data[-num_predictions:], color='red')
+            ax.plot(full_data[:-num_predictions + 1], linewidth=2)
+            ax.plot(full_data[-num_predictions:], color='red', linewidth=2)
         elif graph_choice == 'Bar Chart':
             ax.bar(full_data[:-num_predictions + 1].index.values, full_data[:-num_predictions + 1])
             ax.bar(full_data[-num_predictions:].index.values, full_data[-num_predictions:], color='red')

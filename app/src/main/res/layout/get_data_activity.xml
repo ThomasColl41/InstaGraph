@@ -97,17 +97,19 @@
             </RelativeLayout>
 
             <!--Data preview window-->
-            <HorizontalScrollView
+            <ScrollView
                 android:id="@+id/data_preview_window"
                 style="@style/Theme.InstaGraph.Data.Window">
-
-                <!--Data preview-->
-                <ImageView
-                    android:id="@+id/data_preview"
+                <HorizontalScrollView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/empty_content_description"/>
-            </HorizontalScrollView>
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/data_preview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/empty_content_description"/>
+                </HorizontalScrollView>
+            </ScrollView>
 
             <!--Data summary-->
             <TextView

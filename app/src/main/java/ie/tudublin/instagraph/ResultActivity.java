@@ -42,7 +42,7 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
 
         finish = findViewById(R.id.finish);
         back = findViewById(R.id.back);
-        plot_window = findViewById(R.id.plot_window);
+        plot_window = findViewById(R.id.plot);
         jpgIcon = findViewById(R.id.jpg_icon);
         csvIcon = findViewById(R.id.csv_icon);
 

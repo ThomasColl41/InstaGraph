@@ -98,10 +98,19 @@
             </RelativeLayout>
 
             <!--Plot window-->
-            <ImageView
+            <ScrollView
                 android:id="@+id/plot_window"
-                style="@style/Theme.InstaGraph.Data.Window"
-                android:contentDescription="@string/empty_content_description"/>
+                style="@style/Theme.InstaGraph.Data.Window">
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/plot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/empty_content_description"/>
+                </HorizontalScrollView>
+            </ScrollView>
 
             <!--Next and back buttons-->
             <RelativeLayout

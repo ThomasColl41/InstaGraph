@@ -47,7 +47,7 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
 
         next = findViewById(R.id.next);
         back = findViewById(R.id.back);
-        plot_window = findViewById(R.id.plot_window);
+        plot_window = findViewById(R.id.plot);
         downloadIcon = findViewById(R.id.download_icon);
         mainLayout = findViewById(R.id.main_layout);
 
