@@ -34,7 +34,7 @@
     <dimen name="data_window_width">350dp</dimen>
     <dimen name="data_window_height">400dp</dimen>
     <dimen name="url_step_text">26sp</dimen>
-    <dimen name="url_input_text">20sp</dimen>
+    <dimen name="input_text">20sp</dimen>
     <dimen name="submit_button_text">38sp</dimen>
     <dimen name="download_icon_background_width">140dp</dimen>
     <dimen name="download_icon_background_height">70dp</dimen>
@@ -47,6 +47,10 @@
     <dimen name="visualisation_window_gap">50dp</dimen>
     <dimen name="visualisation_text">14sp</dimen>
     <dimen name="visualisation_text_padding">10dp</dimen>
+    <dimen name="model_name_text">22sp</dimen>
+    <dimen name="model_name_marginTop">25dp</dimen>
+    <dimen name="input_width">250dp</dimen>
+    <dimen name="parameter_gap">50dp</dimen>
     <dimen name="column_text_width">100dp</dimen>
     <dimen name="column_text">16sp</dimen>
     <dimen name="column_text_padding">10dp</dimen>

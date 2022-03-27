@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SelectColumnsActivity"
+    android:background="@drawable/instagraph_background">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--Main layouts begin here-->
+        <RelativeLayout
+            android:id="@+id/main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!--Progress bar-->
+            <!--Background-->
+            <TextView
+                android:id="@+id/progress_background"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/step_background_height"
+                android:background="@drawable/instagraph_step_bar_background"
+                android:layout_marginTop="@dimen/step_background_margin_top"/>
+
+            <!--Circles indicating progress-->
+            <RelativeLayout
+                style="@style/Theme.InstaGraph.Progress.Layout">
+
+                <!--Step one circle-->
+                <TextView
+                    android:id="@+id/progress_one"
+                    style="@style/Theme.InstaGraph.Step.Circle"
+                    android:text="@string/progress_one"/>
+
+                <!--Step two circle-->
+                <TextView
+                    android:id="@+id/progress_two"
+                    style="@style/Theme.InstaGraph.Step.Circle"
+                    android:text="@string/progress_two"
+                    android:layout_toEndOf="@id/progress_one"
+                    android:layout_marginStart="@dimen/distance_from_step_circles"/>
+
+                <!--Step three circle-->
+                <TextView
+                    android:id="@+id/progress_three"
+                    style="@style/Theme.InstaGraph.Step.Circle.Focused"
+                    android:text="@string/progress_three"
+                    android:layout_toEndOf="@id/progress_two"
+                    android:layout_marginStart="@dimen/distance_from_step_circles"/>
+
+                <!--Step four circle-->
+                <TextView
+                    android:id="@+id/progress_four"
+                    style="@style/Theme.InstaGraph.Step.Circle"
+                    android:text="@string/progress_four"
+                    android:layout_toEndOf="@id/progress_three"
+                    android:layout_marginStart="@dimen/distance_from_step_circles"/>
+
+                <!--Step five circle-->
+                <TextView
+                    android:id="@+id/five"
+                    style="@style/Theme.InstaGraph.Step.Circle"
+                    android:text="@string/progress_five"
+                    android:layout_toEndOf="@id/progress_four"
+                    android:layout_marginStart="@dimen/distance_from_step_circles"/>
+            </RelativeLayout>
+
+            <!--Step Text-->
+            <TextView
+                android:id="@+id/step_text"
+                style="@style/Theme.InstaGraph.Step.Text"
+                android:text="@string/customise_model" />
+
+            <!--Name of model-->
+            <TextView
+                android:id="@+id/model_name"
+                style="@style/Theme.InstaGraph.Text"
+                android:text="@string/model_name_placeholder"
+                android:textSize="@dimen/model_name_text"
+                android:layout_below="@id/step_text"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/model_name_marginTop"/>
+
+            <!--AR-->
+            <RelativeLayout
+                android:id="@+id/ar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/model_name"
+                android:layout_alignStart="@id/step_text"
+                android:layout_marginTop="@dimen/spinner_gap"
+                android:visibility="gone">
+                <!--Order text-->
+                <TextView
+                    android:id="@+id/ar_order"
+                    style="@style/Theme.InstaGraph.Column.Text"
+                    android:text="@string/ar_order"/>
+
+                <!--Order input-->
+                <EditText
+                    android:id="@+id/ar_order_input"
+                    style="@style/Theme.InstaGraph.Input.Parameter"
+                    android:inputType="number"
+                    android:layout_toEndOf="@id/ar_order"
+                    android:importantForAutofill="no"
+                    android:hint="@string/ar_order_hint"/>
+
+                <!--Trend text-->
+                <TextView
+                    android:id="@+id/ar_trend"
+                    style="@style/Theme.InstaGraph.Column.Text"
+                    android:text="@string/trend"
+                    android:layout_below="@id/ar_order"
+                    android:layout_marginTop="@dimen/parameter_gap"/>
+
+                <!--Trend spinner-->
+                <Spinner
+                    android:id="@+id/ar_trend_spinner"
+                    style="@style/Theme.InstaGraph.Column.Spinner"
+                    android:layout_toEndOf="@id/ar_trend"
+                    android:layout_alignTop="@id/ar_trend"
+                    android:prompt="@string/trend_spinner_prompt"/>
+            </RelativeLayout>
+
+            <!--ARIMA-->
+            <RelativeLayout
+                android:id="@+id/arima"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ar"
+                android:layout_alignStart="@id/step_text"
+                android:layout_marginTop="@dimen/parameter_gap"
+                android:visibility="gone">
+                <!--AR order text-->
+                <TextView
+                    android:id="@+id/arima_ar_order"
+                    style="@style/Theme.InstaGraph.Column.Text"
+                    android:text="@string/arima_ar_order"/>
+
+                <!--AR order input-->
+                <EditText
+                    android:id="@+id/arima_ar_order_input"
+                    style="@style/Theme.InstaGraph.Input.Parameter"
+                    android:inputType="number"
+                    android:layout_toEndOf="@id/arima_ar_order"
+                    android:importantForAutofill="no"
+                    android:hint="@string/ar_order_hint"/>
+
+                <!--Differencing order text-->
+                <TextView
+                    android:id="@+id/arima_diff_order"
+                    style="@style/Theme.InstaGraph.Column.Text"
+                    android:text="@string/arima_diff_order"
+                    android:layout_below="@id/arima_ar_order"
+                    android:layout_marginTop="@dimen/parameter_gap"/>
+
+                <!--Differencing order input-->
+                <EditText
+                    android:id="@+id/arima_diff_order_input"
+                    style="@style/Theme.InstaGraph.Input.Parameter"
+                    android:inputType="number"
+                    android:importantForAutofill="no"
+                    android:layout_toEndOf="@id/arima_diff_order"
+                    android:layout_alignTop="@id/arima_diff_order"
+                    android:hint="@string/arima_diff_order_hint"/>
+
+                <!--MA order text-->
+                <TextView
+                    android:id="@+id/arima_ma_order"
+                    style="@style/Theme.InstaGraph.Column.Text"
+                    android:text="@string/arima_ma_order"
+                    android:layout_below="@id/arima_diff_order"
+                    android:layout_marginTop="@dimen/parameter_gap"/>
+
+                <!--MA order input-->
+                <EditText
+                    android:id="@+id/arima_ma_order_input"
+                    style="@style/Theme.InstaGraph.Input.Parameter"
+                    android:inputType="number"
+                    android:importantForAutofill="no"
+                    android:layout_toEndOf="@id/arima_ma_order"
+                    android:layout_alignTop="@id/arima_ma_order"
+                    android:hint="@string/arima_ma_order_hint"/>
+
+                <!--Trend text-->
+                <TextView
+                    android:id="@+id/arima_trend"
+                    style="@style/Theme.InstaGraph.Column.Text"
+                    android:text="@string/trend"
+                    android:layout_below="@id/arima_ma_order"
+                    android:layout_marginTop="@dimen/parameter_gap"/>
+
+                <!--Trend spinner-->
+                <Spinner
+                    android:id="@+id/arima_trend_spinner"
+                    style="@style/Theme.InstaGraph.Column.Spinner"
+                    android:layout_toEndOf="@id/arima_trend"
+                    android:layout_alignTop="@id/arima_trend"
+                    android:prompt="@string/trend_spinner_prompt"/>
+            </RelativeLayout>
+
+            <!--SES-->
+            <RelativeLayout
+                android:id="@+id/ses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/arima"
+                android:layout_alignStart="@id/step_text"
+                android:layout_marginTop="@dimen/spinner_gap"
+                android:visibility="gone">
+                <!--Model text-->
+                <TextView
+                    android:id="@+id/ses_no_customisation"
+                    style="@style/Theme.InstaGraph.Column.Text"
+                    android:layout_width="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/ses_no_customisation_text"/>
+            </RelativeLayout>
+
+            <!--HWES-->
+            <RelativeLayout
+                android:id="@+id/hwes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ses"
+                android:layout_alignStart="@id/step_text"
+                android:layout_marginTop="@dimen/spinner_gap"
+                android:visibility="gone">
+                <!--Trend text-->
+                <TextView
+                    android:id="@+id/hwes_trend"
+                    style="@style/Theme.InstaGraph.Column.Text"
+                    android:text="@string/trend"/>
+
+                <!--Trend spinner-->
+                <Spinner
+                    android:id="@+id/hwes_trend_spinner"
+                    style="@style/Theme.InstaGraph.Column.Spinner"
+                    android:layout_toEndOf="@id/hwes_trend"
+                    android:layout_alignTop="@id/hwes_trend"
+                    android:prompt="@string/trend_spinner_prompt"/>
+
+                <!--Damped trend text-->
+                <TextView
+                    android:id="@+id/hwes_damped_trend"
+                    style="@style/Theme.InstaGraph.Column.Text"
+                    android:text="@string/hwes_damped_trend_text"
+                    android:layout_below="@id/hwes_trend"
+                    android:layout_marginTop="@dimen/parameter_gap"/>
+
+                <!--Damped trend spinner-->
+                <Spinner
+                    android:id="@+id/hwes_damped_trend_spinner"
+                    style="@style/Theme.InstaGraph.Column.Spinner"
+                    android:layout_toEndOf="@id/hwes_damped_trend"
+                    android:layout_alignTop="@id/hwes_damped_trend"
+                    android:prompt="@string/damped_trend_spinner_prompt"/>
+
+                <!--Seasonal text-->
+                <TextView
+                    android:id="@+id/hwes_seasonal"
+                    style="@style/Theme.InstaGraph.Column.Text"
+                    android:text="@string/hwes_seasonal_text"
+                    android:layout_below="@id/hwes_damped_trend"
+                    android:layout_marginTop="@dimen/parameter_gap"/>
+
+                <!--Seasonal spinner-->
+                <Spinner
+                    android:id="@+id/hwes_seasonal_spinner"
+                    style="@style/Theme.InstaGraph.Column.Spinner"
+                    android:layout_toEndOf="@id/hwes_seasonal"
+                    android:layout_alignTop="@id/hwes_seasonal"
+                    android:prompt="@string/seasonal_spinner_prompt"/>
+
+                <!--Seasonal period text-->
+                <TextView
+                    android:id="@+id/hwes_seasonal_period"
+                    style="@style/Theme.InstaGraph.Column.Text"
+                    android:text="@string/hwes_seasonal_period_text"
+                    android:layout_below="@id/hwes_seasonal"
+                    android:layout_marginTop="@dimen/parameter_gap"/>
+
+                <!--Seasonal period input-->
+                <EditText
+                    android:id="@+id/hwes_seasonal_period_input"
+                    style="@style/Theme.InstaGraph.Input.Parameter"
+                    android:inputType="number"
+                    android:importantForAutofill="no"
+                    android:layout_toEndOf="@id/hwes_seasonal_period"
+                    android:layout_alignTop="@id/hwes_seasonal_period"
+                    android:hint="@string/hwes_seasonal_period_input_hint"/>
+            </RelativeLayout>
+
+            <!--Next and back buttons-->
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/hwes"
+                android:layout_marginTop="@dimen/buttons_marginTop">
+
+                <!--Back button-->
+                <Button
+                    android:id="@+id/back"
+                    style="@style/Theme.InstaGraph.Button.Small.Back"/>
+                <!--Next button-->
+                <Button
+                    android:id="@+id/next"
+                    style="@style/Theme.InstaGraph.Button.Small.Next"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+</androidx.appcompat.widget.LinearLayoutCompat>

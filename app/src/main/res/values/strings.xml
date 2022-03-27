@@ -21,6 +21,7 @@
     <string name="step_one">1. Get Data</string>
     <string name="step_two">2. Select Graph</string>
     <string name="step_three">3. Select Columns</string>
+    <string name="customise_model">Customise Model</string>
     <string name="step_four">4. Predict</string>
     <string name="step_five">5. Result</string>
     <string name="progress_one">1</string>
@@ -43,6 +44,9 @@
     <string name="pie_chart_col2">Data</string>
     <string name="horizontal_bar_chart_col1">Labels</string>
     <string name="horizontal_bar_chart_col2">Data</string>
+    <string name="trend_spinner_prompt">Trend</string>
+    <string name="damped_trend_spinner_prompt">Damped Trend</string>
+    <string name="seasonal_spinner_prompt">Seasonal</string>
     <string name="preview_not_found">The preview plot could not be found. Please try again or use a different URL.</string>
     <string name="preview_unknown_error">An unknown error has occurred. Please ensure the URL is correct and try again.</string>
     <string name="preview_class_cast_error">An error occurred when creating the preview. Please try again.</string>
@@ -57,6 +61,20 @@
     <string name="predictions_not_found">The predictions plot could not be found. Please try again or use a different URL.</string>
     <string name="predictions_unknown_error">An unknown error occurred when trying to plot the predictions. Please try again or use a different URL.</string>
     <string name="predictions_saved">Predictions saved to Download folder</string>
+    <string name="model_name_placeholder">Model Name</string>
+    <string name="ar_order">Order</string>
+    <string name="trend">Trend</string>
+    <string name="ar_order_hint">Order of Autoregression</string>
+    <string name="arima_ar_order">AR Order</string>
+    <string name="arima_ma_order">MA Order</string>
+    <string name="arima_ma_order_hint">Order of Moving Average</string>
+    <string name="arima_diff_order">Diff Order</string>
+    <string name="arima_diff_order_hint">Order of Differencing</string>
+    <string name="ses_no_customisation_text">No SES parameters are available to customise.</string>
+    <string name="hwes_damped_trend_text">Damped Trend</string>
+    <string name="hwes_seasonal_text">Seasonal</string>
+    <string name="hwes_seasonal_period_text">Seasonal Period</string>
+    <string name="hwes_seasonal_period_input_hint">Period of Seasonality</string>
     <string-array name="models">
         <item>AR</item>
         <item>ARIMA</item>

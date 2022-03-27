@@ -178,7 +178,7 @@
     <style name="Theme.InstaGraph.Input.URL" parent="Widget.AppCompat.EditText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/url_input_text</item>
+        <item name="android:textSize">@dimen/input_text</item>
         <item name="android:inputType">textUri</item>
         <item name="android:layout_below">@id/step_text</item>
         <item name="android:layout_marginTop">@dimen/step_text_and_url_input_gap</item>
@@ -229,6 +229,13 @@
         <item name="android:layout_width">@dimen/spinner_width</item>
         <item name="android:layout_height">@dimen/spinner_height</item>
         <item name="android:background">@drawable/instagraph_spinner_background</item>
+    </style>
+
+    <!--Theme for parameter input-->
+    <style name="Theme.InstaGraph.Input.Parameter" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_width">@dimen/input_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/input_text</item>
     </style>
 
 </resources>

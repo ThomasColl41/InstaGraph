@@ -71,8 +71,8 @@
 
             <!--Step Text-->
             <TextView
-                style="@style/Theme.InstaGraph.Step.Text"
                 android:id="@+id/step_text"
+                style="@style/Theme.InstaGraph.Step.Text"
                 android:text="@string/step_three" />
 
             <!--Model-->
