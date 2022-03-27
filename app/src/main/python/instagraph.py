@@ -184,6 +184,23 @@ def graph_plot(file_name, graph_choice, xlabel='x-axis', ylabel='y-axis', title=
 
     # model_data = replace_index(model_data, model_data.index.name)
 
+    nrows = model_data.shape[0]
+
+    # List of place to display the axis ticks
+    # Display a tick for the 10% mark, 20%, 30%, and so on
+    pie_labels = [
+        int(nrows*0.1),
+        int(nrows*0.2),
+        int(nrows*0.3),
+        int(nrows*0.4),
+        int(nrows*0.5),
+        int(nrows*0.6),
+        int(nrows*0.7),
+        int(nrows*0.8),
+        int(nrows*0.9),
+        int(nrows),
+    ]
+
     # Set the font size for every future plot
     plt.rcParams['font.size'] = '20'
 
@@ -212,7 +229,15 @@ def graph_plot(file_name, graph_choice, xlabel='x-axis', ylabel='y-axis', title=
         elif graph_choice == 'Bar Chart':
             ax.bar(model_data.index.values, model_data[model_data.columns[0]])
         elif graph_choice == 'Pie Chart':
-            ax.pie(model_data)
+            # ax.pie(model_data)
+            # ax.pie(model_data, labels=model_data.index.values, startangle=90, counterclock=False)
+            patches, texts = ax.pie(model_data[ylabel], labels=model_data.index.values, startangle=90, counterclock=False)
+            for i, t in enumerate(texts):
+                if i in pie_labels:
+                    t._visible = True
+                else:
+                    t._visible = False
+            texts[0]._visible = True
             # No labels for pie chart
             ax.set_xlabel('')
             ax.set_ylabel('')
@@ -291,23 +316,6 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
 
     model_data = replace_index(model_data, model_data.index.name)
 
-    nrows = model_data.shape[0]
-
-    # List of place to display the axis ticks
-    # Display a tick for the 10% mark, 20%, 30%, and so on
-    tick_labels = [
-        int(nrows*0.1),
-        int(nrows*0.2),
-        int(nrows*0.3),
-        int(nrows*0.4),
-        int(nrows*0.5),
-        int(nrows*0.6),
-        int(nrows*0.7),
-        int(nrows*0.8),
-        int(nrows*0.9),
-        int(nrows),
-    ]
-
     # Limit number of lags to check to 12 to reduce execution time
     max_lag = 12
     num_predictions = 12
@@ -374,6 +382,23 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
 
     save_predictions(full_data)
 
+    nrows = full_data.shape[0]
+
+    # List of place to display the labels for the pie chart
+    # Display a tick for the 10% mark, 20%, 30%, and so on
+    pie_labels = [
+        int(nrows*0.1),
+        int(nrows*0.2),
+        int(nrows*0.3),
+        int(nrows*0.4),
+        int(nrows*0.5),
+        int(nrows*0.6),
+        int(nrows*0.7),
+        int(nrows*0.8),
+        int(nrows*0.9),
+        int(nrows),
+    ]
+
     fig, ax = plt.subplots(figsize=(11,16))
 
     # Set axis labels and title
@@ -395,7 +420,18 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
             ax.bar(full_data[-num_predictions:].index.values, full_data[-num_predictions:], color='red')
         elif graph_choice == 'Pie Chart':
             # ax.pie(full_data2.index.values)
-            ax.pie(full_data)
+            # ax.pie(full_data)
+            # ax.pie(full_data, labels=full_data.index.values)
+            patches, texts = ax.pie(full_data.dropna(), labels=full_data.dropna().index.values, startangle=90, counterclock=False)
+            for i, t in enumerate(texts):
+                if i in pie_labels:
+                    t._visible = True
+                else:
+                    t._visible = False
+            texts[0]._visible = True
+            # No labels for pie chart
+            ax.set_xlabel('')
+            ax.set_ylabel('')
         elif graph_choice == 'Horizontal Bar Chart':
             ax.barh(full_data[:-num_predictions + 1].index.values, full_data[:-num_predictions + 1])
             ax.barh(full_data[-num_predictions:].index.values, full_data[-num_predictions:], color='red')
@@ -419,7 +455,7 @@ def save_predictions(dataset):
     # Inspired from https://www.youtube.com/watch?v=sm02Q91ujfs&list=PLeOtHc_su2eXZuiqCH4pBgV6vamBbP88K&index=7
     files_dir = str(Python.getPlatform().getApplication().getFilesDir())
     file_name = join(dirname(files_dir),'predictions.csv')
-    dataset.to_csv(file_name, index=True)
+    dataset.dropna().to_csv(file_name, index=True)
 
 # Function to return the file directory where the datasets are first saved
 def read_predictions():
