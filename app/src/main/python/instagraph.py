@@ -1,6 +1,7 @@
 # Imports
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.ticker import MaxNLocator
 import numpy as np
 import io
 import csv
@@ -8,6 +9,9 @@ import urllib.request
 from urllib.error import HTTPError
 from os.path import dirname, join
 from statsmodels.tsa.ar_model import AutoReg, ar_select_order
+from statsmodels.tsa.arima.model import ARIMA
+from statsmodels.tsa.holtwinters import SimpleExpSmoothing, ExponentialSmoothing
+from statsmodels.tsa.stattools import adfuller
 from com.chaquo.python import Python
 
 # A custom Exception to raise and return to the app
@@ -180,27 +184,10 @@ def graph_plot(file_name, graph_choice, xlabel='x-axis', ylabel='y-axis', title=
 
     # model_data = replace_index(model_data, model_data.index.name)
 
-    nrows = model_data.shape[0]
-
-    # List of place to display the axis ticks
-    # Display a tick for the 10% mark, 20%, 30%, and so on
-    tick_labels = [
-        int(nrows*0.1),
-        int(nrows*0.2),
-        int(nrows*0.3),
-        int(nrows*0.4),
-        int(nrows*0.5),
-        int(nrows*0.6),
-        int(nrows*0.7),
-        int(nrows*0.8),
-        int(nrows*0.9),
-        int(nrows),
-    ]
-
     # Set the font size for every future plot
-    plt.rcParams['font.size'] = '16'
+    plt.rcParams['font.size'] = '20'
 
-    fig, ax = plt.subplots(figsize=(11,8))
+    fig, ax = plt.subplots(figsize=(11,16))
 
     # Set axis labels and title
     ax.set_xlabel(xlabel)
@@ -208,13 +195,15 @@ def graph_plot(file_name, graph_choice, xlabel='x-axis', ylabel='y-axis', title=
     plt.title(title)
 
     if graph_choice != 'Horizontal Bar Chart':
-        # Set the tick labels for the x-axis
-        ax.set_xticks(ticks=tick_labels)
+        # Limit the number of x-ticks displayed to 10
+        # Inspired by https://www.delftstack.com/howto/matplotlib/matplotlib-set-number-of-ticks/
+        ax.xaxis.set_major_locator(MaxNLocator(10))
 
         # Rotate the x-axis values by 45 degrees
         plt.xticks(rotation=45)
     else:
-        ax.set_yticks(ticks=tick_labels)
+        # Limit the number of y-ticks displayed to 10
+        ax.yaxis.set_major_locator(MaxNLocator(10))
 
     # Catch incorrect data type exceptions when trying to plot data
     try:
@@ -268,6 +257,30 @@ def replace_index(data, index_name='Index'):
     data.index.name = index_name
     return pd.DataFrame(data)
 
+# Function to perform an augmented Dickey-Fuller unit root test
+def adf_test(data):
+    return adfuller(data, autolag='AIC')[1]
+
+# Function to test different differences of data for stationarity (uses pandas' diff method)
+def stationarity_test(data, d_label):
+    # Take a copy of the model data to check differencing on
+    differences = data.copy()
+
+    # Dictionary for holding p-values of ADF test
+    p_dict = {'No_Diff': adf_test(differences[d_label])}
+
+    # First order differencing
+    differences['First_Diff'] = differences[d_label].diff(1)
+
+    # Second order differencing
+    differences['Second_Diff'] = differences['First_Diff'].diff(1)
+
+    p_dict['First_Diff'] = adf_test(differences['First_Diff'].dropna())
+    p_dict['Second_Diff'] = adf_test(differences['Second_Diff'].dropna())
+
+    stationarity = min(p_dict, key=p_dict.get)
+    return str(stationarity)
+
 # Function to predict future values
 def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph', graph_choice='Line Graph', model_choice='AR'):
     model_data = pd.read_csv(file_name, skip_blank_lines=True)
@@ -303,13 +316,55 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
     model_lags = ar_select_order(model_data, maxlag=max_lag, ic='aic').ar_lags
 
     # Try and create a model with the appropriate lag structure
-    model = AutoReg(model_data, lags = model_lags).fit()
+    model = AutoReg(model_data, lags=model_lags).fit()
 
-    # predictions = model.forecast(num_predictions)
-    # full_data = model_data[model_data.columns[0]].append(predictions)
+    if model_choice == 'AR':
+        # Autoregression
+        model = ar_select_order(model_data, max_lag, 'aic').model.fit()
+    elif model_choice == 'ARIMA':
+        # ARIMA
+        station = stationarity_test(model_data, ylabel)
+        if station == 'First_Diff':
+            diff_order = 1
+        elif station == 'Second_Diff':
+            diff_order = 2
+        else:
+            diff_order = 0
+        model = ARIMA(model_data, order=(model_lags,diff_order,1)).fit()
+    elif model_choice == 'SES':
+        # SES
+        # model = SimpleExpSmoothing(model_data, initialization_method='estimated').fit()
+        model = SimpleExpSmoothing(model_data).fit()
+    elif model_choice == 'HWES':
+        # HWES
+        # model = ExponentialSmoothing(model_data, trend='add', seasonal='add', seasonal_periods=12, initialization_method='estimated', use_boxcox=True).fit()
+        model = ExponentialSmoothing(model_data, trend='add', seasonal='add', seasonal_periods=12).fit()
+    else:
+        raise Error('The choice of model could not be determined')
 
-    predictions = AutoReg(model_data, lags=model_lags).fit().predict(model_data.index[-1], model_data.index[-1] + num_predictions)
-    full_data = model_data[model_data.columns[0]].append(predictions).dropna()
+    # Since dates cannot be added to with integers, if the dataset uses a DateTimeIndex,
+    # use the pandas Timedelta class to generate the forecast datetimes
+    if isinstance(model_data.index, pd.DatetimeIndex):
+        # If SES is used, adjust the smoothing parameter to be optimised
+        # Inspired by https://www.statsmodels.org/devel/examples/notebooks/generated/exponential_smoothing.html#Holt%E2%80%99s-Winters-Seasonal
+        if model_choice == 'SES':
+            predictions = model.predict(model_data.index[-1], model_data.index[-1] + pd.Timedelta(num_predictions, unit=str(model_data.index.freqstr))).rename(r"$\alpha=%s$" % model.model.params["smoothing_level"])
+        else:
+            predictions = model.predict(model_data.index[-1], model_data.index[-1] + pd.Timedelta(num_predictions, unit=str(model_data.index.freqstr)))
+    # Otherwise, add on to the RangeIndex
+    else:
+        # If SES is used, adjust the smoothing parameter to be optimised
+        # Inspired by https://www.statsmodels.org/devel/examples/notebooks/generated/exponential_smoothing.html#Holt%E2%80%99s-Winters-Seasonal
+        if model_choice == 'SES':
+            predictions = model.predict(model_data.index[-1], model_data.index[-1] + num_predictions).rename(r"$\alpha=%s$" % model.model.params["smoothing_level"])
+        else:
+            predictions = model.predict(model_data.index[-1], model_data.index[-1] + num_predictions)
+
+    predictions.name = ylabel
+
+    # full_data = model_data[model_data.columns[0]].append(predictions).dropna()
+
+    full_data = pd.concat([model_data[ylabel], predictions])
 
     # Set the data column's header
     full_data.name = ylabel
@@ -319,24 +374,7 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
 
     save_predictions(full_data)
 
-    nrows = full_data.shape[0]
-
-    # List of place to display the axis ticks
-    # Display a tick for the 10% mark, 20%, 30%, and so on
-    tick_labels = [
-        int(nrows*0.1),
-        int(nrows*0.2),
-        int(nrows*0.3),
-        int(nrows*0.4),
-        int(nrows*0.5),
-        int(nrows*0.6),
-        int(nrows*0.7),
-        int(nrows*0.8),
-        int(nrows*0.9),
-        int(nrows),
-    ]
-
-    fig, ax = plt.subplots(figsize=(11,8))
+    fig, ax = plt.subplots(figsize=(11,16))
 
     # Set axis labels and title
     ax.set_xlabel(xlabel)
@@ -344,13 +382,8 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
     plt.title(title)
 
     if graph_choice != 'Horizontal Bar Chart':
-        # Set the tick labels for the x-axis
-        ax.set_xticks(ticks=tick_labels)
-
         # Rotate the x-axis values by 45 degrees
         plt.xticks(rotation=45)
-    else:
-        ax.set_yticks(ticks=tick_labels)
 
     # Catch incorrect data type execeptions when trying to plot data
     try:

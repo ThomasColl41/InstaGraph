@@ -21,7 +21,6 @@
     <dimen name="step_text_height">70dp</dimen>
     <dimen name="step_text_margin_top">100dp</dimen>
     <dimen name="step_text_margin_start">50dp</dimen>
-    <dimen name="step_and_buttons_gap">500dp</dimen>
     <dimen name="step_and_graphs_gap">25dp</dimen>
     <dimen name="graphs_and_buttons_gap">25dp</dimen>
     <dimen name="big_button_width">150dp</dimen>
@@ -30,8 +29,10 @@
     <dimen name="small_button_width">100dp</dimen>
     <dimen name="small_button_height">60dp</dimen>
     <dimen name="small_button_text">20sp</dimen>
+    <dimen name="buttons_marginTop">50dp</dimen>
+    <dimen name="data_preview_height">200dp</dimen>
     <dimen name="data_window_width">350dp</dimen>
-    <dimen name="data_window_height">270dp</dimen>
+    <dimen name="data_window_height">400dp</dimen>
     <dimen name="url_step_text">26sp</dimen>
     <dimen name="url_input_text">20sp</dimen>
     <dimen name="submit_button_text">38sp</dimen>

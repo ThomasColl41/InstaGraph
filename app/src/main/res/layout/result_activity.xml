@@ -106,7 +106,7 @@
             </RelativeLayout>
 
             <!--Plot window-->
-            <ScrollView
+            <androidx.core.widget.NestedScrollView
                 android:id="@+id/plot_window"
                 style="@style/Theme.InstaGraph.Data.Window">
                 <HorizontalScrollView
@@ -118,14 +118,15 @@
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/empty_content_description"/>
                 </HorizontalScrollView>
-            </ScrollView>
+            </androidx.core.widget.NestedScrollView>
 
             <!--Next and back buttons-->
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/step_and_buttons_gap"
-                android:layout_below="@id/step_text"
-                android:layout_centerHorizontal="true">
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/plot_window"
+                android:layout_marginTop="@dimen/buttons_marginTop">
 
                 <!--Back button-->
                 <Button
