@@ -295,23 +295,15 @@
                     android:hint="@string/hwes_seasonal_period_input_hint"/>
             </RelativeLayout>
 
-            <!--Next and back buttons-->
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
+            <!--Submit button-->
+            <Button
+                android:id="@+id/submit"
+                style="@style/Theme.InstaGraph.Button.Big"
+                android:text="@string/submit_button_text"
+                android:textSize="@dimen/submit_button_text"
                 android:layout_below="@id/hwes"
-                android:layout_marginTop="@dimen/buttons_marginTop">
-
-                <!--Back button-->
-                <Button
-                    android:id="@+id/back"
-                    style="@style/Theme.InstaGraph.Button.Small.Back"/>
-                <!--Next button-->
-                <Button
-                    android:id="@+id/next"
-                    style="@style/Theme.InstaGraph.Button.Small.Next"/>
-            </RelativeLayout>
+                android:layout_marginTop="@dimen/parameter_gap"
+                android:contentDescription="@string/submit_button_text"/>
 
         </RelativeLayout>
     </ScrollView>

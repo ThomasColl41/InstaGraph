@@ -81,4 +81,18 @@
         <item>SES</item>
         <item>HWES</item>
     </string-array>
+    <string-array name="trend">
+        <item>No trend</item>
+        <item>Constant only</item>
+        <item>Time trend only</item>
+        <item>Constant and time trend</item>
+    </string-array>
+    <string-array name="hwes_trend">
+        <item>Additive</item>
+        <item>Multiplicative</item>
+    </string-array>
+    <string-array name="bool_spinner">
+        <item>True</item>
+        <item>False</item>
+    </string-array>
 </resources>

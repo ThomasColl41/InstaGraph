@@ -90,7 +90,7 @@
                 android:textSize="@dimen/submit_button_text"
                 android:layout_below="@id/url_input"
                 android:layout_marginTop="@dimen/url_input_and_submit_gap"
-                android:contentDescription="@string/start_button_content"/>
+                android:contentDescription="@string/submit_button_text"/>
         </RelativeLayout>
     </ScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>
