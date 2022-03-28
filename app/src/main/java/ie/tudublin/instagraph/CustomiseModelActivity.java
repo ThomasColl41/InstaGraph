@@ -84,8 +84,8 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
         cancel.setOnClickListener(this);
 
 
-        Intent fromSelectGraph = getIntent();
-        userParameters = fromSelectGraph.getParcelableExtra("userParameters");
+        Intent fromSelectColumns = getIntent();
+        userParameters = fromSelectColumns.getParcelableExtra("userParameters");
 
         // Initialise Python (using Chaquopy)
         if(!Python.isStarted()) {
@@ -118,6 +118,36 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
         switch(view.getId()) {
             case(R.id.submit):
                 // Submit changes
+                switch(userParameters.getModel()) {
+                    case "AR":
+                        userParameters.setPara1(arOrderInput.getText().toString());
+                        userParameters.setPara2(arTrendSpinner.getSelectedItem().toString());
+                        break;
+
+                    case "ARIMA":
+                        userParameters.setPara1(arimaAROrderInput.getText().toString());
+                        userParameters.setPara2(arimaDiffOrderInput.getText().toString());
+                        userParameters.setPara3(arimaMAOrderInput.getText().toString());
+                        userParameters.setPara4(arimaTrendSpinner.getSelectedItem().toString());
+                        break;
+
+                    // No parameters for SES
+
+                    case "HWES":
+                        userParameters.setPara1(hwesTrendSpinner.getSelectedItem().toString());
+                        userParameters.setPara2(hwesDampedTrendSpinner.getSelectedItem().toString());
+                        userParameters.setPara3(hwesSeasonalSpinner.getSelectedItem().toString());
+                        userParameters.setPara4(hwesSeasonalPeriodInput.getText().toString());
+                        break;
+                }
+
+                // Set the parameters for the row limit
+                userParameters.setFirstLast(rowLimitFirstLastSpinner.getSelectedItem().toString());
+                userParameters.setRowLimit(rowLimitInput.getText().toString());
+
+                Intent returnToSelectColumns = new Intent(CustomiseModelActivity.this, SelectColumnsActivity.class);
+                returnToSelectColumns.putExtra("userParameters", userParameters);
+                setResult(RESULT_OK, returnToSelectColumns);
                 finish();
             case(R.id.cancel):
                 // Cancel changes
@@ -142,7 +172,6 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
                 ar.setVisibility(View.VISIBLE);
                 arOrderInput = findViewById(R.id.ar_order_input);
                 arTrendSpinner = findViewById(R.id.ar_trend_spinner);
-                prepareModelParameters(model_choice);
                 break;
 
             case "ARIMA":
@@ -151,12 +180,10 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
                 arimaDiffOrderInput = findViewById(R.id.arima_diff_order_input);
                 arimaMAOrderInput = findViewById(R.id.arima_ma_order_input);
                 arimaTrendSpinner = findViewById(R.id.arima_trend_spinner);
-                prepareModelParameters(model_choice);
                 break;
 
             case "SES":
                 ses.setVisibility(View.VISIBLE);
-                prepareModelParameters(model_choice);
                 break;
 
             case "HWES":
@@ -165,9 +192,9 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
                 hwesDampedTrendSpinner = findViewById(R.id.hwes_damped_trend_spinner);
                 hwesSeasonalSpinner = findViewById(R.id.hwes_seasonal_spinner);
                 hwesSeasonalPeriodInput = findViewById(R.id.hwes_seasonal_period_input);
-                prepareModelParameters(model_choice);
                 break;
         }
+        prepareModelParameters(model_choice);
     }
 
     // Method to perpare model parameters for user input

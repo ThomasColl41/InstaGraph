@@ -1,5 +1,9 @@
 package ie.tudublin.instagraph;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -43,8 +47,45 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
     RelativeLayout mainLayout;
 
     Popup waitPopup;
+    Popup errorPopup;
 
     PopupWindow popWindow;
+    PopupWindow errorWindow;
+
+    // Inspired from https://www.youtube.com/watch?v=-y5eF0u1bZQ and https://www.youtube.com/watch?v=Ke9PaRdMcgc
+    // StartActivityForResult alternative implementation
+    ActivityResultLauncher<Intent> customiseModelLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    new ActivityResultCallback<ActivityResult>() {
+                        // When CustomiseModelActivity returns, this method is called
+                        @Override
+                        public void onActivityResult(ActivityResult result) {
+                            // Get the result code and data
+                            int resCode = result.getResultCode();
+                            Intent data = result.getData();
+
+                            Log.i("InstaGraph", "Custom Parameters:\n" + resCode);
+                            Log.i("InstaGraph", "Custom Parameters:\n" + data);
+
+                            // if things went ok (the user pressed submit)
+                            if(resCode == RESULT_OK && data != null) {
+                                try {
+                                    userParameters = data.getParcelableExtra("userParameters");
+                                    Log.i("InstaGraph", "Custom Parameters:\n" + userParameters.toString());
+                                }
+                                catch (NullPointerException npe) {
+                                    errorWindow = errorPopup.showPopup(getString(R.string.custom_parameters_not_found), false);
+                                }
+                            }
+                            else if (resCode != RESULT_CANCELED) {
+                                // Otherwise, something went wrong
+                                errorWindow = errorPopup.showPopup(getString(R.string.custom_parameters_unknown_error), false);
+                            }
+                        }
+                    }
+
+            );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +105,8 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
         next.setOnClickListener(this);
         back.setOnClickListener(this);
         customiseModel.setOnClickListener(this);
+
+        errorPopup = new Popup(SelectColumnsActivity.this, mainLayout);
 
         Intent fromSelectGraph = getIntent();
         userParameters = fromSelectGraph.getParcelableExtra("userParameters");
@@ -117,7 +160,7 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
                 goToCustomise.putExtra("userParameters", userParameters);
                 waitPopup = new Popup(SelectColumnsActivity.this, mainLayout);
                 popWindow = waitPopup.showPopup(getString(R.string.please_wait), true);
-                startActivity(goToCustomise);
+                customiseModelLauncher.launch(goToCustomise);
                 break;
 
             case(R.id.back):

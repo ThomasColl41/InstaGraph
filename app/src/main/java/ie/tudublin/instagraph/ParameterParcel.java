@@ -17,6 +17,16 @@ public class ParameterParcel implements Parcelable {
     String col2;
     String title;
 
+    // Four possible parameters for a custom model
+    String para1;
+    String para2;
+    String para3;
+    String para4;
+
+    // The custom row limit on the data
+    String firstLast;
+    String rowLimit;
+
     // Constructor
     public ParameterParcel() {
         this.url = "";
@@ -28,6 +38,12 @@ public class ParameterParcel implements Parcelable {
         this.col1 = "";
         this.col2 = "";
         this.title = "";
+        this.para1 = null;
+        this.para2 = null;
+        this.para3 = null;
+        this.para4 = null;
+        this.firstLast = null;
+        this.rowLimit = null;
     }
 
     // Getters and Setters
@@ -103,6 +119,54 @@ public class ParameterParcel implements Parcelable {
         this.title = title;
     }
 
+    public String getPara1() {
+        return para1;
+    }
+
+    public void setPara1(String para1) {
+        this.para1 = para1;
+    }
+
+    public String getPara2() {
+        return para2;
+    }
+
+    public void setPara2(String para2) {
+        this.para2 = para2;
+    }
+
+    public String getPara3() {
+        return para3;
+    }
+
+    public void setPara3(String para3) {
+        this.para3 = para3;
+    }
+
+    public String getPara4() {
+        return para4;
+    }
+
+    public void setPara4(String para4) {
+        this.para4 = para4;
+    }
+
+    public String getFirstLast() {
+        return firstLast;
+    }
+
+    public void setFirstLast(String firstLast) {
+        this.firstLast = firstLast;
+    }
+
+    public String getRowLimit() {
+        return rowLimit;
+    }
+
+    public void setRowLimit(String rowLimit) {
+        this.rowLimit = rowLimit;
+    }
+
     // toString
     @NonNull
     @Override
@@ -117,6 +181,12 @@ public class ParameterParcel implements Parcelable {
                 ", col1='" + col1 + '\'' +
                 ", col2='" + col2 + '\'' +
                 ", title='" + title + '\'' +
+                ", para1='" + para1 + '\'' +
+                ", para2='" + para2 + '\'' +
+                ", para3='" + para3 + '\'' +
+                ", para4='" + para4 + '\'' +
+                ", firstLast='" + firstLast + '\'' +
+                ", rowLimit='" + rowLimit + '\'' +
                 '}';
     }
 
@@ -131,6 +201,12 @@ public class ParameterParcel implements Parcelable {
         this.col1 = in.readString();
         this.col2 = in.readString();
         this.title = in.readString();
+        this.para1 = in.readString();
+        this.para2 = in.readString();
+        this.para3 = in.readString();
+        this.para4 = in.readString();
+        this.firstLast = in.readString();
+        this.rowLimit = in.readString();
     }
 
     public static final Creator<ParameterParcel> CREATOR = new Creator<ParameterParcel>() {
@@ -161,5 +237,11 @@ public class ParameterParcel implements Parcelable {
         parcel.writeString(this.col1);
         parcel.writeString(this.col2);
         parcel.writeString(this.title);
+        parcel.writeString(this.para1);
+        parcel.writeString(this.para2);
+        parcel.writeString(this.para3);
+        parcel.writeString(this.para4);
+        parcel.writeString(this.firstLast);
+        parcel.writeString(this.rowLimit);
     }
 }

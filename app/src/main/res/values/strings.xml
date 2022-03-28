@@ -81,6 +81,8 @@
     <string name="customise">Customise…</string>
     <string name="cancel_button_text">Cancel</string>
     <string name="enter_number_hint">Enter Number…</string>
+    <string name="custom_parameters_not_found">Your custom parameters could not be retrieved. Please try again.</string>
+    <string name="custom_parameters_unknown_error">An unknown error occurred when retrieving custom parameters. Please try again.</string>
     <string-array name="models">
         <item>AR</item>
         <item>ARIMA</item>
@@ -88,20 +90,23 @@
         <item>HWES</item>
     </string-array>
     <string-array name="trend">
+        <item/>
         <item>No trend</item>
         <item>Constant only</item>
         <item>Time trend only</item>
         <item>Constant and time trend</item>
     </string-array>
     <string-array name="hwes_trend">
+        <item/>
         <item>Additive</item>
         <item>Multiplicative</item>
     </string-array>
     <string-array name="bool_spinner">
-        <item>True</item>
         <item>False</item>
+        <item>True</item>
     </string-array>
     <string-array name="first_last">
+        <item/>
         <item>First</item>
         <item>Last</item>
     </string-array>
