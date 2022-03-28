@@ -83,6 +83,7 @@
     <string name="enter_number_hint">Enter Number…</string>
     <string name="custom_parameters_not_found">Your custom parameters could not be retrieved. Please try again.</string>
     <string name="custom_parameters_unknown_error">An unknown error occurred when retrieving custom parameters. Please try again.</string>
+    <string name="url_blank">URL cannot be blank. Please enter a value for URL and try again.</string>
     <string-array name="models">
         <item>AR</item>
         <item>ARIMA</item>

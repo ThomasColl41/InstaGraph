@@ -64,6 +64,11 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.submit) {
+            if(URL_input.getText().toString().equals("")) {
+                errorWindow = errorPopup.showPopup(getString(R.string.url_blank), false);
+                return;
+            }
+
             waitWindow = waitPopup.showPopup(getString(R.string.please_wait), true);
 
             // Read in the dataset from the URL, returning the path to a local copy of the dataset
