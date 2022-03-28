@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/model_name"
                 android:layout_alignStart="@id/step_text"
-                android:layout_marginTop="@dimen/spinner_gap"
+                android:layout_marginTop="@dimen/parameter_gap"
                 android:visibility="gone">
                 <!--Order text-->
                 <TextView
@@ -107,7 +107,7 @@
                     android:inputType="number"
                     android:layout_toEndOf="@id/ar_order"
                     android:importantForAutofill="no"
-                    android:hint="@string/ar_order_hint"/>
+                    android:hint="@string/enter_number_hint"/>
 
                 <!--Trend text-->
                 <TextView
@@ -148,7 +148,7 @@
                     android:inputType="number"
                     android:layout_toEndOf="@id/arima_ar_order"
                     android:importantForAutofill="no"
-                    android:hint="@string/ar_order_hint"/>
+                    android:hint="@string/enter_number_hint"/>
 
                 <!--Differencing order text-->
                 <TextView
@@ -166,7 +166,7 @@
                     android:importantForAutofill="no"
                     android:layout_toEndOf="@id/arima_diff_order"
                     android:layout_alignTop="@id/arima_diff_order"
-                    android:hint="@string/arima_diff_order_hint"/>
+                    android:hint="@string/enter_number_hint"/>
 
                 <!--MA order text-->
                 <TextView
@@ -184,7 +184,7 @@
                     android:importantForAutofill="no"
                     android:layout_toEndOf="@id/arima_ma_order"
                     android:layout_alignTop="@id/arima_ma_order"
-                    android:hint="@string/arima_ma_order_hint"/>
+                    android:hint="@string/enter_number_hint"/>
 
                 <!--Trend text-->
                 <TextView
@@ -209,7 +209,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/arima"
-                android:layout_alignStart="@id/step_text"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/spinner_gap"
                 android:visibility="gone">
                 <!--Model text-->
@@ -217,7 +217,7 @@
                     android:id="@+id/ses_no_customisation"
                     style="@style/Theme.InstaGraph.Column.Text"
                     android:layout_width="wrap_content"
-                    android:layout_centerHorizontal="true"
+                    android:layout_marginEnd="@dimen/no_gap"
                     android:text="@string/ses_no_customisation_text"/>
             </RelativeLayout>
 
@@ -292,7 +292,44 @@
                     android:importantForAutofill="no"
                     android:layout_toEndOf="@id/hwes_seasonal_period"
                     android:layout_alignTop="@id/hwes_seasonal_period"
-                    android:hint="@string/hwes_seasonal_period_input_hint"/>
+                    android:hint="@string/enter_number_hint"/>
+            </RelativeLayout>
+
+            <!--Limit the number of rows used-->
+            <RelativeLayout
+                android:id="@+id/row_limit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/hwes"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/parameter_gap">
+                <!--Row limit text-->
+                <TextView
+                    android:id="@+id/row_limit_text"
+                    style="@style/Theme.InstaGraph.Column.Text"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_marginEnd="@dimen/no_gap"
+                    android:text="@string/row_limit_text"/>
+
+                <!--First/Last spinner-->
+                <Spinner
+                    android:id="@+id/row_limit_first_last_spinner"
+                    style="@style/Theme.InstaGraph.Column.Spinner"
+                    android:layout_width="@dimen/first_last_spinner_width"
+                    android:layout_below="@id/row_limit_text"
+                    android:layout_marginTop="@dimen/parameter_gap"
+                    android:prompt="@string/first_last_spinner_prompt"/>
+
+                <!--Row limit input-->
+                <EditText
+                    android:id="@+id/row_limit_input"
+                    style="@style/Theme.InstaGraph.Input.Parameter"
+                    android:inputType="number"
+                    android:layout_toEndOf="@id/row_limit_first_last_spinner"
+                    android:layout_alignTop="@id/row_limit_first_last_spinner"
+                    android:importantForAutofill="no"
+                    android:hint="@string/row_limit_input_hint"/>
             </RelativeLayout>
 
             <!--Submit button-->
@@ -301,9 +338,19 @@
                 style="@style/Theme.InstaGraph.Button.Big"
                 android:text="@string/submit_button_text"
                 android:textSize="@dimen/submit_button_text"
-                android:layout_below="@id/hwes"
+                android:layout_below="@id/row_limit"
                 android:layout_marginTop="@dimen/parameter_gap"
                 android:contentDescription="@string/submit_button_text"/>
+
+            <!--Cancel button-->
+            <Button
+                android:id="@+id/cancel"
+                style="@style/Theme.InstaGraph.Button.Big"
+                android:text="@string/cancel_button_text"
+                android:textSize="@dimen/cancel_button_text"
+                android:layout_below="@id/submit"
+                android:layout_marginTop="@dimen/parameter_gap"
+                android:contentDescription="@string/cancel_button_text"/>
 
         </RelativeLayout>
     </ScrollView>

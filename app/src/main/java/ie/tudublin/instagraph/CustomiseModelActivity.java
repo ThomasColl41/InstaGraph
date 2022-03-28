@@ -24,13 +24,6 @@ import java.util.List;
 
 public class CustomiseModelActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Spinner modelSpinner;
-    Spinner col1Spinner;
-    Spinner col2Spinner;
-
-    TextView col1Text;
-    TextView col2Text;
-
     Python py;
     PyObject instaGraphPyObject;
 
@@ -50,6 +43,7 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
     RelativeLayout hwes;
 
     Button submit;
+    Button cancel;
 
     TextView modelName;
 
@@ -66,26 +60,28 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
     Spinner hwesSeasonalSpinner;
     EditText hwesSeasonalPeriodInput;
 
+    Spinner rowLimitFirstLastSpinner;
+    EditText rowLimitInput;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customise_model);
 
-        modelSpinner = findViewById(R.id.model_spinner);
-        col1Spinner = findViewById(R.id.column_one_spinner);
-        col2Spinner = findViewById(R.id.column_two_spinner);
-        col1Text = findViewById(R.id.column_one_text);
-        col2Text = findViewById(R.id.column_two_text);
         mainLayout = findViewById(R.id.main_layout);
 
+        submit = findViewById(R.id.submit);
+        cancel = findViewById(R.id.cancel);
         ar = findViewById(R.id.ar);
         arima = findViewById(R.id.arima);
         ses = findViewById(R.id.ses);
         hwes = findViewById(R.id.hwes);
-        submit = findViewById(R.id.submit);
         modelName = findViewById(R.id.model_name);
+        rowLimitFirstLastSpinner = findViewById(R.id.row_limit_first_last_spinner);
+        rowLimitInput = findViewById(R.id.row_limit_input);
 
         submit.setOnClickListener(this);
+        cancel.setOnClickListener(this);
 
 
         Intent fromSelectGraph = getIntent();
@@ -113,57 +109,20 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
             Log.i("InstaGraph", name);
         }
 
-        spinnerSetup(names);
-
         // Display the appropriate parameters depending on user choice
         displayModelParameters(userParameters.getModel());
     }
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.submit) {
-            finish();
+        switch(view.getId()) {
+            case(R.id.submit):
+                // Submit changes
+                finish();
+            case(R.id.cancel):
+                // Cancel changes
+                finish();
         }
-    }
-
-    public void spinnerSetup(String[] colNames) {
-        // Get the models string array from strings.xml
-        String[] models = getResources().getStringArray(R.array.models);
-
-        // Load the models into the ArrayAdapter
-        ArrayAdapter<String> modelArray = new ArrayAdapter<>(
-                this,
-                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
-                models);
-
-        // Set the appearance of dropdown items
-        modelArray.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-
-        // Fill the spinner with the values in modelArray
-        modelSpinner.setAdapter(modelArray);
-
-        // Refresh the view if the data changes
-        modelArray.notifyDataSetChanged();
-
-        // Add all the dataset's columns into the columns String list
-        columns.addAll(Arrays.asList(colNames));
-
-        // Create an ArrayAdapter to handle spinners for picking columns
-        // Set the context, appearance and data
-        ArrayAdapter<String> columnArray = new ArrayAdapter<>(
-                this,
-                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
-                columns);
-
-        // Set the appearance of dropdown items
-        columnArray.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-
-        // Fill the spinners with the values in columnArray
-        col1Spinner.setAdapter(columnArray);
-        col2Spinner.setAdapter(columnArray);
-
-        // Refresh the view if the data changes
-        columnArray.notifyDataSetChanged();
     }
 
     @Override
@@ -217,6 +176,7 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
         String[] trends = getResources().getStringArray(R.array.trend);
         String[] hwesTrends = getResources().getStringArray(R.array.hwes_trend);
         String[] boolValues = getResources().getStringArray(R.array.bool_spinner);
+        String[] firstLast = getResources().getStringArray(R.array.first_last);
 
         // Load the string array values into the ArrayAdapters
         ArrayAdapter<String> trendArray = new ArrayAdapter<>(
@@ -234,15 +194,22 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
                 androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
                 boolValues);
 
+        ArrayAdapter<String> firstLastArray = new ArrayAdapter<>(
+                this,
+                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                firstLast);
+
         // Set the appearance of dropdown items
         trendArray.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
         hwesTrendArray.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
         boolArray.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        firstLastArray.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
 
         // Refresh the view if the data changes
         trendArray.notifyDataSetChanged();
         hwesTrendArray.notifyDataSetChanged();
         boolArray.notifyDataSetChanged();
+        firstLastArray.notifyDataSetChanged();
 
         switch(model_choice) {
             case "AR":
@@ -261,6 +228,8 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
                 hwesSeasonalSpinner.setAdapter(hwesTrendArray);
                 break;
         }
+
+        rowLimitFirstLastSpinner.setAdapter(firstLastArray);
     }
 
     // Method to retrieve AR parameters from use input

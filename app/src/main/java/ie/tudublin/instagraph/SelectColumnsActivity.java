@@ -24,6 +24,7 @@ import java.util.List;
 public class SelectColumnsActivity extends AppCompatActivity implements View.OnClickListener {
     Button next;
     Button back;
+    Button customiseModel;
 
     Spinner modelSpinner;
     Spinner col1Spinner;
@@ -52,6 +53,7 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
 
         next = findViewById(R.id.next);
         back = findViewById(R.id.back);
+        customiseModel = findViewById(R.id.customise_model);
         modelSpinner = findViewById(R.id.model_spinner);
         col1Spinner = findViewById(R.id.column_one_spinner);
         col2Spinner = findViewById(R.id.column_two_spinner);
@@ -61,6 +63,7 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
 
         next.setOnClickListener(this);
         back.setOnClickListener(this);
+        customiseModel.setOnClickListener(this);
 
         Intent fromSelectGraph = getIntent();
         userParameters = fromSelectGraph.getParcelableExtra("userParameters");
@@ -93,18 +96,28 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View view) {
+        if(view.getId() == R.id.next || view.getId() == R.id.customise_model) {
+            String title = col1Spinner.getSelectedItem().toString() + " over " + col2Spinner.getSelectedItem().toString();
+            userParameters.setModel(modelSpinner.getSelectedItem().toString());
+            userParameters.setCol1(col1Spinner.getSelectedItem().toString());
+            userParameters.setCol2(col2Spinner.getSelectedItem().toString());
+            userParameters.setTitle(title);
+        }
         switch(view.getId()) {
             case(R.id.next):
-                String title = col1Spinner.getSelectedItem().toString() + " over " + col2Spinner.getSelectedItem().toString();
-                userParameters.setModel(modelSpinner.getSelectedItem().toString());
-                userParameters.setCol1(col1Spinner.getSelectedItem().toString());
-                userParameters.setCol2(col2Spinner.getSelectedItem().toString());
-                userParameters.setTitle(title);
                 Intent goToPredict = new Intent(SelectColumnsActivity.this, PredictActivity.class);
                 goToPredict.putExtra("userParameters", userParameters);
                 waitPopup = new Popup(SelectColumnsActivity.this, mainLayout);
                 popWindow = waitPopup.showPopup(getString(R.string.please_wait), true);
                 startActivity(goToPredict);
+                break;
+
+            case(R.id.customise_model):
+                Intent goToCustomise = new Intent(SelectColumnsActivity.this, CustomiseModelActivity.class);
+                goToCustomise.putExtra("userParameters", userParameters);
+                waitPopup = new Popup(SelectColumnsActivity.this, mainLayout);
+                popWindow = waitPopup.showPopup(getString(R.string.please_wait), true);
+                startActivity(goToCustomise);
                 break;
 
             case(R.id.back):

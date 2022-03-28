@@ -34,6 +34,9 @@
             android:name=".SelectColumnsActivity">
         </activity>
         <activity
+            android:name=".CustomiseModelActivity">
+        </activity>
+        <activity
             android:name=".PredictActivity">
         </activity>
         <activity

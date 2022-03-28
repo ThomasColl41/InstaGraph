@@ -75,6 +75,12 @@
     <string name="hwes_seasonal_text">Seasonal</string>
     <string name="hwes_seasonal_period_text">Seasonal Period</string>
     <string name="hwes_seasonal_period_input_hint">Period of Seasonality</string>
+    <string name="row_limit_input_hint">Number of rows</string>
+    <string name="row_limit_text">Limit the number of rows used\n(Leave blank to use all rows).</string>
+    <string name="first_last_spinner_prompt">First/Last</string>
+    <string name="customise">Customise…</string>
+    <string name="cancel_button_text">Cancel</string>
+    <string name="enter_number_hint">Enter Number…</string>
     <string-array name="models">
         <item>AR</item>
         <item>ARIMA</item>
@@ -94,5 +100,9 @@
     <string-array name="bool_spinner">
         <item>True</item>
         <item>False</item>
+    </string-array>
+    <string-array name="first_last">
+        <item>First</item>
+        <item>Last</item>
     </string-array>
 </resources>

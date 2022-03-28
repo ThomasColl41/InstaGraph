@@ -95,6 +95,16 @@
                     style="@style/Theme.InstaGraph.Column.Spinner"
                     android:layout_toEndOf="@id/model_text"
                     android:prompt="@string/model_spinner_prompt"/>
+
+                <!-- Customise model-->
+                <Button
+                    android:id="@+id/customise_model"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@id/model_spinner"
+                    android:layout_below="@id/model_spinner"
+                    android:layout_marginTop="@dimen/model_spinner_and_customise_button_gap"
+                    android:text="@string/customise"/>
             </RelativeLayout>
 
             <!--Column one-->

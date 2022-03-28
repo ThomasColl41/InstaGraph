@@ -341,11 +341,9 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
         model = ARIMA(model_data, order=(model_lags,diff_order,1)).fit()
     elif model_choice == 'SES':
         # SES
-        # model = SimpleExpSmoothing(model_data, initialization_method='estimated').fit()
         model = SimpleExpSmoothing(model_data).fit()
     elif model_choice == 'HWES':
         # HWES
-        # model = ExponentialSmoothing(model_data, trend='add', seasonal='add', seasonal_periods=12, initialization_method='estimated', use_boxcox=True).fit()
         model = ExponentialSmoothing(model_data, trend='add', seasonal='add', seasonal_periods=12).fit()
     else:
         raise Error('The choice of model could not be determined')
