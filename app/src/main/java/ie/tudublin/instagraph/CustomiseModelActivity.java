@@ -127,9 +127,11 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
         }
 
         // Check that the user has not entered a seasonal period less than 2 for HWES
-        if(userParameters.getModel().equals("HWES") && Integer.parseInt(hwesSeasonalPeriodInput.getText().toString()) < 2) {
-            errorWindow = errorPopup.showPopup("The seasonal period must be greater than 2.", false);
-            return;
+        if(userParameters.getModel().equals("HWES") && !hwesSeasonalPeriodInput.getText().toString().equals("")) {
+            if(Integer.parseInt(hwesSeasonalPeriodInput.getText().toString()) < 2) {
+                errorWindow = errorPopup.showPopup("The seasonal period must be greater than 2.", false);
+                return;
+            }
         }
         switch(view.getId()) {
             case(R.id.submit):

@@ -77,4 +77,7 @@
     <dimen name="cancel_button_text">38sp</dimen>
     <dimen name="model_spinner_and_customise_button_gap">10dp</dimen>
     <dimen name="num_predictions_input_width">300dp</dimen>
+    <dimen name="spinner_triangle_width">20dp</dimen>
+    <dimen name="spinner_triangle_height">20dp</dimen>
+    <dimen name="spinner_triangle_margin">15dp</dimen>
 </resources>

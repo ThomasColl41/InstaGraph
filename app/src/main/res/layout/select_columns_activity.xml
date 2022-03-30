@@ -92,9 +92,17 @@
                 <!--Model spinner-->
                 <Spinner
                     android:id="@+id/model_spinner"
-                    style="@style/Theme.InstaGraph.Column.Spinner"
+                    style="@style/Theme.InstaGraph.Spinner"
                     android:layout_toEndOf="@id/model_text"
-                    android:prompt="@string/model_spinner_prompt"/>
+                    android:prompt="@string/model_spinner_prompt" />
+
+                <!--Spinner triangle-->
+                <ImageView
+                    style="@style/Theme.InstaGraph.Spinner.Triangle"
+                    android:layout_alignTop="@id/model_spinner"
+                    android:layout_alignEnd="@id/model_spinner"
+                    android:contentDescription="@string/empty_content_description"/>
+
 
                 <!-- Customise model-->
                 <Button
@@ -125,9 +133,16 @@
                 <!--Column one spinner-->
                 <Spinner
                     android:id="@+id/column_one_spinner"
-                    style="@style/Theme.InstaGraph.Column.Spinner"
+                    style="@style/Theme.InstaGraph.Spinner"
                     android:layout_toEndOf="@id/column_one_text"
                     android:prompt="@string/column_one_spinner_prompt"/>
+
+                <!--Spinner triangle-->
+                <ImageView
+                    style="@style/Theme.InstaGraph.Spinner.Triangle"
+                    android:layout_alignTop="@id/column_one_spinner"
+                    android:layout_alignEnd="@id/column_one_spinner"
+                    android:contentDescription="@string/empty_content_description"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -147,9 +162,16 @@
                 <!--Column two spinner-->
                 <Spinner
                     android:id="@+id/column_two_spinner"
-                    style="@style/Theme.InstaGraph.Column.Spinner"
+                    style="@style/Theme.InstaGraph.Spinner"
                     android:layout_toEndOf="@id/column_two_text"
                     android:prompt="@string/column_two_spinner_prompt"/>
+
+                <!--Spinner triangle-->
+                <ImageView
+                    style="@style/Theme.InstaGraph.Spinner.Triangle"
+                    android:layout_alignTop="@id/column_two_spinner"
+                    android:layout_alignEnd="@id/column_two_spinner"
+                    android:contentDescription="@string/empty_content_description"/>
             </RelativeLayout>
 
             <!--Next and back buttons-->

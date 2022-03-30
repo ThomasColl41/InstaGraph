@@ -120,10 +120,17 @@
                 <!--Trend spinner-->
                 <Spinner
                     android:id="@+id/ar_trend_spinner"
-                    style="@style/Theme.InstaGraph.Column.Spinner"
+                    style="@style/Theme.InstaGraph.Spinner"
                     android:layout_toEndOf="@id/ar_trend"
                     android:layout_alignTop="@id/ar_trend"
                     android:prompt="@string/trend_spinner_prompt"/>
+
+                <!--Spinner triangle-->
+                <ImageView
+                    style="@style/Theme.InstaGraph.Spinner.Triangle"
+                    android:layout_alignTop="@id/ar_trend_spinner"
+                    android:layout_alignEnd="@id/ar_trend_spinner"
+                    android:contentDescription="@string/empty_content_description"/>
             </RelativeLayout>
 
             <!--ARIMA-->
@@ -197,10 +204,17 @@
                 <!--Trend spinner-->
                 <Spinner
                     android:id="@+id/arima_trend_spinner"
-                    style="@style/Theme.InstaGraph.Column.Spinner"
+                    style="@style/Theme.InstaGraph.Spinner"
                     android:layout_toEndOf="@id/arima_trend"
                     android:layout_alignTop="@id/arima_trend"
                     android:prompt="@string/trend_spinner_prompt"/>
+
+                <!--Spinner triangle-->
+                <ImageView
+                    style="@style/Theme.InstaGraph.Spinner.Triangle"
+                    android:layout_alignTop="@id/arima_trend_spinner"
+                    android:layout_alignEnd="@id/arima_trend_spinner"
+                    android:contentDescription="@string/empty_content_description"/>
             </RelativeLayout>
 
             <!--SES-->
@@ -239,10 +253,17 @@
                 <!--Trend spinner-->
                 <Spinner
                     android:id="@+id/hwes_trend_spinner"
-                    style="@style/Theme.InstaGraph.Column.Spinner"
+                    style="@style/Theme.InstaGraph.Spinner"
                     android:layout_toEndOf="@id/hwes_trend"
                     android:layout_alignTop="@id/hwes_trend"
                     android:prompt="@string/trend_spinner_prompt"/>
+
+                <!--Spinner triangle-->
+                <ImageView
+                    style="@style/Theme.InstaGraph.Spinner.Triangle"
+                    android:layout_alignTop="@id/hwes_trend_spinner"
+                    android:layout_alignEnd="@id/hwes_trend_spinner"
+                    android:contentDescription="@string/empty_content_description"/>
 
                 <!--Seasonal text-->
                 <TextView
@@ -255,10 +276,17 @@
                 <!--Seasonal spinner-->
                 <Spinner
                     android:id="@+id/hwes_seasonal_spinner"
-                    style="@style/Theme.InstaGraph.Column.Spinner"
+                    style="@style/Theme.InstaGraph.Spinner"
                     android:layout_toEndOf="@id/hwes_seasonal"
                     android:layout_alignTop="@id/hwes_seasonal"
                     android:prompt="@string/seasonal_spinner_prompt"/>
+
+                <!--Spinner triangle-->
+                <ImageView
+                    style="@style/Theme.InstaGraph.Spinner.Triangle"
+                    android:layout_alignTop="@id/hwes_seasonal_spinner"
+                    android:layout_alignEnd="@id/hwes_seasonal_spinner"
+                    android:contentDescription="@string/empty_content_description"/>
 
                 <!--Seasonal period text-->
                 <TextView
@@ -299,11 +327,18 @@
                 <!--First/Last spinner-->
                 <Spinner
                     android:id="@+id/row_limit_first_last_spinner"
-                    style="@style/Theme.InstaGraph.Column.Spinner"
+                    style="@style/Theme.InstaGraph.Spinner"
                     android:layout_width="@dimen/first_last_spinner_width"
                     android:layout_below="@id/row_limit_text"
                     android:layout_marginTop="@dimen/parameter_gap"
                     android:prompt="@string/first_last_spinner_prompt"/>
+
+                <!--Spinner triangle-->
+                <ImageView
+                    style="@style/Theme.InstaGraph.Spinner.Triangle"
+                    android:layout_alignTop="@id/row_limit_first_last_spinner"
+                    android:layout_alignEnd="@id/row_limit_first_last_spinner"
+                    android:contentDescription="@string/empty_content_description"/>
 
                 <!--Row limit input-->
                 <EditText

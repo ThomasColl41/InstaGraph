@@ -225,10 +225,19 @@
     </style>
 
     <!--Theme for spinners-->
-    <style name="Theme.InstaGraph.Column.Spinner" parent="Widget.AppCompat.Spinner">
+    <style name="Theme.InstaGraph.Spinner" parent="Widget.AppCompat.Spinner">
         <item name="android:layout_width">@dimen/spinner_width</item>
         <item name="android:layout_height">@dimen/spinner_height</item>
         <item name="android:background">@drawable/instagraph_spinner_background</item>
+    </style>
+
+    <!--Theme for spinner triangle-->
+    <style name="Theme.InstaGraph.Spinner.Triangle" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">@dimen/spinner_triangle_width</item>
+        <item name="android:layout_height">@dimen/spinner_triangle_height</item>
+        <item name="android:background">@drawable/instagraph_spinner_triangle</item>
+        <item name="android:layout_marginTop">@dimen/spinner_triangle_margin</item>
+        <item name="android:layout_marginEnd">@dimen/spinner_triangle_margin</item>
     </style>
 
     <!--Theme for parameter input-->
