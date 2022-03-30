@@ -88,7 +88,12 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
                 userParameters.getCol2(),
                 userParameters.getTitle(),
                 userParameters.getGraphType(),
-                userParameters.getModel()
+                userParameters.getModel(),
+                userParameters.getPara1(),
+                userParameters.getPara2(),
+                userParameters.getPara3(),
+                userParameters.getPara4(),
+                userParameters.getNumPredictions()
         );
 
         // Log the contents of the PyObject (should be a byte array)

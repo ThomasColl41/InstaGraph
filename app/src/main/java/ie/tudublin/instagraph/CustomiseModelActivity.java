@@ -33,9 +33,9 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
 
     RelativeLayout mainLayout;
 
-    Popup waitPopup;
+    Popup errorPopup;
 
-    PopupWindow popWindow;
+    PopupWindow errorWindow;
 
     RelativeLayout ar;
     RelativeLayout arima;
@@ -56,12 +56,13 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
     Spinner arimaTrendSpinner;
 
     Spinner hwesTrendSpinner;
-    Spinner hwesDampedTrendSpinner;
     Spinner hwesSeasonalSpinner;
     EditText hwesSeasonalPeriodInput;
 
     Spinner rowLimitFirstLastSpinner;
     EditText rowLimitInput;
+
+    EditText numPredictionsInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,10 +80,12 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
         modelName = findViewById(R.id.model_name);
         rowLimitFirstLastSpinner = findViewById(R.id.row_limit_first_last_spinner);
         rowLimitInput = findViewById(R.id.row_limit_input);
+        numPredictionsInput = findViewById(R.id.num_predictions_input);
 
         submit.setOnClickListener(this);
         cancel.setOnClickListener(this);
 
+        errorPopup = new Popup(CustomiseModelActivity.this, mainLayout);
 
         Intent fromSelectColumns = getIntent();
         userParameters = fromSelectColumns.getParcelableExtra("userParameters");
@@ -115,42 +118,31 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onClick(View view) {
+        // The the user limits the number of rows, it should be at least 2
+        if(!rowLimitInput.getText().toString().equals("")) {
+            if(Integer.parseInt(rowLimitInput.getText().toString()) < 2) {
+                errorWindow = errorPopup.showPopup(getString(R.string.not_enough_rows), false);
+                return;
+            }
+        }
+
+        // Check that the user has not entered a seasonal period less than 2 for HWES
+        if(userParameters.getModel().equals("HWES") && Integer.parseInt(hwesSeasonalPeriodInput.getText().toString()) < 2) {
+            errorWindow = errorPopup.showPopup("The seasonal period must be greater than 2.", false);
+            return;
+        }
         switch(view.getId()) {
             case(R.id.submit):
-                // Submit changes
-                switch(userParameters.getModel()) {
-                    case "AR":
-                        userParameters.setPara1(arOrderInput.getText().toString());
-                        userParameters.setPara2(arTrendSpinner.getSelectedItem().toString());
-                        break;
+                // Set the custom parameters in the userParameters object
+                setParameters(userParameters.getModel());
 
-                    case "ARIMA":
-                        userParameters.setPara1(arimaAROrderInput.getText().toString());
-                        userParameters.setPara2(arimaDiffOrderInput.getText().toString());
-                        userParameters.setPara3(arimaMAOrderInput.getText().toString());
-                        userParameters.setPara4(arimaTrendSpinner.getSelectedItem().toString());
-                        break;
-
-                    // No parameters for SES
-
-                    case "HWES":
-                        userParameters.setPara1(hwesTrendSpinner.getSelectedItem().toString());
-                        userParameters.setPara2(hwesDampedTrendSpinner.getSelectedItem().toString());
-                        userParameters.setPara3(hwesSeasonalSpinner.getSelectedItem().toString());
-                        userParameters.setPara4(hwesSeasonalPeriodInput.getText().toString());
-                        break;
-                }
-
-                // Set the parameters for the row limit
-                userParameters.setFirstLast(rowLimitFirstLastSpinner.getSelectedItem().toString());
-                userParameters.setRowLimit(rowLimitInput.getText().toString());
-
+                // Return to SelectColumnsActivity with the newly updated userParameters
                 Intent returnToSelectColumns = new Intent(CustomiseModelActivity.this, SelectColumnsActivity.class);
                 returnToSelectColumns.putExtra("userParameters", userParameters);
                 setResult(RESULT_OK, returnToSelectColumns);
                 finish();
             case(R.id.cancel):
-                // Cancel changes
+                // Cancel changes, no update to userParameters needed
                 finish();
         }
     }
@@ -158,16 +150,16 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
     @Override
     protected void onResume() {
         super.onResume();
-        if(popWindow != null && popWindow.isShowing()) {
-            popWindow.dismiss();
+        if(errorWindow != null && errorWindow.isShowing()) {
+            errorWindow.dismiss();
         }
     }
 
     // Method to display options for the chosen forecasting model
-    public void displayModelParameters(String model_choice) {
+    public void displayModelParameters(String modelChoice) {
         // Set the content of the modelName TextView to that of the chosen model
         modelName.setText(userParameters.getModel());
-        switch(model_choice) {
+        switch(modelChoice) {
             case "AR":
                 ar.setVisibility(View.VISIBLE);
                 arOrderInput = findViewById(R.id.ar_order_input);
@@ -189,20 +181,18 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
             case "HWES":
                 hwes.setVisibility(View.VISIBLE);
                 hwesTrendSpinner = findViewById(R.id.hwes_trend_spinner);
-                hwesDampedTrendSpinner = findViewById(R.id.hwes_damped_trend_spinner);
                 hwesSeasonalSpinner = findViewById(R.id.hwes_seasonal_spinner);
                 hwesSeasonalPeriodInput = findViewById(R.id.hwes_seasonal_period_input);
                 break;
         }
-        prepareModelParameters(model_choice);
+        prepareModelParameters(modelChoice);
     }
 
     // Method to perpare model parameters for user input
-    public void prepareModelParameters(String model_choice) {
+    public void prepareModelParameters(String modelChoice) {
         // Get the string array resources from strings.xml
         String[] trends = getResources().getStringArray(R.array.trend);
         String[] hwesTrends = getResources().getStringArray(R.array.hwes_trend);
-        String[] boolValues = getResources().getStringArray(R.array.bool_spinner);
         String[] firstLast = getResources().getStringArray(R.array.first_last);
 
         // Load the string array values into the ArrayAdapters
@@ -216,11 +206,6 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
                 androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
                 hwesTrends);
 
-        ArrayAdapter<String> boolArray = new ArrayAdapter<>(
-                this,
-                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
-                boolValues);
-
         ArrayAdapter<String> firstLastArray = new ArrayAdapter<>(
                 this,
                 androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
@@ -229,16 +214,14 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
         // Set the appearance of dropdown items
         trendArray.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
         hwesTrendArray.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-        boolArray.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
         firstLastArray.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
 
         // Refresh the view if the data changes
         trendArray.notifyDataSetChanged();
         hwesTrendArray.notifyDataSetChanged();
-        boolArray.notifyDataSetChanged();
         firstLastArray.notifyDataSetChanged();
 
-        switch(model_choice) {
+        switch(modelChoice) {
             case "AR":
                 arTrendSpinner.setAdapter(trendArray);
                 break;
@@ -251,7 +234,6 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
 
             case"HWES":
                 hwesTrendSpinner.setAdapter(hwesTrendArray);
-                hwesDampedTrendSpinner.setAdapter(boolArray);
                 hwesSeasonalSpinner.setAdapter(hwesTrendArray);
                 break;
         }
@@ -259,23 +241,54 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
         rowLimitFirstLastSpinner.setAdapter(firstLastArray);
     }
 
-    // Method to retrieve AR parameters from use input
-    public void getARParameters() {
+    // Method to set the custom parameters depending on the choice of model
+    public void setParameters(String modelChoice) {
+        // Submit changes
+        switch(modelChoice) {
+            case "AR":
+                userParameters.setPara1(arOrderInput.getText().toString());
+                userParameters.setPara2(determineTrend(arTrendSpinner.getSelectedItem().toString()));
+                break;
 
+            case "ARIMA":
+                userParameters.setPara1(arimaAROrderInput.getText().toString());
+                userParameters.setPara2(arimaDiffOrderInput.getText().toString());
+                userParameters.setPara3(arimaMAOrderInput.getText().toString());
+                userParameters.setPara4(determineTrend(arimaTrendSpinner.getSelectedItem().toString()));
+                break;
+
+            // No parameters for SES
+
+            case "HWES":
+                userParameters.setPara1(hwesTrendSpinner.getSelectedItem().toString().toLowerCase());
+                userParameters.setPara2(hwesSeasonalSpinner.getSelectedItem().toString().toLowerCase());
+                userParameters.setPara3(hwesSeasonalPeriodInput.getText().toString());
+                break;
+        }
+
+        // Set the parameters for the row limit
+        userParameters.setFirstLast(rowLimitFirstLastSpinner.getSelectedItem().toString());
+        userParameters.setRowLimit(rowLimitInput.getText().toString());
+
+        // Set the number of predictions parameter
+        userParameters.setNumPredictions(numPredictionsInput.getText().toString());
     }
 
-    // Method to retrieve ARIMA parameters from use input
-    public void getARIMAParameters() {
+    // Method to covert the chosen value for trend into one that will be accepted by the models
+    public String determineTrend(String trendValue) {
+        switch(trendValue) {
+            case "No trend":
+                return "n";
+            case "Constant only":
+                return "c";
+            case "Time trend only":
+                return "t";
+            case "Constant and time trend":
+                return "ct";
 
-    }
+        }
 
-    // Method to retrieve SES parameters from use input
-    public void getSESParameters() {
-
-    }
-
-    // Method to retrieve HWES parameters from use input
-    public void getHWESParameters() {
-
+        // Return "c" by default
+        return "c";
     }
 }

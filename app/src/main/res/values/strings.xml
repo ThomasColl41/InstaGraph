@@ -45,7 +45,6 @@
     <string name="horizontal_bar_chart_col1">Labels</string>
     <string name="horizontal_bar_chart_col2">Data</string>
     <string name="trend_spinner_prompt">Trend</string>
-    <string name="damped_trend_spinner_prompt">Damped Trend</string>
     <string name="seasonal_spinner_prompt">Seasonal</string>
     <string name="preview_not_found">The preview plot could not be found. Please try again or use a different URL.</string>
     <string name="preview_unknown_error">An unknown error has occurred. Please ensure the URL is correct and try again.</string>
@@ -71,7 +70,6 @@
     <string name="arima_diff_order">Diff Order</string>
     <string name="arima_diff_order_hint">Order of Differencing</string>
     <string name="ses_no_customisation_text">No SES parameters are available to customise.</string>
-    <string name="hwes_damped_trend_text">Damped Trend</string>
     <string name="hwes_seasonal_text">Seasonal</string>
     <string name="hwes_seasonal_period_text">Seasonal Period</string>
     <string name="hwes_seasonal_period_input_hint">Period of Seasonality</string>
@@ -84,6 +82,10 @@
     <string name="custom_parameters_not_found">Your custom parameters could not be retrieved. Please try again.</string>
     <string name="custom_parameters_unknown_error">An unknown error occurred when retrieving custom parameters. Please try again.</string>
     <string name="url_blank">URL cannot be blank. Please enter a value for URL and try again.</string>
+    <string name="not_enough_rows_to_predict">There are not enough rows in the dataset to predict values. Please adjust the row limit or use a bigger dataset and try again.</string>
+    <string name="not_enough_rows">Not enough rows of been selected. Please use at least 2 rows.</string>
+    <string name="num_predictions_hint">Number of Predictions</string>
+    <string name="num_predictions_text">Enter the number of predictions to make\n(Leave blank to predict 12 steps ahead.</string>
     <string-array name="models">
         <item>AR</item>
         <item>ARIMA</item>

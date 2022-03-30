@@ -76,4 +76,5 @@
     <dimen name="first_last_spinner_width">100dp</dimen>
     <dimen name="cancel_button_text">38sp</dimen>
     <dimen name="model_spinner_and_customise_button_gap">10dp</dimen>
+    <dimen name="num_predictions_input_width">300dp</dimen>
 </resources>

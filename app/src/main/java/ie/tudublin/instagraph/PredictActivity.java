@@ -36,8 +36,14 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
     RelativeLayout mainLayout;
 
     Popup pop;
+    Popup waitPopup;
+    Popup errorPopup;
 
     PopupWindow popWindow;
+    PopupWindow waitWindow;
+    PopupWindow errorWindow;
+
+    int modelRows;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +61,8 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         downloadIcon.setOnClickListener(this);
 
         pop = new Popup(PredictActivity.this, mainLayout);
+        waitPopup = new Popup(PredictActivity.this, mainLayout);
+        errorPopup = new Popup(PredictActivity.this, mainLayout);
 
         // Get user choices from previous activities
         // URL, graph choice, columns, etc.
@@ -79,7 +87,9 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
                 "read_model_data",
                 userParameters.getDatasetPath(),
                 userParameters.getCol1(),
-                userParameters.getCol2()
+                userParameters.getCol2(),
+                userParameters.getFirstLast(),
+                userParameters.getRowLimit()
         ).toString();
 
         userParameters.setModelDataPath(modelDataPath);
@@ -94,6 +104,9 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
                 userParameters.getTitle()
         );
 
+        modelRows = Integer.parseInt(instaGraphPyObject.callAttr("model_rows", userParameters.getModelDataPath()).toString());
+        Log.i("InstaGraph", "The model has " + modelRows + "rows.");
+
         // Log the contents of the PyObject (should be a byte array)
         Log.i("InstaGraph", plot_image.toString());
 
@@ -105,10 +118,10 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
             plot_window.setImageBitmap(bmp);
         }
         catch (NullPointerException npe) {
-            popWindow = pop.showPopup(getString(R.string.graph_not_found), false);
+            errorWindow = errorPopup.showPopup(getString(R.string.graph_not_found), false);
         }
         catch (Exception e) {
-            popWindow = pop.showPopup(getString(R.string.graph_unknown_error), false);
+            errorWindow = errorPopup.showPopup(getString(R.string.graph_unknown_error), false);
         }
     }
 
@@ -116,9 +129,13 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch(view.getId()) {
             case(R.id.next):
+                if(modelRows < minimumPredictionRows(userParameters.getModel())) {
+                    errorWindow = errorPopup.showPopup(getString(R.string.not_enough_rows_to_predict), false);
+                    return;
+                }
                 Intent goToResult = new Intent(PredictActivity.this, ResultActivity.class);
                 goToResult.putExtra("userParameters", userParameters);
-                popWindow = pop.showPopup(getString(R.string.please_wait), true);
+                waitWindow = waitPopup.showPopup(getString(R.string.please_wait), true);
                 startActivity(goToResult);
                 break;
 
@@ -138,11 +155,60 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    // Method to get the minimum number of rows required for prediction
+    public int minimumPredictionRows(String modelChoice) {
+        switch(modelChoice) {
+            case "AR":
+                if(userParameters.getPara1().equals("")) {
+                    // The default AR model required at least 26 rows for predictions
+                    return 26;
+                }
+                else {
+                    return (1 + Integer.parseInt(userParameters.getPara1()) * 2) + 1;
+                }
+            case "ARIMA":
+                // If any of the custom parameters are not set, set them to be the highest possible default
+                // Minimum rows for default model is 26
+                if(userParameters.getPara1().equals("")) {
+                    userParameters.setPara1("12");
+                }
+                if(userParameters.getPara2().equals("")) {
+                    userParameters.setPara2("2");
+                }
+                if(userParameters.getPara2().equals("")) {
+                    userParameters.setPara3("1");
+                }
+                return ((1 +Integer.parseInt(userParameters.getPara1()) +
+                        Integer.parseInt(userParameters.getPara2()) +
+                        Integer.parseInt(userParameters.getPara3())) * 2) + 1;
+
+            case "SES":
+                // No additional rows required for prediction in SES
+                return 2;
+
+            case "HWES":
+                if(userParameters.getPara3().equals("")) {
+                    userParameters.setPara3("12");
+                }
+                // At least 13 rows required for default seasonal period of 12
+                return Integer.parseInt(userParameters.getPara3()) + 1;
+        }
+
+        // By default, return the highest default requirement
+        return 26;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         if(popWindow != null && popWindow.isShowing()) {
             popWindow.dismiss();
+        }
+        if(waitWindow != null && waitWindow.isShowing()) {
+            waitWindow.dismiss();
+        }
+        if(errorWindow != null && errorWindow.isShowing()) {
+            errorWindow.dismiss();
         }
     }
 }

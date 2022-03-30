@@ -27,6 +27,9 @@ public class ParameterParcel implements Parcelable {
     String firstLast;
     String rowLimit;
 
+    // The number of steps to predict ahead
+    String numPredictions;
+
     // Constructor
     public ParameterParcel() {
         this.url = "";
@@ -44,6 +47,7 @@ public class ParameterParcel implements Parcelable {
         this.para4 = null;
         this.firstLast = null;
         this.rowLimit = null;
+        this.numPredictions = null;
     }
 
     // Getters and Setters
@@ -167,6 +171,14 @@ public class ParameterParcel implements Parcelable {
         this.rowLimit = rowLimit;
     }
 
+    public String getNumPredictions() {
+        return numPredictions;
+    }
+
+    public void setNumPredictions(String numPredictions) {
+        this.numPredictions = numPredictions;
+    }
+
     // toString
     @NonNull
     @Override
@@ -187,6 +199,7 @@ public class ParameterParcel implements Parcelable {
                 ", para4='" + para4 + '\'' +
                 ", firstLast='" + firstLast + '\'' +
                 ", rowLimit='" + rowLimit + '\'' +
+                ", numPredictions='" + numPredictions + '\'' +
                 '}';
     }
 
@@ -207,6 +220,7 @@ public class ParameterParcel implements Parcelable {
         this.para4 = in.readString();
         this.firstLast = in.readString();
         this.rowLimit = in.readString();
+        this.numPredictions = in.readString();
     }
 
     public static final Creator<ParameterParcel> CREATOR = new Creator<ParameterParcel>() {
@@ -243,5 +257,6 @@ public class ParameterParcel implements Parcelable {
         parcel.writeString(this.para4);
         parcel.writeString(this.firstLast);
         parcel.writeString(this.rowLimit);
+        parcel.writeString(this.numPredictions);
     }
 }

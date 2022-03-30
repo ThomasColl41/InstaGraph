@@ -158,21 +158,41 @@ def get_column_names(file_name):
     return list(dataset.columns.values)
 
 # Function to generate the model_data DataFrame and save it
-def read_model_data(file_name, xlabel='x-axis', ylabel='y-axis'):
+def read_model_data(file_name, xlabel='x-axis', ylabel='y-axis', first_last='', row_limit=''):
     try:
         # Read the local copy of the dataset
         dataset = pd.read_csv(file_name, skip_blank_lines=True)
     except FileNotFoundError:
         raise Error('Local copy of dataset could not be read.')
 
-    model_data = pd.DataFrame(dataset[ylabel])
-    model_data.index = dataset[xlabel]
+    # Check whether the user wishes to limit the number of rows
+    if first_last != '' and row_limit != '' and row_limit is not None:
+        rl = abs(int(row_limit))
+
+        # Depending on whether First or Last was chosen, slice the dataset accordingly
+        if first_last == 'First':
+            limited_dataset = dataset[:rl]
+        else:
+            limited_dataset = dataset[-rl:]
+
+        # Create the model_data DataFrame with the limited number of rows
+        model_data = pd.DataFrame(limited_dataset[ylabel])
+        model_data.index = limited_dataset[xlabel]
+    else:
+        model_data = pd.DataFrame(dataset[ylabel])
+        model_data.index = dataset[xlabel]
 
     # Inspired from https://www.youtube.com/watch?v=sm02Q91ujfs&list=PLeOtHc_su2eXZuiqCH4pBgV6vamBbP88K&index=7
     files_dir = str(Python.getPlatform().getApplication().getFilesDir())
     file_name = join(dirname(files_dir),'model_data.csv')
     model_data.to_csv(file_name, index=True)
     return file_name
+
+# Function to return the number of rows in the model_data dataset
+def model_rows(file_name):
+    model_data = pd.read_csv(file_name, skip_blank_lines=True, header=0)
+    nrows = model_data.shape[0]
+    return str(nrows)
 
 # Function to plot a graph based on user choice
 def graph_plot(file_name, graph_choice, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph'):
@@ -307,7 +327,7 @@ def stationarity_test(data, d_label):
     return str(stationarity)
 
 # Function to predict future values
-def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph', graph_choice='Line Graph', model_choice='AR'):
+def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph', graph_choice='Line Graph', model_choice='AR', para1='', para2='', para3='', para4='', num_predictions=''):
     model_data = pd.read_csv(file_name, skip_blank_lines=True)
 
     # Reassign the index to the dataset and drop the index column
@@ -318,33 +338,65 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
 
     # Limit number of lags to check to 12 to reduce execution time
     max_lag = 12
-    num_predictions = 12
+    if num_predictions == '':
+        num_predictions = 12
+    else:
+        num_predictions = abs(int(num_predictions))
 
-    # Determine appropriate lag structure
-    model_lags = ar_select_order(model_data, maxlag=max_lag, ic='aic').ar_lags
-
-    # Try and create a model with the appropriate lag structure
-    model = AutoReg(model_data, lags=model_lags).fit()
+    # Determine appropriate lag structure for AR and ARIMA models
+    if model_choice == 'AR' or model_choice == 'ARIMA':
+        model_lags = ar_select_order(model_data, maxlag=max_lag, ic='aic').ar_lags
+    else:
+        model_lags = 0
 
     if model_choice == 'AR':
         # Autoregression
-        model = ar_select_order(model_data, max_lag, 'aic').model.fit()
+        # If custom parameters are blank, set them with appropriate values
+        if para1 == '':
+            para1 = model_lags
+        else:
+            para1 = abs(int(para1))
+        if para2 == '':
+            para2 = 'c'
+
+        model = AutoReg(model_data, lags=para1, trend=para2).fit()
+
     elif model_choice == 'ARIMA':
         # ARIMA
-        station = stationarity_test(model_data, ylabel)
-        if station == 'First_Diff':
+        differencing = stationarity_test(model_data, ylabel)
+        if differencing == 'First_Diff':
             diff_order = 1
-        elif station == 'Second_Diff':
+        elif differencing == 'Second_Diff':
             diff_order = 2
         else:
             diff_order = 0
-        model = ARIMA(model_data, order=(model_lags,diff_order,1)).fit()
+
+        # If custom parameters are blank, set them with appropriate values
+        if para1 == '':
+            para1 = model_lags
+        if para2 == '':
+            para2 = diff_order
+        if para3 == '':
+            para3 = 1
+        if para4 == '':
+            para4 = 'c'
+
+        model = ARIMA(model_data, order=(int(para1), int(para2), int(para3)), trend=para4).fit()
     elif model_choice == 'SES':
         # SES
+        # No custom parameters in SES
         model = SimpleExpSmoothing(model_data).fit()
     elif model_choice == 'HWES':
         # HWES
-        model = ExponentialSmoothing(model_data, trend='add', seasonal='add', seasonal_periods=12).fit()
+        # If custom parameters are blank, set them with appropriate values
+        if para1 == '':
+            para1 = 'additive'
+        if para2 == '':
+            para2 = 'additive'
+        if para3 == '':
+            para3 = 12
+
+        model = ExponentialSmoothing(model_data, trend=para1, seasonal=para2, seasonal_periods=int(para3)).fit()
     else:
         raise Error('The choice of model could not be determined')
 
@@ -354,9 +406,9 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
         # If SES is used, adjust the smoothing parameter to be optimised
         # Inspired by https://www.statsmodels.org/devel/examples/notebooks/generated/exponential_smoothing.html#Holt%E2%80%99s-Winters-Seasonal
         if model_choice == 'SES':
-            predictions = model.predict(model_data.index[-1], model_data.index[-1] + pd.Timedelta(num_predictions, unit=str(model_data.index.freqstr))).rename(r"$\alpha=%s$" % model.model.params["smoothing_level"])
+            predictions = model.predict(model_data.index[-1], model_data.index[-1] + pd.Timedelta(num_predictions - 1, unit=str(model_data.index.freqstr))).rename(r"$\alpha=%s$" % model.model.params["smoothing_level"])
         else:
-            predictions = model.predict(model_data.index[-1], model_data.index[-1] + pd.Timedelta(num_predictions, unit=str(model_data.index.freqstr)))
+            predictions = model.predict(model_data.index[-1], model_data.index[-1] + pd.Timedelta(num_predictions - 1, unit=str(model_data.index.freqstr)))
     # Otherwise, add on to the RangeIndex
     else:
         # If SES is used, adjust the smoothing parameter to be optimised
@@ -408,14 +460,19 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
         # Rotate the x-axis values by 45 degrees
         plt.xticks(rotation=45)
 
+    if isinstance(full_data.index, pd.DatetimeIndex):
+        step_back = 1
+    else:
+        step_back = 2
+
     # Catch incorrect data type execeptions when trying to plot data
     try:
         if graph_choice == 'Line Graph':
-            ax.plot(full_data[:-num_predictions + 1], linewidth=2)
-            ax.plot(full_data[-num_predictions:], color='red', linewidth=2)
+            ax.plot(full_data[:-num_predictions], linewidth=2)
+            ax.plot(full_data[-num_predictions - step_back:], color='red', linewidth=2)
         elif graph_choice == 'Bar Chart':
-            ax.bar(full_data[:-num_predictions + 1].index.values, full_data[:-num_predictions + 1])
-            ax.bar(full_data[-num_predictions:].index.values, full_data[-num_predictions:], color='red')
+            ax.bar(full_data[:-num_predictions].index.values, full_data[:-num_predictions + 1])
+            ax.bar(full_data[-num_predictions - step_back:].index.values, full_data[-num_predictions:], color='red')
         elif graph_choice == 'Pie Chart':
             # ax.pie(full_data2.index.values)
             # ax.pie(full_data)
@@ -431,8 +488,8 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
             ax.set_xlabel('')
             ax.set_ylabel('')
         elif graph_choice == 'Horizontal Bar Chart':
-            ax.barh(full_data[:-num_predictions + 1].index.values, full_data[:-num_predictions + 1])
-            ax.barh(full_data[-num_predictions:].index.values, full_data[-num_predictions:], color='red')
+            ax.barh(full_data[:-num_predictions].index.values, full_data[:-num_predictions + 1])
+            ax.barh(full_data[-num_predictions - step_back:].index.values, full_data[-num_predictions:], color='red')
             ax.set_xlabel(ylabel)
             ax.set_ylabel(xlabel)
     except TypeError as te:

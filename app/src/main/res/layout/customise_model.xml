@@ -244,28 +244,12 @@
                     android:layout_alignTop="@id/hwes_trend"
                     android:prompt="@string/trend_spinner_prompt"/>
 
-                <!--Damped trend text-->
-                <TextView
-                    android:id="@+id/hwes_damped_trend"
-                    style="@style/Theme.InstaGraph.Column.Text"
-                    android:text="@string/hwes_damped_trend_text"
-                    android:layout_below="@id/hwes_trend"
-                    android:layout_marginTop="@dimen/parameter_gap"/>
-
-                <!--Damped trend spinner-->
-                <Spinner
-                    android:id="@+id/hwes_damped_trend_spinner"
-                    style="@style/Theme.InstaGraph.Column.Spinner"
-                    android:layout_toEndOf="@id/hwes_damped_trend"
-                    android:layout_alignTop="@id/hwes_damped_trend"
-                    android:prompt="@string/damped_trend_spinner_prompt"/>
-
                 <!--Seasonal text-->
                 <TextView
                     android:id="@+id/hwes_seasonal"
                     style="@style/Theme.InstaGraph.Column.Text"
                     android:text="@string/hwes_seasonal_text"
-                    android:layout_below="@id/hwes_damped_trend"
+                    android:layout_below="@id/hwes_trend"
                     android:layout_marginTop="@dimen/parameter_gap"/>
 
                 <!--Seasonal spinner-->
@@ -332,13 +316,43 @@
                     android:hint="@string/row_limit_input_hint"/>
             </RelativeLayout>
 
+            <!--Number of predictions-->
+            <RelativeLayout
+                android:id="@+id/num_predictions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/row_limit"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/parameter_gap">
+
+                <!--Number of predictions text-->
+                <TextView
+                    android:id="@+id/num_predictions_text"
+                    style="@style/Theme.InstaGraph.Column.Text"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_marginEnd="@dimen/no_gap"
+                    android:text="@string/num_predictions_text"/>
+
+                <!--Number of predictions input-->
+                <EditText
+                    android:id="@+id/num_predictions_input"
+                    style="@style/Theme.InstaGraph.Input.Parameter"
+                    android:layout_width="@dimen/num_predictions_input_width"
+                    android:inputType="number"
+                    android:importantForAutofill="no"
+                    android:layout_below="@id/num_predictions_text"
+                    android:layout_marginTop="@dimen/parameter_gap"
+                    android:hint="@string/num_predictions_hint"/>
+            </RelativeLayout>
+
             <!--Submit button-->
             <Button
                 android:id="@+id/submit"
                 style="@style/Theme.InstaGraph.Button.Big"
                 android:text="@string/submit_button_text"
                 android:textSize="@dimen/submit_button_text"
-                android:layout_below="@id/row_limit"
+                android:layout_below="@id/num_predictions"
                 android:layout_marginTop="@dimen/parameter_gap"
                 android:contentDescription="@string/submit_button_text"/>
 
