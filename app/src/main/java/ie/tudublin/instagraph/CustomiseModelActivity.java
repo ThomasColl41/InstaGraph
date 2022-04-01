@@ -34,8 +34,10 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
     RelativeLayout mainLayout;
 
     Popup errorPopup;
+    Popup infoPopup;
 
     PopupWindow errorWindow;
+    PopupWindow infoWindow;
 
     RelativeLayout ar;
     RelativeLayout arima;
@@ -44,6 +46,7 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
 
     Button submit;
     Button cancel;
+    Button modelInfo;
 
     TextView modelName;
 
@@ -73,6 +76,7 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
 
         submit = findViewById(R.id.submit);
         cancel = findViewById(R.id.cancel);
+        modelInfo = findViewById(R.id.model_info);
         ar = findViewById(R.id.ar);
         arima = findViewById(R.id.arima);
         ses = findViewById(R.id.ses);
@@ -84,8 +88,10 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
 
         submit.setOnClickListener(this);
         cancel.setOnClickListener(this);
+        modelInfo.setOnClickListener(this);
 
         errorPopup = new Popup(CustomiseModelActivity.this, mainLayout);
+        infoPopup = new Popup(CustomiseModelActivity.this, mainLayout);
 
         Intent fromSelectColumns = getIntent();
         userParameters = fromSelectColumns.getParcelableExtra("userParameters");
@@ -143,9 +149,33 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
                 returnToSelectColumns.putExtra("userParameters", userParameters);
                 setResult(RESULT_OK, returnToSelectColumns);
                 finish();
+                break;
+
             case(R.id.cancel):
                 // Cancel changes, no update to userParameters needed
                 finish();
+                break;
+
+            case(R.id.model_info):
+                // Display information appropriate to the chosen model
+                switch(userParameters.getModel()) {
+                    case "AR":
+                        infoWindow = infoPopup.showPopup(getString(R.string.ar_model_info), false);
+                        break;
+
+                    case "ARIMA":
+                        infoWindow = infoPopup.showPopup(getString(R.string.arima_model_info), false);
+                        break;
+
+                    case "SES":
+                        infoWindow = infoPopup.showPopup(getString(R.string.ses_model_info), false);
+                        break;
+
+                    case "HWES":
+                        infoWindow = infoPopup.showPopup(getString(R.string.hwes_model_info), false);
+                        break;
+                }
+                break;
         }
     }
 

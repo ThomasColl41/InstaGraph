@@ -6,7 +6,7 @@
     <dimen name="logo_height">250dp</dimen>
     <dimen name="info_button_width">50dp</dimen>
     <dimen name="info_button_height">50dp</dimen>
-    <dimen name="popup_text">18sp</dimen>
+    <dimen name="popup_text">14sp</dimen>
     <dimen name="popup_padding">10dp</dimen>
     <dimen name="progress_bar_width">50dp</dimen>
     <dimen name="progress_bar_height">50dp</dimen>

@@ -42,10 +42,6 @@
         <item name="android:layout_width">@dimen/info_button_height</item>
         <item name="android:layout_height">@dimen/info_button_height</item>
         <item name="android:background">@drawable/instagraph_info</item>
-        <item name="android:layout_below">@id/title</item>
-        <item name="android:layout_toEndOf">@id/logo</item>
-        <item name="android:layout_marginTop">@dimen/title_and_info_button_gap</item>
-        <item name="android:contentDescription">@string/empty_content_description</item>
     </style>
 
     <!--Theme for info window-->

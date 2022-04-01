@@ -1,7 +1,15 @@
 <resources>
     <string name="app_name">InstaGraph</string>
     <string name="popup_placeholder">This is a placeholder string for popups.</string>
-    <string name="instagraph_information">Information about what the app does\n\n\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n\n\nTap the information button to close.</string>
+    <string name="instagraph_information">
+        Welcome to InstaGraph!\n\n
+        This app features data visualisation and time series forecasting capabilities, broken into five steps:\n\n
+        1. Get Data: Provide a URL to a file containing your data in a CSV format.\n\n
+        2. Select Graph: Choose between a selection of charts to visualise your data.\n\n
+        3. Select Columns: Pick which columns will be plotted, as well as what forecasting model will be used to make predictions. The chosen model can be customised to experiment with different parameters.\n\n
+        4. Predict: The selected visualisation is created using the specified columns.\n\n
+        5. Result: Using the model of your choice, future values are predicted and graphed along with the original data.
+    </string>
     <string name="error_general">An error occurred</string>
     <string name="start_button_text">Start</string>
     <string name="start_button_content">Tap to start InstaGraph.</string>
@@ -69,7 +77,7 @@
     <string name="arima_ma_order_hint">Order of Moving Average</string>
     <string name="arima_diff_order">Diff Order</string>
     <string name="arima_diff_order_hint">Order of Differencing</string>
-    <string name="ses_no_customisation_text">No SES parameters are available to customise.</string>
+    <string name="ses_no_customisation_text">No SES parameters are available to customise. The smoothing parameter &#945; is optimised by default.</string>
     <string name="hwes_seasonal_text">Seasonal</string>
     <string name="hwes_seasonal_period_text">Seasonal Period</string>
     <string name="hwes_seasonal_period_input_hint">Period of Seasonality</string>
@@ -86,6 +94,31 @@
     <string name="not_enough_rows">Not enough rows of been selected. Please use at least 2 rows.</string>
     <string name="num_predictions_hint">Number of Predictions</string>
     <string name="num_predictions_text">Enter the number of predictions to make\n(Leave blank to predict 12 steps ahead.</string>
+    <string name="ar_model_info">
+        Autoregression: Uses a selection of past values to predict future ones using regression.\n\n
+        Order: The number of past values to consider.\n\n
+        Trend: Inform the model that there is a trend (general upward or downward drift of values) in your data.
+    </string>
+    <string name="arima_model_info">
+        Autoregressive Integrated Moving Average: A combination of the autoregression*, differencing** and moving average***.\n\n
+        AR Order: The number of past values to consider.\n\n
+        Diff Order: The order of differencing to apply (usually 1 or 2).\n\n
+        MA Order: The number of previous prediction errors to consider.\n\n
+        Trend: Inform the model that there is a trend (general upward or downward drift of values) in your data.
+        *Autoregression: Uses a selection of past values to predict future ones using regression.\n\n
+        **Differencing: The process of taking the difference between observations to make the data independent of time. The order of differencing refers to how many times the difference between observations is taken.\n\n
+        ***Moving Average: Uses the error of previous predictions to improve future ones in a regression-like fashion.
+    </string>
+    <string name="ses_model_info">
+        Simple Exponential Smoothing: Useful when a trend or seasonal pattern is not clear. SES associates a weight to all observations, which is a measure of its relevance when predicting future values. Larger weights are applied to more recent observations and the weights decrease exponentially over time. The decay of the weights is controlled by the smoothing parameter &#945;.
+    </string>
+    <string name="hwes_model_info">
+        Holt-Winter’s Exponential Smoothing: One variation of exponential smoothing that assigns a weight to all observations. Larger weights are applied to recent values, and the weight decays exponentially over time. HWES accounts for any trend or seasonality in your data.\n\n
+        Trend: The type of trend. Additive means there is some constant variation throughout the data. Multiplicative indicates the change is proportional to the level of the series (the average value of data at a particular time).\n\n
+        Seasonal: The type of seasonality. Additive means there is some constant variation throughout the data. Multiplicative indicates the change is proportional to the level of the series (the average value of data at a particular time).\n\n
+        Seasonal Period: The number of observations within a season. For example, a period of 12 in monthly data implies a yearly seasonal pattern, 7 for weekly, 4 for quarterly, etc.
+    </string>
+    <string name="parameter_notice">Note: All parameters are optional. Fields left blank will assume a default value.</string>
     <string-array name="models">
         <item>AR</item>
         <item>ARIMA</item>

@@ -85,13 +85,32 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/model_name_marginTop"/>
 
+            <!--Model info button-->
+            <Button
+                android:id="@+id/model_info"
+                style="@style/Theme.InstaGraph.Info.Button"
+                android:layout_alignTop="@id/model_name"
+                android:layout_alignEnd="@id/step_text"/>
+
+            <!--Optional parameter notice-->
+            <TextView
+                android:id="@+id/parameter_notice"
+                style="@style/Theme.InstaGraph.Text"
+                android:layout_below="@id/model_name"
+                android:layout_centerHorizontal="true"
+                android:layout_alignStart="@id/step_text"
+                android:layout_alignEnd="@id/step_text"
+                android:layout_marginTop="@dimen/parameter_gap"
+                android:text="@string/parameter_notice"/>
+
             <!--AR-->
             <RelativeLayout
                 android:id="@+id/ar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/model_name"
+                android:layout_below="@id/parameter_notice"
                 android:layout_alignStart="@id/step_text"
+                android:layout_alignEnd="@id/step_text"
                 android:layout_marginTop="@dimen/parameter_gap"
                 android:visibility="gone">
                 <!--Order text-->
@@ -140,6 +159,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ar"
                 android:layout_alignStart="@id/step_text"
+                android:layout_alignEnd="@id/step_text"
                 android:layout_marginTop="@dimen/parameter_gap"
                 android:visibility="gone">
                 <!--AR order text-->
@@ -223,7 +243,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/arima"
-                android:layout_centerHorizontal="true"
+                android:layout_alignStart="@id/step_text"
+                android:layout_alignEnd="@id/step_text"
                 android:layout_marginTop="@dimen/spinner_gap"
                 android:visibility="gone">
                 <!--Model text-->
@@ -242,6 +263,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ses"
                 android:layout_alignStart="@id/step_text"
+                android:layout_alignEnd="@id/step_text"
                 android:layout_marginTop="@dimen/spinner_gap"
                 android:visibility="gone">
                 <!--Trend text-->
