@@ -119,6 +119,7 @@
         Seasonal Period: The number of observations within a season. For example, a period of 12 in monthly data implies a yearly seasonal pattern, 7 for weekly, 4 for quarterly, etc.
     </string>
     <string name="parameter_notice">Note: All parameters are optional. Fields left blank will assume a default value.</string>
+    <string name="no_dataset">No dataset found (Choose File…)</string>
     <string-array name="models">
         <item>AR</item>
         <item>ARIMA</item>

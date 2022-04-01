@@ -33,10 +33,14 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
     Downloader downloader;
 
     Popup pop;
+    Popup waitPopup;
+    Popup errorPopup;
 
     RelativeLayout mainLayout;
 
     PopupWindow popWindow;
+    PopupWindow waitWindow;
+    PopupWindow errorWindow;
 
 
     // Inspired from https://www.youtube.com/watch?v=-y5eF0u1bZQ and https://www.youtube.com/watch?v=Ke9PaRdMcgc
@@ -65,14 +69,15 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
                                 String summary = data.getStringExtra("summary");
                                 dataSummary.setText(summary);
                                 dataSummary.setVisibility(View.VISIBLE);
+                                next.setAlpha(1);
                             }
                             catch (NullPointerException npe) {
-                                popWindow = pop.showPopup(getString(R.string.preview_not_found), false);
+                                errorWindow = errorPopup.showPopup(getString(R.string.preview_not_found), false);
                             }
                         }
                         else if (resCode != RESULT_CANCELED) {
                             // Otherwise, something went wrong
-                            popWindow = pop.showPopup(getString(R.string.preview_unknown_error), false);
+                            errorWindow = errorPopup.showPopup(getString(R.string.preview_unknown_error), false);
                         }
                     }
                 }
@@ -95,7 +100,8 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
         next.setOnClickListener(this);
         downloadIcon.setOnClickListener(this);
 
-        pop = new Popup(GetDataActivity.this, mainLayout);
+        waitPopup = new Popup(GetDataActivity.this, mainLayout);
+        errorPopup = new Popup(GetDataActivity.this, mainLayout);
     }
 
     @Override
@@ -103,11 +109,15 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
         switch(view.getId()) {
             case(R.id.choose_file):
                 Intent goToChooseFile = new Intent(GetDataActivity.this, GetURLActivity.class);
-                popWindow = pop.showPopup(getString(R.string.please_wait), true);
+                waitWindow = waitPopup.showPopup(getString(R.string.please_wait), true);
                 getUrlLauncher.launch(goToChooseFile);
                 break;
 
             case(R.id.next):
+                if(userParameters == null || userParameters.getDatasetPath() == null) {
+                    errorWindow = errorPopup.showPopup(getString(R.string.no_dataset),false);
+                    return;
+                }
                 Intent goToSelectGraph = new Intent(GetDataActivity.this, SelectGraphActivity.class);
                 goToSelectGraph.putExtra("userParameters", userParameters);
                 startActivity(goToSelectGraph);
@@ -115,7 +125,7 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
 
             case(R.id.download_icon):
                 if(bmp == null) {
-                    popWindow = pop.showPopup(getString(R.string.no_preview), false);
+                    errorWindow = errorPopup.showPopup(getString(R.string.no_preview), false);
                     break;
                 }
                 if(downloader == null) {
@@ -133,6 +143,12 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
         super.onResume();
         if(popWindow != null && popWindow.isShowing()) {
             popWindow.dismiss();
+        }
+        if(waitWindow != null && waitWindow.isShowing()) {
+            waitWindow.dismiss();
+        }
+        if(errorWindow != null && errorWindow.isShowing()) {
+            errorWindow.dismiss();
         }
     }
 }
