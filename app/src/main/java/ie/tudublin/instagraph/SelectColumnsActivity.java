@@ -122,23 +122,28 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
         // Run the script associated with the parameter
         instaGraphPyObject = py.getModule("instagraph");
 
-        // Run the get_column_names function
-        PyObject columnNames = instaGraphPyObject.callAttr("get_column_names", userParameters.getDatasetPath());
+        try {
+            // Run the get_column_names function
+            PyObject columnNames = instaGraphPyObject.callAttr("get_column_names", userParameters.getDatasetPath());
 
-        // Store the returned names in a String array
-        String[] names = columnNames.toJava(String[].class);
+            // Store the returned names in a String array
+            String[] names = columnNames.toJava(String[].class);
 
-        // Log the column names
-        for (String name : names) {
-            Log.i("InstaGraph", name);
+            spinnerSetup(names);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
 
-        spinnerSetup(names);
         columnTextSetup(userParameters.getGraphType());
     }
 
     @Override
     public void onClick(View view) {
+        if(col1Spinner.getSelectedItem().toString().equals(col2Spinner.getSelectedItem().toString())) {
+            errorWindow = errorPopup.showPopup(getString(R.string.identical_columns), false);
+            return;
+        }
         if(view.getId() == R.id.next || view.getId() == R.id.customise_model) {
             String title = col1Spinner.getSelectedItem().toString() + " over " + col2Spinner.getSelectedItem().toString();
             userParameters.setModel(modelSpinner.getSelectedItem().toString());
@@ -148,6 +153,19 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
         }
         switch(view.getId()) {
             case(R.id.next):
+                try {
+                    PyObject testPlot = instaGraphPyObject.callAttr(
+                            "test_plot",
+                            userParameters.getDatasetPath(),
+                            userParameters.getGraphType(),
+                            userParameters.getCol1(),
+                            userParameters.getCol2()
+                    );
+                }
+                catch (Exception e) {
+                    errorWindow = errorPopup.showPopup(e.getMessage(), false);
+                    return;
+                }
                 Intent goToPredict = new Intent(SelectColumnsActivity.this, PredictActivity.class);
                 goToPredict.putExtra("userParameters", userParameters);
                 waitPopup = new Popup(SelectColumnsActivity.this, mainLayout);

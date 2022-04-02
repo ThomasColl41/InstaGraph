@@ -107,17 +107,6 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
         // Run the script associated with the parameter
         instaGraphPyObject = py.getModule("instagraph");
 
-        // Run the get_column_names function
-        PyObject columnNames = instaGraphPyObject.callAttr("get_column_names", userParameters.getDatasetPath());
-
-        // Store the returned names in a String array
-        String[] names = columnNames.toJava(String[].class);
-
-        // Log the column names
-        for (String name : names) {
-            Log.i("InstaGraph", name);
-        }
-
         // Display the appropriate parameters depending on user choice
         displayModelParameters(userParameters.getModel());
     }
@@ -135,7 +124,7 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
         // Check that the user has not entered a seasonal period less than 2 for HWES
         if(userParameters.getModel().equals("HWES") && !hwesSeasonalPeriodInput.getText().toString().equals("")) {
             if(Integer.parseInt(hwesSeasonalPeriodInput.getText().toString()) < 2) {
-                errorWindow = errorPopup.showPopup("The seasonal period must be greater than 2.", false);
+                errorWindow = errorPopup.showPopup(getString(R.string.not_enough_seasonal_periods), false);
                 return;
             }
         }

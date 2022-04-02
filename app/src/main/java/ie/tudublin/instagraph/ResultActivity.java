@@ -80,28 +80,35 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
         // Run the script associated with the parameter
         instaGraphPyObject = py.getModule("instagraph");
 
-        // Run the predict function
-        plot_image = instaGraphPyObject.callAttr(
-                "predict",
-                userParameters.getModelDataPath(),
-                userParameters.getCol1(),
-                userParameters.getCol2(),
-                userParameters.getTitle(),
-                userParameters.getGraphType(),
-                userParameters.getModel(),
-                userParameters.getPara1(),
-                userParameters.getPara2(),
-                userParameters.getPara3(),
-                userParameters.getPara4(),
-                userParameters.getNumPredictions()
-        );
+        try {
+            // Run the predict function
+            plot_image = instaGraphPyObject.callAttr(
+                    "predict",
+                    userParameters.getModelDataPath(),
+                    userParameters.getCol1(),
+                    userParameters.getCol2(),
+                    userParameters.getTitle(),
+                    userParameters.getGraphType(),
+                    userParameters.getModel(),
+                    userParameters.getPara1(),
+                    userParameters.getPara2(),
+                    userParameters.getPara3(),
+                    userParameters.getPara4(),
+                    userParameters.getNumPredictions()
+            );
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        // Log the contents of the PyObject (should be a byte array)
-        Log.i("InstaGraph", plot_image.toString());
-
-        // Get the directory where the predictions have been saved
-        String predPath = instaGraphPyObject.callAttr("read_predictions").toString();
-        userParameters.setPredictionsPath(predPath);
+        try {
+            // Get the directory where the predictions have been saved
+            String predPath = instaGraphPyObject.callAttr("read_predictions").toString();
+            userParameters.setPredictionsPath(predPath);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Decode the byte array and display the visualisation bitmap
         try {

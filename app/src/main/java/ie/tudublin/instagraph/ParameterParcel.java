@@ -41,13 +41,13 @@ public class ParameterParcel implements Parcelable {
         this.col1 = "";
         this.col2 = "";
         this.title = "";
-        this.para1 = null;
-        this.para2 = null;
-        this.para3 = null;
-        this.para4 = null;
-        this.firstLast = null;
-        this.rowLimit = null;
-        this.numPredictions = null;
+        this.para1 = "";
+        this.para2 = "";
+        this.para3 = "";
+        this.para4 = "";
+        this.firstLast = "";
+        this.rowLimit = "";
+        this.numPredictions = "";
     }
 
     // Getters and Setters

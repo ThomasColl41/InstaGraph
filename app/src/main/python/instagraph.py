@@ -194,13 +194,40 @@ def model_rows(file_name):
     nrows = model_data.shape[0]
     return str(nrows)
 
+# Function to test whether graphing the selected columns is appropriate
+# Function to plot a graph based on user choice
+def test_plot(file_name, graph_choice, xlabel='x-axis', ylabel='y-axis'):
+    dataset = pd.read_csv(file_name, skip_blank_lines=True, header=0)
+
+    test_data = pd.DataFrame(dataset[ylabel])
+    test_data.index = dataset[xlabel]
+
+    # Plot in a small window (will not be seen)
+    fig, ax = plt.subplots(figsize=(1,1))
+
+    # Catch incorrect data type exceptions when trying to plot data
+    try:
+        if graph_choice == 'Line Graph':
+            ax.plot(test_data)
+        elif graph_choice == 'Bar Chart':
+            ax.bar(test_data.index.values, test_data[ylabel])
+        elif graph_choice == 'Pie Chart':
+            ax.pie(test_data[ylabel])
+        elif graph_choice == 'Horizontal Bar Chart':
+            ax.barh(test_data.index.values, test_data[ylabel])
+    except (TypeError, ValueError):
+        raise Error('Unsuitable columns have been selected for graphing. Please try again.')
+    except Exception:
+        raise Error('An unknown error has occurred when attempting to plot the data. Please try again.')
+
+    plt.show()
+
 # Function to plot a graph based on user choice
 def graph_plot(file_name, graph_choice, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph'):
-    model_data = pd.read_csv(file_name, skip_blank_lines=True, header=0)
+    dataset = pd.read_csv(file_name, skip_blank_lines=True, header=0)
 
-    # Reassign the index to the dataset and drop the index column
-    model_data.index = model_data[xlabel]
-    model_data = model_data.drop(xlabel, axis=1)
+    model_data = pd.DataFrame(dataset[ylabel])
+    model_data.index = dataset[xlabel]
 
     # model_data = replace_index(model_data, model_data.index.name)
 
@@ -247,10 +274,8 @@ def graph_plot(file_name, graph_choice, xlabel='x-axis', ylabel='y-axis', title=
         if graph_choice == 'Line Graph':
             ax.plot(model_data, linewidth=2)
         elif graph_choice == 'Bar Chart':
-            ax.bar(model_data.index.values, model_data[model_data.columns[0]])
+            ax.bar(model_data.index.values, model_data[ylabel])
         elif graph_choice == 'Pie Chart':
-            # ax.pie(model_data)
-            # ax.pie(model_data, labels=model_data.index.values, startangle=90, counterclock=False)
             patches, texts = ax.pie(model_data[ylabel], labels=model_data.index.values, startangle=90, counterclock=False)
             for i, t in enumerate(texts):
                 if i in pie_labels:
@@ -262,7 +287,7 @@ def graph_plot(file_name, graph_choice, xlabel='x-axis', ylabel='y-axis', title=
             ax.set_xlabel('')
             ax.set_ylabel('')
         elif graph_choice == 'Horizontal Bar Chart':
-            ax.barh(model_data.index.values, model_data[model_data.columns[0]])
+            ax.barh(model_data.index.values, model_data[ylabel])
             # Opposite labels for horizontal bar chart
             ax.set_xlabel(ylabel)
             ax.set_ylabel(xlabel)
@@ -326,19 +351,30 @@ def stationarity_test(data, d_label):
     stationarity = min(p_dict, key=p_dict.get)
     return str(stationarity)
 
+# Function to check if ARIMA is being used with a RangeIndex (does not work)
+def arima_check(file_name, xlabel='x-axis', ylabel='y-axis', model_choice='AR',):
+    dataset = pd.read_csv(file_name, skip_blank_lines=True)
+
+    model_data = pd.DataFrame(dataset[ylabel])
+    model_data.index = dataset[xlabel]
+
+    model_data = replace_index(model_data, model_data.index.name)
+
+    if isinstance(model_data.index, pd.RangeIndex) and model_choice == 'ARIMA':
+        raise Error('The dataset is not suitable for prediction with ARIMA. Please choose a different model.')
+
 # Function to predict future values
 def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph', graph_choice='Line Graph', model_choice='AR', para1='', para2='', para3='', para4='', num_predictions=''):
-    model_data = pd.read_csv(file_name, skip_blank_lines=True)
+    dataset = pd.read_csv(file_name, skip_blank_lines=True)
 
-    # Reassign the index to the dataset and drop the index column
-    model_data.index = model_data[xlabel]
-    model_data = model_data.drop(xlabel, axis=1)
+    model_data = pd.DataFrame(dataset[ylabel])
+    model_data.index = dataset[xlabel]
 
     model_data = replace_index(model_data, model_data.index.name)
 
     # Limit number of lags to check to 12 to reduce execution time
     max_lag = 12
-    if num_predictions == '':
+    if num_predictions == '' or num_predictions is None:
         num_predictions = 12
     else:
         num_predictions = abs(int(num_predictions))
@@ -352,11 +388,11 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
     if model_choice == 'AR':
         # Autoregression
         # If custom parameters are blank, set them with appropriate values
-        if para1 == '':
+        if para1 == '' or para1 is None:
             para1 = model_lags
         else:
             para1 = abs(int(para1))
-        if para2 == '':
+        if para2 == '' or para2 is None:
             para2 = 'c'
 
         model = AutoReg(model_data, lags=para1, trend=para2).fit()
@@ -372,13 +408,13 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
             diff_order = 0
 
         # If custom parameters are blank, set them with appropriate values
-        if para1 == '':
+        if para1 == '' or para1 is None:
             para1 = model_lags
-        if para2 == '':
+        if para2 == '' or para2 is None:
             para2 = diff_order
-        if para3 == '':
+        if para3 == '' or para3 is None:
             para3 = 1
-        if para4 == '':
+        if para4 == '' or para4 is None:
             para4 = 'c'
 
         model = ARIMA(model_data, order=(int(para1), int(para2), int(para3)), trend=para4).fit()
@@ -389,11 +425,11 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
     elif model_choice == 'HWES':
         # HWES
         # If custom parameters are blank, set them with appropriate values
-        if para1 == '':
+        if para1 == '' or para1 is None:
             para1 = 'additive'
-        if para2 == '':
+        if para2 == '' or para2 is None:
             para2 = 'additive'
-        if para3 == '':
+        if para3 == '' or para3 is None:
             para3 = 12
 
         model = ExponentialSmoothing(model_data, trend=para1, seasonal=para2, seasonal_periods=int(para3)).fit()
@@ -419,8 +455,6 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
             predictions = model.predict(model_data.index[-1], model_data.index[-1] + num_predictions)
 
     predictions.name = ylabel
-
-    # full_data = model_data[model_data.columns[0]].append(predictions).dropna()
 
     full_data = pd.concat([model_data[ylabel], predictions])
 
@@ -465,18 +499,15 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
     else:
         step_back = 2
 
-    # Catch incorrect data type execeptions when trying to plot data
+    # Catch incorrect data type exceptions when trying to plot data
     try:
         if graph_choice == 'Line Graph':
             ax.plot(full_data[:-num_predictions], linewidth=2)
             ax.plot(full_data[-num_predictions - step_back:], color='red', linewidth=2)
         elif graph_choice == 'Bar Chart':
-            ax.bar(full_data[:-num_predictions].index.values, full_data[:-num_predictions + 1])
-            ax.bar(full_data[-num_predictions - step_back:].index.values, full_data[-num_predictions:], color='red')
+            ax.bar(full_data[:-num_predictions].index.values, full_data[:-num_predictions])
+            ax.bar(full_data[-num_predictions - step_back:].index.values, full_data[-num_predictions - step_back:], color='red')
         elif graph_choice == 'Pie Chart':
-            # ax.pie(full_data2.index.values)
-            # ax.pie(full_data)
-            # ax.pie(full_data, labels=full_data.index.values)
             patches, texts = ax.pie(full_data.dropna(), labels=full_data.dropna().index.values, startangle=90, counterclock=False)
             for i, t in enumerate(texts):
                 if i in pie_labels:
@@ -488,8 +519,8 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
             ax.set_xlabel('')
             ax.set_ylabel('')
         elif graph_choice == 'Horizontal Bar Chart':
-            ax.barh(full_data[:-num_predictions].index.values, full_data[:-num_predictions + 1])
-            ax.barh(full_data[-num_predictions - step_back:].index.values, full_data[-num_predictions:], color='red')
+            ax.barh(full_data[:-num_predictions].index.values, full_data[:-num_predictions])
+            ax.barh(full_data[-num_predictions - step_back:].index.values, full_data[-num_predictions - step_back:], color='red')
             ax.set_xlabel(ylabel)
             ax.set_ylabel(xlabel)
     except TypeError as te:

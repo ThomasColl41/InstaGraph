@@ -83,32 +83,44 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         // Run the script associated with the parameter
         instaGraphPyObject = py.getModule("instagraph");
 
-        String modelDataPath = instaGraphPyObject.callAttr(
-                "read_model_data",
-                userParameters.getDatasetPath(),
-                userParameters.getCol1(),
-                userParameters.getCol2(),
-                userParameters.getFirstLast(),
-                userParameters.getRowLimit()
-        ).toString();
+        try {
+            String modelDataPath = instaGraphPyObject.callAttr(
+                    "read_model_data",
+                    userParameters.getDatasetPath(),
+                    userParameters.getCol1(),
+                    userParameters.getCol2(),
+                    userParameters.getFirstLast(),
+                    userParameters.getRowLimit()
+            ).toString();
 
-        userParameters.setModelDataPath(modelDataPath);
+            userParameters.setModelDataPath(modelDataPath);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Plot the graph depending on user choice
-        plot_image = instaGraphPyObject.callAttr(
-                "graph_plot",
-                userParameters.getModelDataPath(),
-                userParameters.getGraphType(),
-                userParameters.getCol1(),
-                userParameters.getCol2(),
-                userParameters.getTitle()
-        );
+        try {
+            plot_image = instaGraphPyObject.callAttr(
+                    "graph_plot",
+                    userParameters.getModelDataPath(),
+                    userParameters.getGraphType(),
+                    userParameters.getCol1(),
+                    userParameters.getCol2(),
+                    userParameters.getTitle()
+            );
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        modelRows = Integer.parseInt(instaGraphPyObject.callAttr("model_rows", userParameters.getModelDataPath()).toString());
-        Log.i("InstaGraph", "The model has " + modelRows + "rows.");
+        try {
+            modelRows = Integer.parseInt(instaGraphPyObject.callAttr("model_rows", userParameters.getModelDataPath()).toString());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        // Log the contents of the PyObject (should be a byte array)
-        Log.i("InstaGraph", plot_image.toString());
 
         // Decode the byte array and display the visualisation bitmap
         try {
@@ -117,11 +129,8 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
 
             plot_window.setImageBitmap(bmp);
         }
-        catch (NullPointerException npe) {
-            errorWindow = errorPopup.showPopup(getString(R.string.graph_not_found), false);
-        }
         catch (Exception e) {
-            errorWindow = errorPopup.showPopup(getString(R.string.graph_unknown_error), false);
+            e.printStackTrace();
         }
     }
 
@@ -129,6 +138,21 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch(view.getId()) {
             case(R.id.next):
+                // Check that ARIMA is suitable with the dataset
+                try {
+                    instaGraphPyObject.callAttr(
+                            "arima_check",
+                            userParameters.getModelDataPath(),
+                            userParameters.getCol1(),
+                            userParameters.getCol2(),
+                            userParameters.getModel()
+                    );
+                }
+                catch (Exception e) {
+                    errorWindow = errorPopup.showPopup(e.getMessage(), false);
+                    return;
+                }
+
                 if(modelRows < minimumPredictionRows(userParameters.getModel())) {
                     errorWindow = errorPopup.showPopup(getString(R.string.not_enough_rows_to_predict), false);
                     return;
@@ -175,7 +199,7 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
                 if(userParameters.getPara2().equals("")) {
                     userParameters.setPara2("2");
                 }
-                if(userParameters.getPara2().equals("")) {
+                if(userParameters.getPara3().equals("")) {
                     userParameters.setPara3("1");
                 }
                 return ((1 +Integer.parseInt(userParameters.getPara1()) +
