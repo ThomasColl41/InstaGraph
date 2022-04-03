@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     RelativeLayout mainLayout;
 
+    Popup infoPopup;
     PopupWindow infoWindow;
 
     @Override
@@ -25,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         start = findViewById(R.id.start);
         info_button = findViewById(R.id.info_button);
         mainLayout = findViewById(R.id.main_layout);
+
+        infoPopup = new Popup(MainActivity.this, mainLayout);
 
         start.setOnClickListener(this);
         info_button.setOnClickListener(this);
@@ -40,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case(R.id.info_button):
                 // Display info pop-up
-                Popup infoPopup = new Popup(MainActivity.this, mainLayout);
                 infoWindow = infoPopup.showPopup(getString(R.string.instagraph_information), false);
                 break;
         }

@@ -118,7 +118,6 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
             Intent returnToGetData = new Intent(GetURLActivity.this, GetDataActivity.class);
 
             // Convert the dataPreview PyObject into a byte array
-//                Inspired from https://github.com/Robbi-Blechdose/FT-TXT/blob/8751afe7fd0f74efb05f1635bb5b9a28d107013e/app/src/main/java/de/rbgs/ft_txt_app/Main.java#L264
             try {
                 assert dataPreview != null;
                 byte[] data = dataPreview.toJava(byte[].class);
