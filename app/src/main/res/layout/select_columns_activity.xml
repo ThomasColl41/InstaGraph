@@ -73,6 +73,7 @@
             <TextView
                 android:id="@+id/step_text"
                 style="@style/Theme.InstaGraph.Step.Text"
+                android:textSize="@dimen/select_columns_text"
                 android:text="@string/step_three" />
 
             <!--Model-->

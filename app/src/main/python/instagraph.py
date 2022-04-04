@@ -24,7 +24,14 @@ def read_dataset(url):
     dataset = None
 
     # Check if file at url has a header
-    has_header = check_for_header(url)
+    try:
+        has_header = check_for_header(url)
+    except UnicodeDecodeError:
+        raise Error('Invalid file type. If the file is encoded, it should be encoded with utf-8. '
+                    'Compressed files, such as a .zip file, are not accepted.')
+    except Exception:
+        raise Error('An unknown error occurred when attempting to read the dataset from the URL. '
+                    'Please try again, or use a different URL.')
 
     # has_header could be an error message
     # If so, return it without proceeding
@@ -34,9 +41,9 @@ def read_dataset(url):
     # Handle exceptions
     try:
         if has_header:
-            dataset = pd.read_csv(url, skip_blank_lines=True)
+            dataset = pd.read_csv(url, skip_blank_lines=True, encoding='utf_8')
         else:
-            dataset = pd.read_csv(url, header=None, prefix='Column ', skip_blank_lines=True)
+            dataset = pd.read_csv(url, header=None, prefix='Column ', skip_blank_lines=True, encoding='utf_8')
     except Exception:
         raise Error('An unknown error occurred when reading from the URL. '
                     'Please ensure the URL is correct and try again.')
@@ -116,6 +123,9 @@ def check_for_header(url):
                         'Please ensure the URL is correct and try again')
         else:
             raise Error('A HTTP ' + str(httpe.code) + ' error occurred.')
+    except UnicodeDecodeError:
+        raise Error('Invalid file type. If the file is encoded, it should be encoded with utf-8. '
+                    'Compressed files, such as a .zip file, are not accepted.')
 
     # Open the file
     try:

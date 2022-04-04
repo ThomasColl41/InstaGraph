@@ -66,7 +66,7 @@
     <dimen name="data_preview_and_data_summary_gap">30dp</dimen>
     <dimen name="choose_file_and_data_summary_gap">50dp</dimen>
     <dimen name="choose_file_and_next_gap">50dp</dimen>
-    <dimen name="step_text_and_url_input_gap">100dp</dimen>
+    <dimen name="url_input_and_info_button_gap">50dp</dimen>
     <dimen name="url_input_and_submit_gap">100dp</dimen>
     <dimen name="back_and_next_gap">50dp</dimen>
     <dimen name="model_spinner_gap">200dp</dimen>
@@ -80,4 +80,6 @@
     <dimen name="spinner_triangle_width">20dp</dimen>
     <dimen name="spinner_triangle_height">20dp</dimen>
     <dimen name="spinner_triangle_margin">15dp</dimen>
+    <dimen name="select_columns_text">36sp</dimen>
+    <dimen name="step_text_and_info_button_gap">50dp</dimen>
 </resources>

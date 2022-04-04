@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     Button start;
-    Button info_button;
+    Button infoButton;
 
     RelativeLayout mainLayout;
 
@@ -24,13 +24,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         start = findViewById(R.id.start);
-        info_button = findViewById(R.id.info_button);
+        infoButton = findViewById(R.id.info_button);
         mainLayout = findViewById(R.id.main_layout);
 
         infoPopup = new Popup(MainActivity.this, mainLayout);
 
         start.setOnClickListener(this);
-        info_button.setOnClickListener(this);
+        infoButton.setOnClickListener(this);
     }
 
     @Override

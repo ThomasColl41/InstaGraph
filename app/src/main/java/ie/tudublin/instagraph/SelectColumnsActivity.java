@@ -140,10 +140,6 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View view) {
-        if(col1Spinner.getSelectedItem().toString().equals(col2Spinner.getSelectedItem().toString())) {
-            errorWindow = errorPopup.showPopup(getString(R.string.identical_columns), false);
-            return;
-        }
         if(view.getId() == R.id.next || view.getId() == R.id.customise_model) {
             String title = col1Spinner.getSelectedItem().toString() + " over " + col2Spinner.getSelectedItem().toString();
             userParameters.setModel(modelSpinner.getSelectedItem().toString());
@@ -153,6 +149,10 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
         }
         switch(view.getId()) {
             case(R.id.next):
+                if(col1Spinner.getSelectedItem().toString().equals(col2Spinner.getSelectedItem().toString())) {
+                    errorWindow = errorPopup.showPopup(getString(R.string.identical_columns), false);
+                    return;
+                }
                 try {
                     PyObject testPlot = instaGraphPyObject.callAttr(
                             "test_plot",

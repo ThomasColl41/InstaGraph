@@ -17,6 +17,7 @@ import com.chaquo.python.android.AndroidPlatform;
 
 public class GetURLActivity extends AppCompatActivity implements View.OnClickListener {
     EditText URL_input;
+    Button infoButton;
     Button submit;
 
     Python py;
@@ -26,9 +27,11 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
 
     RelativeLayout mainLayout;
 
+    Popup infoPopup;
     Popup waitPopup;
     Popup errorPopup;
 
+    PopupWindow infoWindow;
     PopupWindow waitWindow;
     PopupWindow errorWindow;
 
@@ -53,125 +56,144 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
         instaGraphPyObject = py.getModule("instagraph");
 
         URL_input = findViewById(R.id.url_input);
+        infoButton = findViewById(R.id.info_button);
         submit = findViewById(R.id.submit);
 
+        infoButton.setOnClickListener(this);
         submit.setOnClickListener(this);
 
+        infoPopup = new Popup(GetURLActivity.this, mainLayout);
         waitPopup = new Popup(GetURLActivity.this, mainLayout);
         errorPopup = new Popup(GetURLActivity.this, mainLayout);
     }
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.submit) {
-            if(URL_input.getText().toString().equals("")) {
-                errorWindow = errorPopup.showPopup(getString(R.string.url_blank), false);
-                return;
-            }
+        switch(view.getId()) {
+            case (R.id.submit):
+                if(URL_input.getText().toString().equals("")) {
+                    errorWindow = errorPopup.showPopup(getString(R.string.url_blank), false);
+                    return;
+                }
 
-            waitWindow = waitPopup.showPopup(getString(R.string.please_wait), true);
+                waitWindow = waitPopup.showPopup(getString(R.string.please_wait), true);
 
-            // Read in the dataset from the URL, returning the path to a local copy of the dataset
-            String datasetPath;
-            try {
-                // Run the specified function in the script and get the return value
-                datasetPath = instaGraphPyObject.callAttr("read_dataset", URL_input.getText().toString()).toString();
-            }
-            catch (Exception e) {
-                waitWindow.dismiss();
-                errorWindow = errorPopup.showPopup(e.getMessage(), false);
-                return;
-            }
+                // Read in the dataset from the URL, returning the path to a local copy of the dataset
+                String datasetPath;
+                try {
+                    // Run the specified function in the script and get the return value
+                    datasetPath = instaGraphPyObject.callAttr("read_dataset", URL_input.getText().toString()).toString();
+                }
+                catch (Exception e) {
+                    waitWindow.dismiss();
+                    errorWindow = errorPopup.showPopup(e.getMessage(), false);
+                    return;
+                }
 
-            Log.i("InstaGraph", "file path to dataset: " + datasetPath);
+                Log.i("InstaGraph", "file path to dataset: " + datasetPath);
 
-            // Set the URL and datasetPath parameters
-            userParameters.setUrl(URL_input.getText().toString());
-            userParameters.setDatasetPath(datasetPath);
+                // Set the URL and datasetPath parameters
+                userParameters.setUrl(URL_input.getText().toString());
+                userParameters.setDatasetPath(datasetPath);
 
-            // The plot of the data preview
-            PyObject dataPreview;
+                // Get the number of rows
+                int datasetRows = Integer.parseInt(instaGraphPyObject.callAttr("model_rows", userParameters.getDatasetPath()).toString());
+                if(datasetRows > 3000) {
+                    waitWindow.dismiss();
+                    errorWindow = errorPopup.showPopup(getString(R.string.too_many_rows), false);
+                    return;
+                }
 
-            // A string summarising the dataset
-            PyObject datasetSummary;
+                // The plot of the data preview
+                PyObject dataPreview;
 
-            // Run the step_one function to generate a preview of the data
-            try {
-                dataPreview = instaGraphPyObject.callAttr("step_one", datasetPath);
-            }
-            catch (Exception e) {
-                waitWindow.dismiss();
-                errorWindow = errorPopup.showPopup(e.getMessage(), false);
-                return;
-            }
+                // A string summarising the dataset
+                PyObject datasetSummary;
 
-            // Run the dataset_summary function to get a summary of the dataset
-            try {
-                datasetSummary = instaGraphPyObject.callAttr("dataset_summary", URL_input.getText().toString());
-            }
-            catch (Exception e) {
-                waitWindow.dismiss();
-                errorWindow = errorPopup.showPopup( e.getMessage(), false);
-                return;
-            }
+                // Run the step_one function to generate a preview of the data
+                try {
+                    dataPreview = instaGraphPyObject.callAttr("step_one", datasetPath);
+                }
+                catch (Exception e) {
+                    waitWindow.dismiss();
+                    errorWindow = errorPopup.showPopup(e.getMessage(), false);
+                    return;
+                }
 
-            Intent returnToGetData = new Intent(GetURLActivity.this, GetDataActivity.class);
+                // Run the dataset_summary function to get a summary of the dataset
+                try {
+                    datasetSummary = instaGraphPyObject.callAttr("dataset_summary", URL_input.getText().toString());
+                }
+                catch (Exception e) {
+                    waitWindow.dismiss();
+                    errorWindow = errorPopup.showPopup( e.getMessage(), false);
+                    return;
+                }
 
-            // Convert the dataPreview PyObject into a byte array
-            try {
-                assert dataPreview != null;
-                byte[] data = dataPreview.toJava(byte[].class);
-                returnToGetData.putExtra("dataPreview", data);
-            }
-            catch (AssertionError ae) {
-                waitWindow.dismiss();
-                errorWindow = errorPopup.showPopup(getString(R.string.preview_not_found), false);
-                return;
-            }
-            catch (java.lang.ClassCastException cce) {
-                waitWindow.dismiss();
-                errorWindow = errorPopup.showPopup(getString(R.string.preview_class_cast_error), false);
-                Log.i("InstaGraph", cce.getMessage());
-                return;
-            }
-            catch (Exception e) {
-                waitWindow.dismiss();
-                errorWindow = errorPopup.showPopup(e.getMessage(), false);
-                return;
-            }
+                Intent returnToGetData = new Intent(GetURLActivity.this, GetDataActivity.class);
 
-            // Convert the datasetSummary PyObject to a String
-            try {
-                assert datasetSummary != null;
-                String summary = datasetSummary.toJava(String.class);
-                returnToGetData.putExtra("summary", summary);
-            }
-            catch (AssertionError ae) {
-                waitWindow.dismiss();
-                errorWindow = errorPopup.showPopup(getString(R.string.summary_not_found), false);
-                return;
-            }
-            catch (java.lang.ClassCastException cce) {
-                waitWindow.dismiss();
-                errorWindow = errorPopup.showPopup(getString(R.string.summary_class_cast_error), false);
-                Log.i("InstaGraph", cce.getMessage());
-                return;
-            }
-            catch (Exception e) {
-                waitWindow.dismiss();
-                errorWindow = errorPopup.showPopup(e.getMessage(), false);
-                return;
-            }
+                // Convert the dataPreview PyObject into a byte array
+                try {
+                    assert dataPreview != null;
+                    byte[] data = dataPreview.toJava(byte[].class);
+                    returnToGetData.putExtra("dataPreview", data);
+                }
+                catch (AssertionError ae) {
+                    waitWindow.dismiss();
+                    errorWindow = errorPopup.showPopup(getString(R.string.preview_not_found), false);
+                    return;
+                }
+                catch (java.lang.ClassCastException cce) {
+                    waitWindow.dismiss();
+                    errorWindow = errorPopup.showPopup(getString(R.string.preview_class_cast_error), false);
+                    Log.i("InstaGraph", cce.getMessage());
+                    return;
+                }
+                catch (Exception e) {
+                    waitWindow.dismiss();
+                    errorWindow = errorPopup.showPopup(e.getMessage(), false);
+                    return;
+                }
 
-            returnToGetData.putExtra("userParameters", userParameters);
-            setResult(RESULT_OK, returnToGetData);
-            finish();
+                // Convert the datasetSummary PyObject to a String
+                try {
+                    assert datasetSummary != null;
+                    String summary = datasetSummary.toJava(String.class);
+                    returnToGetData.putExtra("summary", summary);
+                }
+                catch (AssertionError ae) {
+                    waitWindow.dismiss();
+                    errorWindow = errorPopup.showPopup(getString(R.string.summary_not_found), false);
+                    return;
+                }
+                catch (java.lang.ClassCastException cce) {
+                    waitWindow.dismiss();
+                    errorWindow = errorPopup.showPopup(getString(R.string.summary_class_cast_error), false);
+                    Log.i("InstaGraph", cce.getMessage());
+                    return;
+                }
+                catch (Exception e) {
+                    waitWindow.dismiss();
+                    errorWindow = errorPopup.showPopup(e.getMessage(), false);
+                    return;
+                }
+
+                returnToGetData.putExtra("userParameters", userParameters);
+                setResult(RESULT_OK, returnToGetData);
+                finish();
+                break;
+
+            case (R.id.info_button):
+                infoWindow = infoPopup.showPopup(getString(R.string.row_limit_info), false);
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        if(infoWindow != null && infoWindow.isShowing()) {
+            infoWindow.dismiss();
+        }
         if(waitWindow != null && waitWindow.isShowing()) {
             waitWindow.dismiss();
         }

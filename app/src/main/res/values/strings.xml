@@ -122,6 +122,8 @@
     <string name="no_dataset">No dataset found (Choose File…)</string>
     <string name="identical_columns">The columns cannot be the same. Please try again.</string>
     <string name="not_enough_seasonal_periods">The seasonal period must be greater than 2.</string>
+    <string name="row_limit_info">Please note: This app is best suited to small datasets (less than 1000 rows). Larger datasets will take significant time to process and there is a limit of 3000 rows.</string>
+    <string name="too_many_rows">There are too many rows in this dataset. Please choose a dataset with less than 3000 rows.</string>
     <string-array name="models">
         <item>AR</item>
         <item>ARIMA</item>

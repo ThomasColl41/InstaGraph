@@ -75,6 +75,15 @@
                 android:text="@string/URL_step_text"
                 android:textSize="@dimen/url_step_text"/>
 
+            <!--Info button-->
+            <Button
+                android:id="@+id/info_button"
+                style="@style/Theme.InstaGraph.Info.Button"
+                android:layout_below="@id/step_text"
+                android:layout_alignEnd="@id/step_text"
+                android:layout_marginTop="@dimen/step_text_and_info_button_gap"
+                android:contentDescription="@string/empty_content_description"/>
+
             <!--URL input-->
             <EditText
                 android:id="@+id/url_input"

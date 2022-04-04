@@ -100,6 +100,7 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
         next.setOnClickListener(this);
         downloadIcon.setOnClickListener(this);
 
+        pop = new Popup(GetDataActivity.this, mainLayout);
         waitPopup = new Popup(GetDataActivity.this, mainLayout);
         errorPopup = new Popup(GetDataActivity.this, mainLayout);
     }

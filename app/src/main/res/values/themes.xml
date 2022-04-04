@@ -176,8 +176,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/input_text</item>
         <item name="android:inputType">textUri</item>
-        <item name="android:layout_below">@id/step_text</item>
-        <item name="android:layout_marginTop">@dimen/step_text_and_url_input_gap</item>
+        <item name="android:layout_below">@id/info_button</item>
+        <item name="android:layout_marginTop">@dimen/url_input_and_info_button_gap</item>
         <item name="android:layout_alignStart">@id/step_text</item>
         <item name="android:layout_alignEnd">@id/step_text</item>
     </style>
