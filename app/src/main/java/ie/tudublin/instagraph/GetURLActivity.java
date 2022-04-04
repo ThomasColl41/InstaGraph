@@ -16,7 +16,7 @@ import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 
 public class GetURLActivity extends AppCompatActivity implements View.OnClickListener {
-    EditText URL_input;
+    EditText URLInput;
     Button infoButton;
     Button submit;
 
@@ -55,7 +55,7 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
         // Run the script associated with the parameter
         instaGraphPyObject = py.getModule("instagraph");
 
-        URL_input = findViewById(R.id.url_input);
+        URLInput = findViewById(R.id.url_input);
         infoButton = findViewById(R.id.info_button);
         submit = findViewById(R.id.submit);
 
@@ -71,7 +71,7 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch(view.getId()) {
             case (R.id.submit):
-                if(URL_input.getText().toString().equals("")) {
+                if(URLInput.getText().toString().equals("")) {
                     errorWindow = errorPopup.showPopup(getString(R.string.url_blank), false);
                     return;
                 }
@@ -82,7 +82,7 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
                 String datasetPath;
                 try {
                     // Run the specified function in the script and get the return value
-                    datasetPath = instaGraphPyObject.callAttr("read_dataset", URL_input.getText().toString()).toString();
+                    datasetPath = instaGraphPyObject.callAttr("read_dataset", URLInput.getText().toString()).toString();
                 }
                 catch (Exception e) {
                     waitWindow.dismiss();
@@ -93,7 +93,7 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
                 Log.i("InstaGraph", "file path to dataset: " + datasetPath);
 
                 // Set the URL and datasetPath parameters
-                userParameters.setUrl(URL_input.getText().toString());
+                userParameters.setUrl(URLInput.getText().toString());
                 userParameters.setDatasetPath(datasetPath);
 
                 // Get the number of rows
@@ -122,7 +122,7 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
 
                 // Run the dataset_summary function to get a summary of the dataset
                 try {
-                    datasetSummary = instaGraphPyObject.callAttr("dataset_summary", URL_input.getText().toString());
+                    datasetSummary = instaGraphPyObject.callAttr("dataset_summary", URLInput.getText().toString());
                 }
                 catch (Exception e) {
                     waitWindow.dismiss();
