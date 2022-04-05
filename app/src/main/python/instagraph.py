@@ -133,7 +133,7 @@ def check_for_header(url):
             # Read the first 1024 characters to determine whether the first row is consistent with
             # subsequent rows (i.e. string vs. integer)
             try:
-                header = csv.Sniffer().has_header(file.read(1024))
+                header = csv.Sniffer().has_header(file.read(2048))
             except OSError:
                 raise Error('A header could not be determined. '
                             'Please try again with a different dataset.')
