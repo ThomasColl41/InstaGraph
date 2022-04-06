@@ -109,7 +109,7 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
                 findViewById(R.id.line_graph_border).setVisibility(View.VISIBLE);
                 highlighted = R.id.line_graph_border;
                 popWindow = pop.showPopup(getString(R.string.graph_not_highlighted), false);
-                return "Line Graph";
+                return getString(R.string.line_graph);
             }
         }
         else if (id != highlighted) {
@@ -126,7 +126,7 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
                 findViewById(R.id.line_graph_border).setVisibility(View.VISIBLE);
                 highlighted = R.id.line_graph_border;
                 popWindow = pop.showPopup(getString(R.string.graph_not_highlighted), false);
-                return "Line Graph";
+                return getString(R.string.line_graph);
             }
         }
         return getGraphType(id);
@@ -136,19 +136,19 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
         // Return name of selected graph
         switch(id) {
             case(R.id.line_graph_border):
-                return "Line Graph";
+                return getString(R.string.line_graph);
 
             case(R.id.bar_chart_border):
-                return "Bar Chart";
+                return getString(R.string.bar_chart);
 
             case(R.id.pie_chart_border):
-                return "Pie Chart";
+                return getString(R.string.pie_chart);
 
             case(R.id.horizontal_bar_chart_border):
-                return "Horizontal Bar Chart";
+                return getString(R.string.horizontal_bar_chart);
 
             default:
-                return "Line Graph";
+                return getString(R.string.line_graph);
         }
     }
 
