@@ -81,10 +81,10 @@
                 style="@style/Theme.InstaGraph.Button.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/change_graph"
                 android:layout_above="@id/plot_window"
                 android:layout_alignStart="@id/plot_window"
-                android:layout_alignParentBottom="false"/>
+                android:layout_alignParentBottom="false"
+                android:text="@string/change_graph" />
 
             <!--Download icons-->
             <RelativeLayout
@@ -130,8 +130,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/change_graph"
                 android:layout_alignStart="@id/plot_window"
-                android:background="@drawable/instagraph_button"
-                android:visibility="gone">
+                android:background="@drawable/instagraph_text_background"
+                >
 
                 <!--Line Graph-->
                 <ImageButton

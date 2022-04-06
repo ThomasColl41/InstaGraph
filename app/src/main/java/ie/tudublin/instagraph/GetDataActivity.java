@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class GetDataActivity extends AppCompatActivity implements View.OnClickListener {
     Button chooseFile;

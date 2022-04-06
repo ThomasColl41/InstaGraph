@@ -49,7 +49,7 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
     Popup waitPopup;
     Popup errorPopup;
 
-    PopupWindow popWindow;
+    PopupWindow waitWindow;
     PopupWindow errorWindow;
 
     // Inspired from https://www.youtube.com/watch?v=-y5eF0u1bZQ and https://www.youtube.com/watch?v=Ke9PaRdMcgc
@@ -106,6 +106,7 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
         back.setOnClickListener(this);
         customiseModel.setOnClickListener(this);
 
+        waitPopup = new Popup(SelectColumnsActivity.this, mainLayout);
         errorPopup = new Popup(SelectColumnsActivity.this, mainLayout);
 
         Intent fromSelectGraph = getIntent();
@@ -154,7 +155,7 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
                     return;
                 }
                 try {
-                    PyObject testPlot = instaGraphPyObject.callAttr(
+                    instaGraphPyObject.callAttr(
                             "test_plot",
                             userParameters.getDatasetPath(),
                             userParameters.getGraphType(),
@@ -168,16 +169,14 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
                 }
                 Intent goToPredict = new Intent(SelectColumnsActivity.this, PredictActivity.class);
                 goToPredict.putExtra("userParameters", userParameters);
-                waitPopup = new Popup(SelectColumnsActivity.this, mainLayout);
-                popWindow = waitPopup.showPopup(getString(R.string.please_wait), true);
+                waitWindow = waitPopup.showPopup(getString(R.string.please_wait), true);
                 startActivity(goToPredict);
                 break;
 
             case(R.id.customise_model):
                 Intent goToCustomise = new Intent(SelectColumnsActivity.this, CustomiseModelActivity.class);
                 goToCustomise.putExtra("userParameters", userParameters);
-                waitPopup = new Popup(SelectColumnsActivity.this, mainLayout);
-                popWindow = waitPopup.showPopup(getString(R.string.please_wait), true);
+                waitWindow = waitPopup.showPopup(getString(R.string.please_wait), true);
                 customiseModelLauncher.launch(goToCustomise);
                 break;
 
@@ -255,8 +254,11 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onResume() {
         super.onResume();
-        if(popWindow != null && popWindow.isShowing()) {
-            popWindow.dismiss();
+        if(waitWindow != null && waitWindow.isShowing()) {
+            waitWindow.dismiss();
+        }
+        if(errorWindow != null && errorWindow.isShowing()) {
+            errorWindow.dismiss();
         }
     }
 }

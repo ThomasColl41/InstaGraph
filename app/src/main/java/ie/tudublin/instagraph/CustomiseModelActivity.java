@@ -2,7 +2,6 @@ package ie.tudublin.instagraph;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,16 +17,10 @@ import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class CustomiseModelActivity extends AppCompatActivity implements View.OnClickListener {
 
     Python py;
     PyObject instaGraphPyObject;
-
-    private final List<String> columns = new ArrayList<>();
 
     ParameterParcel userParameters;
 
@@ -168,14 +161,6 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(errorWindow != null && errorWindow.isShowing()) {
-            errorWindow.dismiss();
-        }
-    }
-
     // Method to display options for the chosen forecasting model
     public void displayModelParameters(String modelChoice) {
         // Set the content of the modelName TextView to that of the chosen model
@@ -311,5 +296,16 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
 
         // Return "c" by default
         return "c";
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(errorWindow != null && errorWindow.isShowing()) {
+            errorWindow.dismiss();
+        }
+        if(infoWindow != null && infoWindow.isShowing()) {
+            infoWindow.dismiss();
+        }
     }
 }
