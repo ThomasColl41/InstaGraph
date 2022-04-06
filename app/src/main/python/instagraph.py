@@ -198,49 +198,16 @@ def read_model_data(file_name, xlabel='x-axis', ylabel='y-axis', first_last='', 
     model_data.to_csv(file_name, index=True)
     return file_name
 
-# Function to return the number of rows in the model_data dataset
-def model_rows(file_name):
-    model_data = pd.read_csv(file_name, skip_blank_lines=True, header=0)
-    nrows = model_data.shape[0]
-    return str(nrows)
-
-# Function to test whether graphing the selected columns is appropriate
-# Function to plot a graph based on user choice
-def test_plot(file_name, graph_choice, xlabel='x-axis', ylabel='y-axis'):
+# Function to return the model_data dataset as a DataFrame
+def get_dataframe(file_name, xlabel='x-axis', ylabel='y-label'):
     dataset = pd.read_csv(file_name, skip_blank_lines=True, header=0)
 
-    test_data = pd.DataFrame(dataset[ylabel])
-    test_data.index = dataset[xlabel]
+    dataset_df = pd.DataFrame(dataset[ylabel])
+    dataset_df.index = dataset[xlabel]
+    return dataset_df
 
-    # Plot in a small window (will not be seen)
-    fig, ax = plt.subplots(figsize=(1,1))
-
-    # Catch incorrect data type exceptions when trying to plot data
-    try:
-        if graph_choice == 'Line Graph':
-            ax.plot(test_data)
-        elif graph_choice == 'Bar Chart':
-            ax.bar(test_data.index.values, test_data[ylabel])
-        elif graph_choice == 'Pie Chart':
-            ax.pie(test_data[ylabel])
-        elif graph_choice == 'Horizontal Bar Chart':
-            ax.barh(test_data.index.values, test_data[ylabel])
-    except (TypeError, ValueError):
-        raise Error('Unsuitable columns have been selected for graphing. Please try again.')
-    except Exception:
-        raise Error('An unknown error has occurred when attempting to plot the data. Please try again.')
-
-    plt.show()
-
-# Function to plot a graph based on user choice
-def graph_plot(file_name, graph_choice, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph'):
-    dataset = pd.read_csv(file_name, skip_blank_lines=True, header=0)
-
-    model_data = pd.DataFrame(dataset[ylabel])
-    model_data.index = dataset[xlabel]
-
-    # model_data = replace_index(model_data, model_data.index.name)
-
+# Function to plot the dataframe
+def dataframe_plot(model_data, graph_choice, xlabel='x-axis', ylabel='y-axis', title='Title of Line Graph'):
     nrows = model_data.shape[0]
 
     # List of place to display the axis ticks
@@ -313,6 +280,40 @@ def graph_plot(file_name, graph_choice, xlabel='x-axis', ylabel='y-axis', title=
     buffer = io_buff.getvalue()
 
     return buffer
+
+# Function to return the number of rows in the model_data dataset
+def model_rows(file_name):
+    model_data = pd.read_csv(file_name, skip_blank_lines=True, header=0)
+    nrows = model_data.shape[0]
+    return str(nrows)
+
+# Function to test whether graphing the selected columns is appropriate
+# Function to plot a graph based on user choice
+def test_plot(file_name, graph_choice, xlabel='x-axis', ylabel='y-axis'):
+    dataset = pd.read_csv(file_name, skip_blank_lines=True, header=0)
+
+    test_data = pd.DataFrame(dataset[ylabel])
+    test_data.index = dataset[xlabel]
+
+    # Plot in a small window (will not be seen)
+    fig, ax = plt.subplots(figsize=(1,1))
+
+    # Catch incorrect data type exceptions when trying to plot data
+    try:
+        if graph_choice == 'Line Graph':
+            ax.plot(test_data)
+        elif graph_choice == 'Bar Chart':
+            ax.bar(test_data.index.values, test_data[ylabel])
+        elif graph_choice == 'Pie Chart':
+            ax.pie(test_data[ylabel])
+        elif graph_choice == 'Horizontal Bar Chart':
+            ax.barh(test_data.index.values, test_data[ylabel])
+    except (TypeError, ValueError):
+        raise Error('Unsuitable columns have been selected for graphing. Please try again.')
+    except Exception:
+        raise Error('An unknown error has occurred when attempting to plot the data. Please try again.')
+
+    plt.show()
 
 # Function to replace the index of a dataset with a suitable pandas Index
 def replace_index(data, index_name='Index'):

@@ -170,6 +170,12 @@
         <item name="android:layout_below">@id/download_icons</item>
     </style>
 
+    <!--Theme for graph options-->
+    <style name="Theme.InstaGraph.Graph.Option" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">@dimen/change_graph_option_width</item>
+        <item name="android:layout_height">@dimen/change_graph_option_height</item>
+    </style>
+
     <!--Theme for URL input-->
     <style name="Theme.InstaGraph.Input.URL" parent="Widget.AppCompat.EditText">
         <item name="android:layout_width">wrap_content</item>

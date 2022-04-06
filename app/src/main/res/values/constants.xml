@@ -82,4 +82,9 @@
     <dimen name="spinner_triangle_margin">15dp</dimen>
     <dimen name="select_columns_text">36sp</dimen>
     <dimen name="step_text_and_info_button_gap">50dp</dimen>
+    <dimen name="change_graph_option_width">100dp</dimen>
+    <dimen name="change_graph_option_height">100dp</dimen>
+    <dimen name="graph_option_margin">10dp</dimen>
+    <dimen name="graph_option_gap">50dp</dimen>
+    <dimen name="graph_option_and_hide_gap">30dp</dimen>
 </resources>

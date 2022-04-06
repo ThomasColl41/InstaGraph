@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -18,6 +19,8 @@ import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 
 public class PredictActivity extends AppCompatActivity implements View.OnClickListener {
+    Button changeGraphButton;
+    Button hide;
     Button next;
     Button back;
 
@@ -43,6 +46,13 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
     PopupWindow waitWindow;
     PopupWindow errorWindow;
 
+    PyObject dataFrame;
+
+    ImageButton lineGraph;
+    ImageButton barChart;
+    ImageButton pieChart;
+    ImageButton horizontalBarChart;
+
     int modelRows;
 
     @Override
@@ -50,15 +60,27 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.predict_activity);
 
+        changeGraphButton = findViewById(R.id.change_graph);
+        hide = findViewById(R.id.hide);
         next = findViewById(R.id.next);
         back = findViewById(R.id.back);
         plot_window = findViewById(R.id.plot);
         downloadIcon = findViewById(R.id.download_icon);
         mainLayout = findViewById(R.id.main_layout);
+        lineGraph = findViewById(R.id.line_graph);
+        barChart = findViewById(R.id.bar_chart);
+        pieChart = findViewById(R.id.pie_chart);
+        horizontalBarChart = findViewById(R.id.horizontal_bar_chart);
 
+        changeGraphButton.setOnClickListener(this);
+        hide.setOnClickListener(this);
         next.setOnClickListener(this);
         back.setOnClickListener(this);
         downloadIcon.setOnClickListener(this);
+        lineGraph.setOnClickListener(this);
+        barChart.setOnClickListener(this);
+        pieChart.setOnClickListener(this);
+        horizontalBarChart.setOnClickListener(this);
 
         pop = new Popup(PredictActivity.this, mainLayout);
         waitPopup = new Popup(PredictActivity.this, mainLayout);
@@ -99,11 +121,17 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
             e.printStackTrace();
         }
 
-        // Plot the graph depending on user choice
         try {
-            plot_image = instaGraphPyObject.callAttr(
-                    "graph_plot",
+            dataFrame = instaGraphPyObject.callAttr(
+                    "get_dataframe",
                     userParameters.getModelDataPath(),
+                    userParameters.getCol1(),
+                    userParameters.getCol2()
+            );
+
+            plot_image = instaGraphPyObject.callAttr(
+                    "dataframe_plot",
+                    dataFrame,
                     userParameters.getGraphType(),
                     userParameters.getCol1(),
                     userParameters.getCol2(),
@@ -137,6 +165,30 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
+            case(R.id.change_graph):
+                findViewById(R.id.change_graph_window).setVisibility(View.VISIBLE);
+                break;
+
+            case(R.id.hide):
+                findViewById(R.id.change_graph_window).setVisibility(View.GONE);
+                break;
+
+            case(R.id.line_graph):
+                changeGraph(getString(R.string.line_graph));
+                break;
+
+            case(R.id.bar_chart):
+                changeGraph(getString(R.string.bar_chart));
+                break;
+
+            case(R.id.pie_chart):
+                changeGraph(getString(R.string.pie_chart));
+                break;
+
+            case(R.id.horizontal_bar_chart):
+                changeGraph(getString(R.string.horizontal_bar_chart));
+                break;
+
             case(R.id.next):
                 // Check that ARIMA is suitable with the dataset
                 try {
@@ -220,6 +272,35 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
 
         // By default, return the highest default requirement
         return 26;
+    }
+
+    // Method to change the graph plot
+    public void changeGraph(String graphType) {
+        waitWindow = waitPopup.showPopup(getString(R.string.please_wait), true);
+        try {
+            plot_image = instaGraphPyObject.callAttr(
+                    "dataframe_plot",
+                    dataFrame,
+                    graphType,
+                    userParameters.getCol1(),
+                    userParameters.getCol2(),
+                    userParameters.getTitle()
+            );
+
+            byte[] plot = plot_image.toJava(byte[].class);
+            bmp = BitmapFactory.decodeByteArray(plot,0, plot.length);
+            plot_window.setImageBitmap(bmp);
+        }
+        catch (Exception e) {
+            waitWindow.dismiss();
+            errorWindow = errorPopup.showPopup(getString(R.string.unknown_error_changing_graph), false);
+        }
+        finally {
+            if(waitWindow.isShowing()) {
+                waitWindow.dismiss();
+            }
+        }
+        userParameters.setGraphType(graphType);
     }
 
     @Override

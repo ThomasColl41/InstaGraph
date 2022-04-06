@@ -75,6 +75,17 @@
                 style="@style/Theme.InstaGraph.Step.Text"
                 android:text="@string/step_four"/>
 
+            <!--Change graph button-->
+            <Button
+                android:id="@+id/change_graph"
+                style="@style/Theme.InstaGraph.Button.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/change_graph"
+                android:layout_above="@id/plot_window"
+                android:layout_alignStart="@id/plot_window"
+                android:layout_alignParentBottom="false"/>
+
             <!--Download icons-->
             <RelativeLayout
                 android:id="@+id/download_icons"
@@ -111,6 +122,66 @@
                         android:contentDescription="@string/empty_content_description" />
                 </HorizontalScrollView>
             </androidx.core.widget.NestedScrollView>
+
+            <!--Change graph window-->
+            <RelativeLayout
+                android:id="@+id/change_graph_window"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/change_graph"
+                android:layout_alignStart="@id/plot_window"
+                android:background="@drawable/instagraph_button"
+                android:visibility="gone">
+
+                <!--Line Graph-->
+                <ImageButton
+                    android:id="@+id/line_graph"
+                    style="@style/Theme.InstaGraph.Graph.Option"
+                    android:background="@drawable/line_graph"
+                    android:layout_marginStart="@dimen/graph_option_margin"
+                    android:layout_marginTop="@dimen/graph_option_margin"
+                    android:contentDescription="@string/line_graph"/>
+
+                <!--Bar chart-->
+                <ImageButton
+                    android:id="@+id/bar_chart"
+                    style="@style/Theme.InstaGraph.Graph.Option"
+                    android:background="@drawable/bar_chart"
+                    android:layout_toEndOf="@id/line_graph"
+                    android:layout_alignTop="@id/line_graph"
+                    android:layout_marginStart="@dimen/graph_option_gap"
+                    android:layout_marginEnd="@dimen/graph_option_margin"
+                    android:contentDescription="@string/bar_chart"/>
+
+                <!--Pie chart-->
+                <ImageButton
+                    android:id="@+id/pie_chart"
+                    style="@style/Theme.InstaGraph.Graph.Option"
+                    android:background="@drawable/pie_chart"
+                    android:layout_below="@id/line_graph"
+                    android:layout_alignStart="@id/line_graph"
+                    android:layout_marginTop="@dimen/graph_option_gap"
+                    android:contentDescription="@string/pie_chart"/>
+
+                <!--Horizontal Bar Chart-->
+                <ImageButton
+                    android:id="@+id/horizontal_bar_chart"
+                    style="@style/Theme.InstaGraph.Graph.Option"
+                    android:background="@drawable/horizontal_bar_chart"
+                    android:layout_toEndOf="@id/pie_chart"
+                    android:layout_alignTop="@id/pie_chart"
+                    android:layout_marginStart="@dimen/graph_option_gap"
+                    android:contentDescription="@string/horizontal_bar_chart"/>
+
+                <!--Hide button-->
+                <Button
+                    android:id="@+id/hide"
+                    style="@style/Theme.InstaGraph.Button.Small"
+                    android:text="@string/hide"
+                    android:layout_below="@id/pie_chart"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/graph_option_and_hide_gap"/>
+            </RelativeLayout>
 
             <!--Next and back buttons-->
             <RelativeLayout
