@@ -118,10 +118,10 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
             plot_window.setImageBitmap(bmp);
         }
         catch (NullPointerException npe) {
-            popWindow = pop.showPopup(getString(R.string.predictions_not_found), false);
+            npe.printStackTrace();
         }
         catch (Exception e) {
-            popWindow = pop.showPopup(getString(R.string.predictions_unknown_error), false);
+            e.printStackTrace();
         }
     }
 

@@ -236,7 +236,7 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         switch(modelChoice) {
             case "AR":
                 if(userParameters.getPara1().equals("")) {
-                    // The default AR model required at least 26 rows for predictions
+                    // The default AR model requires at least 26 rows for predictions
                     return 26;
                 }
                 else {

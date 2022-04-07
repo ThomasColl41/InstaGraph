@@ -60,6 +60,8 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
 
     EditText numPredictionsInput;
 
+    String model;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +90,14 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
 
         Intent fromSelectColumns = getIntent();
         userParameters = fromSelectColumns.getParcelableExtra("userParameters");
+        model = fromSelectColumns.getStringExtra("model");
+
+        if(!model.equals(userParameters.getModel())) {
+            userParameters.setPara1("");
+            userParameters.setPara2("");
+            userParameters.setPara3("");
+            userParameters.setPara4("");
+        }
 
         // Initialise Python (using Chaquopy)
         if(!Python.isStarted()) {
@@ -101,30 +111,32 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
         instaGraphPyObject = py.getModule("instagraph");
 
         // Display the appropriate parameters depending on user choice
-        displayModelParameters(userParameters.getModel());
+        displayModelParameters(model);
     }
 
     @Override
     public void onClick(View view) {
-        // The the user limits the number of rows, it should be at least 2
-        if(!rowLimitInput.getText().toString().equals("")) {
-            if(Integer.parseInt(rowLimitInput.getText().toString()) < 2) {
-                errorWindow = errorPopup.showPopup(getString(R.string.not_enough_rows), false);
-                return;
-            }
-        }
-
-        // Check that the user has not entered a seasonal period less than 2 for HWES
-        if(userParameters.getModel().equals("HWES") && !hwesSeasonalPeriodInput.getText().toString().equals("")) {
-            if(Integer.parseInt(hwesSeasonalPeriodInput.getText().toString()) < 2) {
-                errorWindow = errorPopup.showPopup(getString(R.string.not_enough_seasonal_periods), false);
-                return;
-            }
-        }
         switch(view.getId()) {
             case(R.id.submit):
+                // The the user limits the number of rows, it should be at least 2
+                if(!rowLimitInput.getText().toString().equals("")) {
+                    if(Integer.parseInt(rowLimitInput.getText().toString()) < 2) {
+                        errorWindow = errorPopup.showPopup(getString(R.string.not_enough_rows), false);
+                        return;
+                    }
+                }
+
+                // Check that the user has not entered a seasonal period less than 2 for HWES
+                if(model.equals("HWES") && !hwesSeasonalPeriodInput.getText().toString().equals("")) {
+                    if(Integer.parseInt(hwesSeasonalPeriodInput.getText().toString()) < 2) {
+                        errorWindow = errorPopup.showPopup(getString(R.string.not_enough_seasonal_periods), false);
+                        return;
+                    }
+                }
+
                 // Set the custom parameters in the userParameters object
-                setParameters(userParameters.getModel());
+                setParameters(model);
+                userParameters.setModel(model);
 
                 // Return to SelectColumnsActivity with the newly updated userParameters
                 Intent returnToSelectColumns = new Intent(CustomiseModelActivity.this, SelectColumnsActivity.class);
@@ -140,7 +152,7 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
 
             case(R.id.model_info):
                 // Display information appropriate to the chosen model
-                switch(userParameters.getModel()) {
+                switch(model) {
                     case "AR":
                         infoWindow = infoPopup.showPopup(getString(R.string.ar_model_info), false);
                         break;
@@ -164,7 +176,7 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
     // Method to display options for the chosen forecasting model
     public void displayModelParameters(String modelChoice) {
         // Set the content of the modelName TextView to that of the chosen model
-        modelName.setText(userParameters.getModel());
+        modelName.setText(modelChoice);
         switch(modelChoice) {
             case "AR":
                 ar.setVisibility(View.VISIBLE);
@@ -245,6 +257,57 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
         }
 
         rowLimitFirstLastSpinner.setAdapter(firstLastArray);
+
+        // Parameters have been set previously, set them in their elements
+        switch(modelChoice) {
+            case "AR":
+                if(userParameters.getPara1() != null) {
+                    arOrderInput.setText(userParameters.getPara1());
+                }
+                if(userParameters.getPara2() != null) {
+                    arTrendSpinner.setSelection(trendArray.getPosition(userParameters.getPara2()));
+                }
+                break;
+
+            case "ARIMA":
+                if(userParameters.getPara1() != null) {
+                    arimaAROrderInput.setText(userParameters.getPara1());
+                }
+                if(userParameters.getPara2() != null) {
+                    arimaDiffOrderInput.setText(userParameters.getPara2());
+                }
+                if(userParameters.getPara3() != null) {
+                    arimaMAOrderInput.setText(userParameters.getPara3());
+                }
+                if(userParameters.getPara4() != null) {
+                    arimaTrendSpinner.setSelection(trendArray.getPosition(userParameters.getPara4()));
+                }
+                break;
+
+            // Nothing to set for SES
+
+            case"HWES":
+                if(userParameters.getPara1() != null) {
+                    hwesTrendSpinner.setSelection(trendArray.getPosition(userParameters.getPara1()));
+                }
+                if(userParameters.getPara2() != null) {
+                    hwesSeasonalSpinner.setSelection(trendArray.getPosition(userParameters.getPara2()));
+                }
+                if(userParameters.getPara3() != null) {
+                    hwesSeasonalPeriodInput.setText(userParameters.getPara3());
+                }
+                break;
+        }
+
+        if(userParameters.getFirstLast() != null) {
+            rowLimitFirstLastSpinner.setSelection(firstLastArray.getPosition(userParameters.getFirstLast()));
+        }
+        if(userParameters.getRowLimit() != null) {
+            rowLimitInput.setText(userParameters.getRowLimit());
+        }
+        if(userParameters.getNumPredictions() != null) {
+            numPredictionsInput.setText(userParameters.getNumPredictions());
+        }
     }
 
     // Method to set the custom parameters depending on the choice of model
@@ -253,14 +316,14 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
         switch(modelChoice) {
             case "AR":
                 userParameters.setPara1(arOrderInput.getText().toString());
-                userParameters.setPara2(determineTrend(arTrendSpinner.getSelectedItem().toString()));
+                userParameters.setPara2(arTrendSpinner.getSelectedItem().toString());
                 break;
 
             case "ARIMA":
                 userParameters.setPara1(arimaAROrderInput.getText().toString());
                 userParameters.setPara2(arimaDiffOrderInput.getText().toString());
                 userParameters.setPara3(arimaMAOrderInput.getText().toString());
-                userParameters.setPara4(determineTrend(arimaTrendSpinner.getSelectedItem().toString()));
+                userParameters.setPara4(arimaTrendSpinner.getSelectedItem().toString());
                 break;
 
             // No parameters for SES
@@ -278,24 +341,6 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
 
         // Set the number of predictions parameter
         userParameters.setNumPredictions(numPredictionsInput.getText().toString());
-    }
-
-    // Method to covert the chosen value for trend into one that will be accepted by the models
-    public String determineTrend(String trendValue) {
-        switch(trendValue) {
-            case "No trend":
-                return "n";
-            case "Constant only":
-                return "c";
-            case "Time trend only":
-                return "t";
-            case "Constant and time trend":
-                return "ct";
-
-        }
-
-        // Return "c" by default
-        return "c";
     }
 
     @Override

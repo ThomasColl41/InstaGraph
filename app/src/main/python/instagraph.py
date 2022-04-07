@@ -392,7 +392,10 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
 
     # Determine appropriate lag structure for AR and ARIMA models
     if model_choice == 'AR' or model_choice == 'ARIMA':
-        model_lags = ar_select_order(model_data, maxlag=max_lag, ic='aic').ar_lags
+        if para1 == '':
+            model_lags = ar_select_order(model_data, maxlag=max_lag, ic='aic').ar_lags
+        else:
+            model_lags = ar_select_order(model_data, maxlag=int(para1), ic='aic').ar_lags
     else:
         model_lags = 0
 

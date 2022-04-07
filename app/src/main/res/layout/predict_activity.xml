@@ -131,7 +131,7 @@
                 android:layout_below="@id/change_graph"
                 android:layout_alignStart="@id/plot_window"
                 android:background="@drawable/instagraph_text_background"
-                >
+                android:visibility="gone">
 
                 <!--Line Graph-->
                 <ImageButton

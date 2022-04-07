@@ -141,15 +141,13 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.next || view.getId() == R.id.customise_model) {
-            String title = col1Spinner.getSelectedItem().toString() + " over " + col2Spinner.getSelectedItem().toString();
-            userParameters.setModel(modelSpinner.getSelectedItem().toString());
-            userParameters.setCol1(col1Spinner.getSelectedItem().toString());
-            userParameters.setCol2(col2Spinner.getSelectedItem().toString());
-            userParameters.setTitle(title);
-        }
         switch(view.getId()) {
             case(R.id.next):
+                String title = col1Spinner.getSelectedItem().toString() + " over " + col2Spinner.getSelectedItem().toString();
+                userParameters.setModel(modelSpinner.getSelectedItem().toString());
+                userParameters.setCol1(col1Spinner.getSelectedItem().toString());
+                userParameters.setCol2(col2Spinner.getSelectedItem().toString());
+                userParameters.setTitle(title);
                 if(col1Spinner.getSelectedItem().toString().equals(col2Spinner.getSelectedItem().toString())) {
                     errorWindow = errorPopup.showPopup(getString(R.string.identical_columns), false);
                     return;
@@ -167,6 +165,12 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
                     errorWindow = errorPopup.showPopup(e.getMessage(), false);
                     return;
                 }
+                if(userParameters.getModel().equals("AR")) {
+                    userParameters.setPara2(determineTrend(userParameters.getPara2()));
+                }
+                else if(userParameters.getModel().equals("ARIMA")) {
+                    userParameters.setPara4(determineTrend(userParameters.getPara4()));
+                }
                 Intent goToPredict = new Intent(SelectColumnsActivity.this, PredictActivity.class);
                 goToPredict.putExtra("userParameters", userParameters);
                 waitWindow = waitPopup.showPopup(getString(R.string.please_wait), true);
@@ -176,6 +180,7 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
             case(R.id.customise_model):
                 Intent goToCustomise = new Intent(SelectColumnsActivity.this, CustomiseModelActivity.class);
                 goToCustomise.putExtra("userParameters", userParameters);
+                goToCustomise.putExtra("model", modelSpinner.getSelectedItem().toString());
                 waitWindow = waitPopup.showPopup(getString(R.string.please_wait), true);
                 customiseModelLauncher.launch(goToCustomise);
                 break;
@@ -249,6 +254,24 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
                 col2Text.setText(R.string.horizontal_bar_chart_col2);
                 break;
         }
+    }
+
+    // Method to covert the chosen value for trend into one that will be accepted by the models
+    public String determineTrend(String trendValue) {
+        switch(trendValue) {
+            case "No trend":
+                return "n";
+            case "Constant only":
+                return "c";
+            case "Time trend only":
+                return "t";
+            case "Constant and time trend":
+                return "ct";
+
+        }
+
+        // Return "c" by default
+        return "c";
     }
 
     @Override
