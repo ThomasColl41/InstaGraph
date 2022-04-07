@@ -66,9 +66,6 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
         Intent fromPredict = getIntent();
         userParameters = fromPredict.getParcelableExtra("userParameters");
 
-        // Log the provided URL
-        Log.i("InstaGraph", userParameters.getUrl());
-
         // Initialise Python (using Chaquopy)
         if(!Python.isStarted()) {
             Python.start(new AndroidPlatform(this));
@@ -154,8 +151,8 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 try {
                     downloader.saveFile(userParameters.getPredictionsPath());
-                } catch (IOException e) {
-                    Log.i("InstaGraph", "Failed to save predictions " + e.getMessage());
+                } catch (IOException ioe) {
+                    popWindow = pop.showPopup(getString(R.string.failed_to_save_predictions), false);
                 }
 
                 // Inform user

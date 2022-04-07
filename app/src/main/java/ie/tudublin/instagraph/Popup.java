@@ -35,10 +35,9 @@ public class Popup extends PopupWindow {
             popupView = inflater.inflate(R.layout.popup, parentLayout, false);
         }
         catch (InflateException ie) {
-            Log.i("InstaGraph", ie.getMessage());
             Toast.makeText(
                     context,
-                    "Error displaying information (" + ie.getMessage() + ")",
+                    "Error displaying popup",
                     Toast.LENGTH_SHORT).show();
             return null;
         }

@@ -90,8 +90,6 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
                     return;
                 }
 
-                Log.i("InstaGraph", "file path to dataset: " + datasetPath);
-
                 // Set the URL and datasetPath parameters
                 userParameters.setUrl(URLInput.getText().toString());
                 userParameters.setDatasetPath(datasetPath);
@@ -146,7 +144,6 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
                 catch (java.lang.ClassCastException cce) {
                     waitWindow.dismiss();
                     errorWindow = errorPopup.showPopup(getString(R.string.preview_class_cast_error), false);
-                    Log.i("InstaGraph", cce.getMessage());
                     return;
                 }
                 catch (Exception e) {
@@ -169,7 +166,6 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
                 catch (java.lang.ClassCastException cce) {
                     waitWindow.dismiss();
                     errorWindow = errorPopup.showPopup(getString(R.string.summary_class_cast_error), false);
-                    Log.i("InstaGraph", cce.getMessage());
                     return;
                 }
                 catch (Exception e) {

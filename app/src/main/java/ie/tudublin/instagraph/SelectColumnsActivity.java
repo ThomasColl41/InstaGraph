@@ -65,14 +65,10 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
                             int resCode = result.getResultCode();
                             Intent data = result.getData();
 
-                            Log.i("InstaGraph", "Custom Parameters:\n" + resCode);
-                            Log.i("InstaGraph", "Custom Parameters:\n" + data);
-
                             // if things went ok (the user pressed submit)
                             if(resCode == RESULT_OK && data != null) {
                                 try {
                                     userParameters = data.getParcelableExtra("userParameters");
-                                    Log.i("InstaGraph", "Custom Parameters:\n" + userParameters.toString());
                                 }
                                 catch (NullPointerException npe) {
                                     errorWindow = errorPopup.showPopup(getString(R.string.custom_parameters_not_found), false);

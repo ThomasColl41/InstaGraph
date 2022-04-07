@@ -120,7 +120,6 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
                 return getGraphType(id);
             }
             catch (NullPointerException npe) {
-                Log.i("InstaGraph", npe.getMessage());
                 // Line Graph is the default
                 findViewById(highlighted).setVisibility(View.INVISIBLE);
                 findViewById(R.id.line_graph_border).setVisibility(View.VISIBLE);

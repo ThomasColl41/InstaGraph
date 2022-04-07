@@ -55,9 +55,7 @@ public class Downloader extends AppCompatActivity {
         // Inspired from https://stackoverflow.com/questions/7887078/android-saving-file-to-external-storage/7887114#7887114
         File file = new File(filePath);
         if (file.exists()) {
-            if(!file.delete()) {
-                Log.i("InstaGraph", "Duplicate file failed to delete");
-            }
+            file.delete();
         }
         try {
             FileOutputStream out = new FileOutputStream(file);
@@ -65,12 +63,8 @@ public class Downloader extends AppCompatActivity {
             out.flush();
             out.close();
         } catch (Exception e) {
-            Log.i("InstaGraph", e.getMessage());
+            e.printStackTrace();
         }
-
-        // Log values
-        Log.i("InstaGraph", "Downloads: " + downloadsDir);
-        Log.i("InstaGraph", "Save to: " + downloadsDir + filePath);
     }
 
     // Method to save a file as a csv to the Download folder

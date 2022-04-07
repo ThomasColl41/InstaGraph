@@ -91,9 +91,6 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         Intent fromSelectColumns = getIntent();
         userParameters = fromSelectColumns.getParcelableExtra("userParameters");
 
-        // Log the provided URL
-        Log.i("InstaGraph", userParameters.getUrl());
-
         // Initialise Python (using Chaquopy)
         if(!Python.isStarted()) {
             Python.start(new AndroidPlatform(this));

@@ -127,6 +127,7 @@
     <string name="hide">Hide</string>
     <string name="change_graph">Change Graph</string>
     <string name="unknown_error_changing_graph">An unknown error occurred when changing graph. Please try again.</string>
+    <string name="failed_to_save_predictions">Failed to save predictions. Please try again</string>
     <string-array name="models">
         <item>AR</item>
         <item>ARIMA</item>

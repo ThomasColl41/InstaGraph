@@ -61,7 +61,6 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
                                 byte[] image = data.getByteArrayExtra("dataPreview");
                                 bmp = BitmapFactory.decodeByteArray(image,0,image.length);
                                 userParameters = data.getParcelableExtra("userParameters");
-                                Log.i("InstaGraph", "Returned dataset path: " + userParameters.getDatasetPath());
 
                                 dataPreview.setImageBitmap(bmp);
 
