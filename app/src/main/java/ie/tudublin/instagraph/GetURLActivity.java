@@ -83,7 +83,9 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
                 String datasetPath;
                 try {
                     // Run the specified function in the script and get the return value
-                    datasetPath = instaGraphPyObject.callAttr("read_dataset", URLInput.getText().toString()).toString();
+                    datasetPath = instaGraphPyObject.callAttr(
+                            "read_dataset",
+                            URLInput.getText().toString()).toString();
                 }
                 catch (Exception e) {
                     waitWindow.dismiss();
@@ -123,7 +125,9 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
 
                 // Run the dataset_summary function to get a summary of the dataset
                 try {
-                    datasetSummary = instaGraphPyObject.callAttr("dataset_summary", URLInput.getText().toString());
+                    datasetSummary = instaGraphPyObject.callAttr(
+                            "dataset_summary",
+                            URLInput.getText().toString());
                 }
                 catch (Exception e) {
                     waitWindow.dismiss();

@@ -123,7 +123,7 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
 
         try {
             // Rather than reading the csv file everytime a plot is needed,
-            // Return a PyObject which contains the pandas DataFrame of
+            // return a PyObject which contains the pandas DataFrame of
             // the data
             dataFrame = instaGraphPyObject.callAttr(
                     "get_dataframe",

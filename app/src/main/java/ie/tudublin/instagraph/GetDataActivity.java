@@ -58,15 +58,23 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
                         // if things went ok (the user pressed submit)
                         if(resCode == RESULT_OK && data != null) {
                             try {
+                                // Retrieve the byte array from GetURLActivity
                                 byte[] image = data.getByteArrayExtra("dataPreview");
+
+                                // Decode the byte array into a Bitmap image
                                 bmp = BitmapFactory.decodeByteArray(image,0,image.length);
+
                                 userParameters = data.getParcelableExtra("userParameters");
 
+                                // Display the Bitmap
                                 dataPreview.setImageBitmap(bmp);
 
+                                // Get and display the data summary
                                 String summary = data.getStringExtra("summary");
                                 dataSummary.setText(summary);
                                 dataSummary.setVisibility(View.VISIBLE);
+
+                                // Make the next button opaque, meaning the user can proceed
                                 next.setAlpha(1);
                             }
                             catch (NullPointerException npe) {

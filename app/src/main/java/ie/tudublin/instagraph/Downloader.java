@@ -42,12 +42,16 @@ public class Downloader extends AppCompatActivity {
 
         if(!isPermission()) {
             // Permission not granted
-            Toast.makeText(getContext(), "Permission to write files denied", Toast.LENGTH_LONG).show();
+            Toast.makeText(
+                    getContext(),
+                    "Permission to write files denied",
+                    Toast.LENGTH_LONG).show();
             return;
         }
 
         // Get the Download directory
-        String downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+        String downloadsDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOWNLOADS).toString();
 
         // File path to save the visualisation
         String filePath = downloadsDir + generateFileName() + ".jpg";
@@ -84,7 +88,8 @@ public class Downloader extends AppCompatActivity {
         }
 
         // Get the Download directory
-        String downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+        String downloadsDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOWNLOADS).toString();
 
         // File path to save the dataset
         String destFilePath = downloadsDir + generateFileName() + ".csv";

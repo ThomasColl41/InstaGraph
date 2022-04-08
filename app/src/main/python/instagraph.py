@@ -263,8 +263,8 @@ def dataframe_plot(model_data, graph_choice, xlabel='x-axis', ylabel='y-axis',
     # Get the number of rows in the DataFrame
     nrows = model_data.shape[0]
 
-    # List of places to display the axis ticks
-    # Display a tick every 10% of the dataset's length
+    # List of places to display the labels for pie charts
+    # Display a label every 10% of the dataset's length
     pie_labels = [
         int(nrows * 0.1),
         int(nrows * 0.2),
@@ -330,6 +330,7 @@ def dataframe_plot(model_data, graph_choice, xlabel='x-axis', ylabel='y-axis',
             ax.set_ylabel('')
         elif graph_choice == 'Horizontal Bar Chart':
             ax.barh(model_data.index.values, model_data[ylabel])
+
             # Opposite labels for horizontal bar chart
             ax.set_xlabel(ylabel)
             ax.set_ylabel(xlabel)
@@ -605,8 +606,8 @@ def predict(file_name, xlabel='x-axis', ylabel='y-axis', title='Title of Line Gr
     # Get the number of rows
     nrows = full_data.shape[0]
 
-    # List of places to display the axis ticks
-    # Display a tick every 10% of the dataset's length
+    # List of places to display the labels for pie charts
+    # Display a label every 10% of the dataset's length
     pie_labels = [
         int(nrows * 0.1),
         int(nrows * 0.2),
@@ -718,6 +719,7 @@ def read_predictions():
 
     # Join 'predictions.csv' to the directory path to form the full file path
     file_name = join(dirname(files_dir), 'predictions.csv')
+    # ***End reference
 
     # Return the path to the file
     return file_name
