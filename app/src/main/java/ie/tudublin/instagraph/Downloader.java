@@ -51,15 +51,20 @@ public class Downloader extends AppCompatActivity {
 
         // File path to save the visualisation
         String filePath = downloadsDir + generateFileName() + ".jpg";
-        // Save the image
-        // Inspired from https://stackoverflow.com/questions/7887078/android-saving-file-to-external-storage/7887114#7887114
-        File file = new File(filePath);
-        if (file.exists()) {
-            file.delete();
+
+        // Create a file for the image
+        File imageFile = new File(filePath);
+
+        // Overwrite a file if it already exists
+        if (imageFile.exists()) {
+            imageFile.delete();
         }
         try {
-            FileOutputStream out = new FileOutputStream(file);
+            // Create a FileOutputStream to save the file
+            FileOutputStream out = new FileOutputStream(imageFile);
+            // Compress the Bitmap using the output stream
             plot.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            // Flush and close the stream
             out.flush();
             out.close();
         } catch (Exception e) {
@@ -81,7 +86,7 @@ public class Downloader extends AppCompatActivity {
         // Get the Download directory
         String downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
 
-        // File path to save the visualisation
+        // File path to save the dataset
         String destFilePath = downloadsDir + generateFileName() + ".csv";
 
         // Create Path variables based on the paths of the source and destination
@@ -105,12 +110,12 @@ public class Downloader extends AppCompatActivity {
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, writePermission);
         }
         else {
-            // Permission is already granted;
+            // Permission is already granted
             setPermission(true);
         }
     }
 
-    // Method that uses the Calendar class to get the current date and time as a string
+    // Method that uses the Calendar class to get the current date and time as a String
     // And return a String containing InstaGraph_date_and_time for use as a file name
     public String generateFileName() {
         // Get an instance of Calendar, and use it to get the current date and time
@@ -129,12 +134,14 @@ public class Downloader extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == writePermission) {
-            // If request is cancelled, the result array will be empty.
+            // If the request is cancelled, the result array will be empty.
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission has been granted
                 Toast.makeText(getContext(), "Permission granted", Toast.LENGTH_LONG).show();
                 setPermission(true);
             }
             else {
+                // Permission was denied
                 Toast.makeText(getContext(), "Permission denied", Toast.LENGTH_LONG).show();
                 setPermission(false);
             }

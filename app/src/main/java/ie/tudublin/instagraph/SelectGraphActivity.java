@@ -67,6 +67,7 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View view) {
         switch(view.getId()) {
             case(R.id.next):
+                // Set the graph choice in the ParameterParcel and go to SelectColumnsActivity
                 userParameters.setGraphType(graphType);
                 Intent goToSelectColumns = new Intent(SelectGraphActivity.this, SelectColumnsActivity.class);
                 goToSelectColumns.putExtra("userParameters", userParameters);
@@ -78,6 +79,7 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
                 finish();
                 break;
 
+            // Change the graph selection depending on which image was clicked
             case(R.id.line_graph_window):
                 graphType = selectGraph(R.id.line_graph_border);
                 break;
@@ -96,7 +98,9 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    // Method to adjust with visualisation option is highlighted
     public String selectGraph(int id) {
+        // If no image is highlighted, highlight this one
         if (highlighted == 0) {
             try {
                 findViewById(id).setVisibility(View.VISIBLE);
@@ -112,6 +116,8 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
                 return getString(R.string.line_graph);
             }
         }
+        // If an element is already highlighted, remove the highlight and
+        // apply it to the current element
         else if (id != highlighted) {
             try {
                 findViewById(highlighted).setVisibility(View.INVISIBLE);
@@ -128,9 +134,12 @@ public class SelectGraphActivity extends AppCompatActivity implements View.OnCli
                 return getString(R.string.line_graph);
             }
         }
+        // Return the String that represents the graph
         return getGraphType(id);
     }
 
+    // Method that returns a String used to identify
+    // the chosen visualisation
     public String getGraphType(int id) {
         // Return name of selected graph
         switch(id) {

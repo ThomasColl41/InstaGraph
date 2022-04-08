@@ -37,12 +37,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch(view.getId()) {
             case(R.id.start):
+                // Go to GetDataActivity
                 Intent goToGetData = new Intent(MainActivity.this, GetDataActivity.class);
                 startActivity(goToGetData);
                 break;
 
             case(R.id.info_button):
-                // Display info pop-up
+                // Display a popup with information about the application
                 infoWindow = infoPopup.showPopup(getString(R.string.instagraph_information), false);
                 break;
         }

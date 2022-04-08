@@ -71,6 +71,7 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch(view.getId()) {
             case (R.id.submit):
+                // Check that the URL input field is not empty (blank)
                 if(URLInput.getText().toString().equals("")) {
                     errorWindow = errorPopup.showPopup(getString(R.string.url_blank), false);
                     return;
@@ -94,8 +95,10 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
                 userParameters.setUrl(URLInput.getText().toString());
                 userParameters.setDatasetPath(datasetPath);
 
-                // Get the number of rows
+                // Get the number of rows in the dataset
                 int datasetRows = Integer.parseInt(instaGraphPyObject.callAttr("model_rows", userParameters.getDatasetPath()).toString());
+
+                // If there are too many rows, inform the user and return
                 if(datasetRows > 3000) {
                     waitWindow.dismiss();
                     errorWindow = errorPopup.showPopup(getString(R.string.too_many_rows), false);
@@ -128,12 +131,14 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
                     return;
                 }
 
+                // Return to GetDataActivity
                 Intent returnToGetData = new Intent(GetURLActivity.this, GetDataActivity.class);
 
                 // Convert the dataPreview PyObject into a byte array
                 try {
                     assert dataPreview != null;
                     byte[] data = dataPreview.toJava(byte[].class);
+                    // Return it to GetDataActivity
                     returnToGetData.putExtra("dataPreview", data);
                 }
                 catch (AssertionError ae) {
@@ -156,6 +161,7 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
                 try {
                     assert datasetSummary != null;
                     String summary = datasetSummary.toJava(String.class);
+                    // Return it to GetDataActivity
                     returnToGetData.putExtra("summary", summary);
                 }
                 catch (AssertionError ae) {
@@ -174,12 +180,14 @@ public class GetURLActivity extends AppCompatActivity implements View.OnClickLis
                     return;
                 }
 
+                // Return the ParameterParcel
                 returnToGetData.putExtra("userParameters", userParameters);
                 setResult(RESULT_OK, returnToGetData);
                 finish();
                 break;
 
             case (R.id.info_button):
+                // Display information about the application's limitations
                 infoWindow = infoPopup.showPopup(getString(R.string.row_limit_info), false);
         }
     }

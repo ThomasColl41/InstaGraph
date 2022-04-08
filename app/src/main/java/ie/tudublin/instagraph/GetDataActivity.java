@@ -42,7 +42,7 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
     PopupWindow errorWindow;
 
 
-    // Inspired from https://www.youtube.com/watch?v=-y5eF0u1bZQ and https://www.youtube.com/watch?v=Ke9PaRdMcgc
+    // *** Code referenced from https://www.youtube.com/watch?v=-y5eF0u1bZQ and https://www.youtube.com/watch?v=Ke9PaRdMcgc
     // StartActivityForResult alternative implementation
     ActivityResultLauncher<Intent> getUrlLauncher =
         registerForActivityResult(
@@ -81,6 +81,7 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
                 }
 
         );
+    // *** End code reference
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,22 +108,26 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch(view.getId()) {
             case(R.id.choose_file):
+                // Go to GetURLActivity
                 Intent goToChooseFile = new Intent(GetDataActivity.this, GetURLActivity.class);
                 waitWindow = waitPopup.showPopup(getString(R.string.please_wait), true);
                 getUrlLauncher.launch(goToChooseFile);
                 break;
 
             case(R.id.next):
+                // Check that a dataset has been selected
                 if(userParameters == null || userParameters.getDatasetPath() == null) {
                     errorWindow = errorPopup.showPopup(getString(R.string.no_dataset),false);
                     return;
                 }
+                // Go to SelectGraphActivity
                 Intent goToSelectGraph = new Intent(GetDataActivity.this, SelectGraphActivity.class);
                 goToSelectGraph.putExtra("userParameters", userParameters);
                 startActivity(goToSelectGraph);
                 break;
 
             case(R.id.download_icon):
+                // Download the preview
                 if(bmp == null) {
                     errorWindow = errorPopup.showPopup(getString(R.string.no_preview), false);
                     break;
@@ -132,7 +137,7 @@ public class GetDataActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 downloader.savePlot(bmp);
 
-                // Inform user
+                // Inform user of success
                 popWindow = pop.showPopup(getString(R.string.preview_saved), false);
         }
     }

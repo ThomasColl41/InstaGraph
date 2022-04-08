@@ -88,10 +88,13 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
         errorPopup = new Popup(CustomiseModelActivity.this, mainLayout);
         infoPopup = new Popup(CustomiseModelActivity.this, mainLayout);
 
+        // Retreive the ParameterParcel object
         Intent fromSelectColumns = getIntent();
         userParameters = fromSelectColumns.getParcelableExtra("userParameters");
         model = fromSelectColumns.getStringExtra("model");
 
+        // If the model selected is different to the most recent one,
+        // Reset all the parameters
         if(!model.equals(userParameters.getModel())) {
             userParameters.setPara1("");
             userParameters.setPara2("");
@@ -118,7 +121,7 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
     public void onClick(View view) {
         switch(view.getId()) {
             case(R.id.submit):
-                // The the user limits the number of rows, it should be at least 2
+                // If the user limits the number of rows, it should be at least 2
                 if(!rowLimitInput.getText().toString().equals("")) {
                     if(Integer.parseInt(rowLimitInput.getText().toString()) < 2) {
                         errorWindow = errorPopup.showPopup(getString(R.string.not_enough_rows), false);
@@ -177,6 +180,8 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
     public void displayModelParameters(String modelChoice) {
         // Set the content of the modelName TextView to that of the chosen model
         modelName.setText(modelChoice);
+
+        // Instantiated the appropriate widgets for the chosen model
         switch(modelChoice) {
             case "AR":
                 ar.setVisibility(View.VISIBLE);
@@ -239,6 +244,7 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
         hwesTrendArray.notifyDataSetChanged();
         firstLastArray.notifyDataSetChanged();
 
+        // Only set the adapters for the current model
         switch(modelChoice) {
             case "AR":
                 arTrendSpinner.setAdapter(trendArray);
@@ -256,9 +262,11 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
                 break;
         }
 
+        // Always set the Spinner for row limiting
         rowLimitFirstLastSpinner.setAdapter(firstLastArray);
 
-        // Parameters have been set previously, set them in their elements
+        // If parameters have been set previously, set them in their elements
+        // This only applies if the user is customising the same model twice in a row
         switch(modelChoice) {
             case "AR":
                 if(userParameters.getPara1() != null) {
@@ -299,6 +307,7 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
                 break;
         }
 
+        // Row limiting and predictions parameters should be set regardless of model
         if(userParameters.getFirstLast() != null) {
             rowLimitFirstLastSpinner.setSelection(firstLastArray.getPosition(userParameters.getFirstLast()));
         }
@@ -312,7 +321,7 @@ public class CustomiseModelActivity extends AppCompatActivity implements View.On
 
     // Method to set the custom parameters depending on the choice of model
     public void setParameters(String modelChoice) {
-        // Submit changes
+        // Set the values of the widgets in the order they are required for the Python function
         switch(modelChoice) {
             case "AR":
                 userParameters.setPara1(arOrderInput.getText().toString());

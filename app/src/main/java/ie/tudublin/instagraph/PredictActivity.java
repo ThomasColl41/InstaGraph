@@ -103,6 +103,8 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         instaGraphPyObject = py.getModule("instagraph");
 
         try {
+            // Using the columns specified by the user,
+            // Save a csv file of the data and return the path
             String modelDataPath = instaGraphPyObject.callAttr(
                     "read_model_data",
                     userParameters.getDatasetPath(),
@@ -112,6 +114,7 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
                     userParameters.getRowLimit()
             ).toString();
 
+            // Add the path of the model dataset to userParameters
             userParameters.setModelDataPath(modelDataPath);
         }
         catch (Exception e) {
@@ -119,6 +122,9 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         try {
+            // Rather than reading the csv file everytime a plot is needed,
+            // Return a PyObject which contains the pandas DataFrame of
+            // the data
             dataFrame = instaGraphPyObject.callAttr(
                     "get_dataframe",
                     userParameters.getModelDataPath(),
@@ -126,6 +132,7 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
                     userParameters.getCol2()
             );
 
+            // Use the DataFrame to plot the data
             plot_image = instaGraphPyObject.callAttr(
                     "dataframe_plot",
                     dataFrame,
@@ -140,6 +147,7 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         try {
+            // Get the number of rows in the dataset
             modelRows = Integer.parseInt(instaGraphPyObject.callAttr("model_rows", userParameters.getModelDataPath()).toString());
         }
         catch (Exception e) {
@@ -162,26 +170,32 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
+            // Display the graph options window
             case(R.id.change_graph):
                 findViewById(R.id.change_graph_window).setVisibility(View.VISIBLE);
                 break;
 
+            // Hide the graph options window
             case(R.id.hide):
                 findViewById(R.id.change_graph_window).setVisibility(View.GONE);
                 break;
 
+            // Re-plot the data based on the new graph choice
             case(R.id.line_graph):
                 changeGraph(getString(R.string.line_graph));
                 break;
 
+            // Re-plot the data based on the new graph choice
             case(R.id.bar_chart):
                 changeGraph(getString(R.string.bar_chart));
                 break;
 
+            // Re-plot the data based on the new graph choice
             case(R.id.pie_chart):
                 changeGraph(getString(R.string.pie_chart));
                 break;
 
+            // Re-plot the data based on the new graph choice
             case(R.id.horizontal_bar_chart):
                 changeGraph(getString(R.string.horizontal_bar_chart));
                 break;
@@ -202,10 +216,13 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
                     return;
                 }
 
+                // If there are not enough rows in the model dataset for predictions, inform the user
                 if(modelRows < minimumPredictionRows(userParameters.getModel())) {
                     errorWindow = errorPopup.showPopup(getString(R.string.not_enough_rows_to_predict), false);
                     return;
                 }
+
+                // Go to ResultActivity
                 Intent goToResult = new Intent(PredictActivity.this, ResultActivity.class);
                 goToResult.putExtra("userParameters", userParameters);
                 waitWindow = waitPopup.showPopup(getString(R.string.please_wait), true);
@@ -217,12 +234,13 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
                 break;
 
             case(R.id.download_icon):
+                // Download the visualisation
                 if(downloader == null) {
                     downloader = new Downloader(PredictActivity.this, this);
                 }
                 downloader.savePlot(bmp);
 
-                // Inform user
+                // Inform user of success
                 popWindow = pop.showPopup(getString(R.string.graph_saved), false);
 
         }
@@ -237,6 +255,8 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
                     return 26;
                 }
                 else {
+                    // Otherwise, there should be twice as many rows as there is lags,
+                    // plus one for the trend, and another one for safety
                     return (1 + Integer.parseInt(userParameters.getPara1()) * 2) + 1;
                 }
             case "ARIMA":
@@ -246,11 +266,12 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
                     userParameters.setPara1("12");
                 }
                 if(userParameters.getPara2().equals("")) {
-                    userParameters.setPara2("2");
+                    userParameters.setPara2("1");
                 }
                 if(userParameters.getPara3().equals("")) {
                     userParameters.setPara3("1");
                 }
+                // There should be twice as many rows as orders plus one
                 return ((1 +Integer.parseInt(userParameters.getPara1()) +
                         Integer.parseInt(userParameters.getPara2()) +
                         Integer.parseInt(userParameters.getPara3())) * 2) + 1;
@@ -260,6 +281,7 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
                 return 2;
 
             case "HWES":
+                // If no seasonal period has been set, the default is 12
                 if(userParameters.getPara3().equals("")) {
                     userParameters.setPara3("12");
                 }
@@ -274,6 +296,8 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
     // Method to change the graph plot
     public void changeGraph(String graphType) {
         waitWindow = waitPopup.showPopup(getString(R.string.please_wait), true);
+
+        // Re-plot the data using the Dataframe and the new graph choice
         try {
             plot_image = instaGraphPyObject.callAttr(
                     "dataframe_plot",
@@ -297,6 +321,8 @@ public class PredictActivity extends AppCompatActivity implements View.OnClickLi
                 waitWindow.dismiss();
             }
         }
+
+        // Update userParameters with the new graph choice
         userParameters.setGraphType(graphType);
     }
 

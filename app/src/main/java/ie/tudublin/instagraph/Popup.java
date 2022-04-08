@@ -19,11 +19,13 @@ public class Popup extends PopupWindow {
     Context context;
     RelativeLayout parentLayout;
 
+    // Constructor
     public Popup(Context context, RelativeLayout parentLayout) {
         this.context = context;
         this.parentLayout = parentLayout;
     }
 
+    // Method to display a popup with text and possibly a ProgressBar widget
     public PopupWindow showPopup(String text, boolean hasProgressBar) {
         View popupView;
 

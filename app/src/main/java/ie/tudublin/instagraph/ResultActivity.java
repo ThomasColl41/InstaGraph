@@ -101,6 +101,7 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
         try {
             // Get the directory where the predictions have been saved
             String predPath = instaGraphPyObject.callAttr("read_predictions").toString();
+            // Set this in the ParameterParcel
             userParameters.setPredictionsPath(predPath);
         }
         catch (Exception e) {
@@ -126,6 +127,7 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch(view.getId()) {
             case(R.id.finish):
+                // Return to MainActivity and end all activities that were launched since
                 Intent goToMain = new Intent(ResultActivity.this, MainActivity.class);
                 goToMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(goToMain);
@@ -136,16 +138,18 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
                 break;
 
             case(R.id.jpg_icon):
+                // Download the visualisation plot
                 if(downloader == null) {
                     downloader = new Downloader(ResultActivity.this, this);
                 }
                 downloader.savePlot(bmp);
 
-                // Inform user
+                // Inform user of success
                 popWindow = pop.showPopup(getString(R.string.graph_saved), false);
                 break;
 
             case(R.id.csv_icon):
+                // Download the extended dataset
                 if(downloader == null) {
                     downloader = new Downloader(ResultActivity.this, this);
                 }
@@ -155,7 +159,7 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
                     popWindow = pop.showPopup(getString(R.string.failed_to_save_predictions), false);
                 }
 
-                // Inform user
+                // Inform user of success
                 popWindow = pop.showPopup(getString(R.string.predictions_saved), false);
                 break;
         }

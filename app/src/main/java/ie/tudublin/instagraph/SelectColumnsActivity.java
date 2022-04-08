@@ -52,7 +52,7 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
     PopupWindow waitWindow;
     PopupWindow errorWindow;
 
-    // Inspired from https://www.youtube.com/watch?v=-y5eF0u1bZQ and https://www.youtube.com/watch?v=Ke9PaRdMcgc
+    // *** Code referenced from https://www.youtube.com/watch?v=-y5eF0u1bZQ and https://www.youtube.com/watch?v=Ke9PaRdMcgc
     // StartActivityForResult alternative implementation
     ActivityResultLauncher<Intent> customiseModelLauncher =
             registerForActivityResult(
@@ -82,6 +82,7 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
                     }
 
             );
+    // *** End code reference
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,12 +127,14 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
             // Store the returned names in a String array
             String[] names = columnNames.toJava(String[].class);
 
+            // Set up the column spinners using the column names
             spinnerSetup(names);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
 
+        // Set up the column TextViews depending on graph choice
         columnTextSetup(userParameters.getGraphType());
     }
 
@@ -139,15 +142,21 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
     public void onClick(View view) {
         switch(view.getId()) {
             case(R.id.next):
+                // Create a title, and save the other parameters to userParameters
                 String title = col1Spinner.getSelectedItem().toString() + " over " + col2Spinner.getSelectedItem().toString();
                 userParameters.setModel(modelSpinner.getSelectedItem().toString());
                 userParameters.setCol1(col1Spinner.getSelectedItem().toString());
                 userParameters.setCol2(col2Spinner.getSelectedItem().toString());
                 userParameters.setTitle(title);
+
+                // Do not allow the two columns to be the same
                 if(col1Spinner.getSelectedItem().toString().equals(col2Spinner.getSelectedItem().toString())) {
                     errorWindow = errorPopup.showPopup(getString(R.string.identical_columns), false);
                     return;
                 }
+
+                // Create a quick plot to test if the columns are suitable.
+                // If not, inform the user
                 try {
                     instaGraphPyObject.callAttr(
                             "test_plot",
@@ -161,12 +170,17 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
                     errorWindow = errorPopup.showPopup(e.getMessage(), false);
                     return;
                 }
+
+                // If the model is AR or ARIMA, convert the custom trend parameter
+                // to a value accepted by the model
                 if(userParameters.getModel().equals("AR")) {
                     userParameters.setPara2(determineTrend(userParameters.getPara2()));
                 }
                 else if(userParameters.getModel().equals("ARIMA")) {
                     userParameters.setPara4(determineTrend(userParameters.getPara4()));
                 }
+
+                // Go to PredictActivity, passing in userParameters
                 Intent goToPredict = new Intent(SelectColumnsActivity.this, PredictActivity.class);
                 goToPredict.putExtra("userParameters", userParameters);
                 waitWindow = waitPopup.showPopup(getString(R.string.please_wait), true);
@@ -174,6 +188,7 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
                 break;
 
             case(R.id.customise_model):
+                // Go to CustomiseModelActivity
                 Intent goToCustomise = new Intent(SelectColumnsActivity.this, CustomiseModelActivity.class);
                 goToCustomise.putExtra("userParameters", userParameters);
                 goToCustomise.putExtra("model", modelSpinner.getSelectedItem().toString());
@@ -187,6 +202,7 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    // Method to supply the columns Spinner with the names of the dataset columns
     public void spinnerSetup(String[] colNames) {
         // Get the models string array from strings.xml
         String[] models = getResources().getStringArray(R.array.models);
@@ -252,7 +268,8 @@ public class SelectColumnsActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    // Method to covert the chosen value for trend into one that will be accepted by the models
+    // Method to covert the chosen value for trend into one that will be accepted by the model
+    // Applies only to AR and ARIMA
     public String determineTrend(String trendValue) {
         switch(trendValue) {
             case "No trend":
